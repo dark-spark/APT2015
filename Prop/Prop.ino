@@ -1,17 +1,23 @@
 #include <Adafruit_NeoPixel.h>
 
 int floatingPin = A0;
-//const int AI0 = A1;
-//const int AI1 = A2;
-//const int AI2 = A3;
-//const int AI3 = A4;
-//const int AI4 = A5;
-//const int AI5 = A6;
+const int AI0 = A1;
+const int AI1 = A2;
+const int AI2 = A3;
+const int AI3 = A4;
+const int AI4 = A5;
+const int AI5 = A6;
 const int ledPin = 2;
 const int numOfPixels = 6;
 
-uint32_t red, green, blue, magenta, cyan, yellow, off;
-uint32_t colors[7];
+int colors[][3] = {
+{255, 0, 0},
+{0, 255, 0},
+{0, 0, 255},
+{255, 0, 255},
+{0, 255, 255},
+{255, 255, 0},
+{0, 0, 0}};
 
 int randoms[30][6] = {
 {0,5,4,3,2,1},
@@ -49,15 +55,6 @@ Adafruit_NeoPixel leds = Adafruit_NeoPixel(numOfPixels, ledPin, NEO_GRB + NEO_KH
 
 void setup(){
   
-  uint32_t red = leds.Color(255, 0, 0);
-  uint32_t green = leds.Color(0, 255, 0);
-  uint32_t blue = leds.Color(0, 0, 255);
-  uint32_t magenta = leds.Color(255, 0, 255);
-  uint32_t cyan = leds.Color(0, 255, 255);
-  uint32_t yellow = leds.Color(255, 255, 0);
-  uint32_t off = leds.Color(0, 0, 0);
-  uint32_t colors[] = {red, green, blue, magenta, cyan, yellow, off};
-  
   leds.begin();
   leds.show();
   
@@ -70,39 +67,73 @@ void setup(){
 
 void loop(){
   displayRand(500);
+//  rainbow(20);
+  Serial.println(sensorVal(AI0));
+  Serial.println(sensorVal(AI1));
+  Serial.println(sensorVal(AI2));
+  Serial.println(sensorVal(AI3));
+  Serial.println(sensorVal(AI4));
+  Serial.println(sensorVal(AI5));
+  delay(100);
+    
 }
 
 void displayRand(int wait) {
   int r = random(30);
   for(int i = 0; i < numOfPixels; i++) {
-    leds.setPixelColor(i, colors[randoms[r][i]]);
+    leds.setPixelColor(i, colors[randoms[r][i]][0], colors[randoms[r][i]][1], colors[randoms[r][i]][2]);
   }
   leds.show();
   delay(wait);
-  for(int i = 0; i < numOfPixels; i++) {
-    leds.setPixelColor(i, off);
+  for(int i = 0; i < leds.numPixels(); i++) {
+    leds.setPixelColor(i, colors[7][0], colors[7][1], colors[7][2]);
   }
   leds.show();
 }
 
-//int sensorVal(int pin) {
-//  int val = analogRead(pin);
-//  if(val > 96 && < 196) {
-//    return 0;
-//  } else if (val >= 243 && <= 343) {
-//    return 1;
-//  } else if (val >= 389 && <= 489) {
-//    return 2;
-//  } else if (val >= 535 && <= 635) {
-//    return 3;
-//  } else if (val >= 681 && <= 781) {
-//    return 4;
-//  } else if (val >= 828 && <= 928) {
-//    return 5;
-//  } else {
-//    return 6;
-//  }
-//}
+void rainbow(uint8_t wait) {
+  uint16_t i, j;
+
+  for(j=0; j<256; j++) {
+    for(i=0; i<leds.numPixels(); i++) {
+      leds.setPixelColor(i, Wheel((i+j) & 255));
+    }
+    leds.show();
+    delay(wait);
+  }
+}
+
+uint32_t Wheel(byte WheelPos) {
+  WheelPos = 255 - WheelPos;
+  if(WheelPos < 85) {
+   return leds.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+  } else if(WheelPos < 170) {
+    WheelPos -= 85;
+   return leds.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+  } else {
+   WheelPos -= 170;
+   return leds.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+  }
+}
+
+int sensorVal(int pin) {
+  int val = analogRead(pin);
+  if(val > 96 && val < 196) {
+    return 0;
+  } else if (val >= 243 && val <= 343) {
+    return 1;
+  } else if (val >= 389 && val <= 489) {
+    return 2;
+  } else if (val >= 535 && val <= 635) {
+    return 3;
+  } else if (val >= 681 && val <= 781) {
+    return 4;
+  } else if (val >= 828 && val <= 928) {
+    return 5;
+  } else {
+    return 6;
+  }
+}
 
 //
 //
