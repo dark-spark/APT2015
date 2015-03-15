@@ -58,11 +58,12 @@ const int data0 = 6;
 const int data1 = 7;
 const int data2 = 8;
 const int clk = 9;
-const int enableShootingRange = 1;
+const int enableShootingRange = 10;
 
 int r;
 boolean score[numOfPixels];
 int numCorrect = 0;
+int mode = 0;
 
 Adafruit_NeoPixel leds = Adafruit_NeoPixel(numOfPixels, ledPin, NEO_GRB + NEO_KHZ800);
 
@@ -83,12 +84,17 @@ void setup(){
   pinMode(data1, OUTPUT);
   pinMode(data2, OUTPUT);
   pinMode(clk, OUTPUT);
-  pinMode(enableShottingRange, OUTPUT);
+  pinMode(enableShootingRange, OUTPUT);
 
 }
 
 void loop(){
-  while(digitalRead(canPin == LOW) {
+//  for(int i = 0; i < 7; i++) {
+//    transmit(i);
+//    Serial.println("");
+//  }
+//  delay(1000);
+  while(digitalRead(canPin == LOW)) {
     switch(mode) {
       case 0: //Display Random Colors
         numCorrect = 0;
@@ -102,39 +108,52 @@ void loop(){
         }
         break;
       case 2: //Check sensors and Display pass or fail
-        score[numOfPixels] = checkConnections();
-        for(int i = 0; i < numOfPixels; i++) {
-          leds.setPixelColor(i, colors[bools[i]][0], colors[bools[i]][1], colors[bools[i]][2]);
-        }
-        leds.show();
-        mode = 3;
+//        score[numOfPixels] = checkConnections();
+//        for(int i = 0; i < numOfPixels; i++) {
+//          leds.setPixelColor(i, colors[bools[i]][0], colors[bools[i]][1], colors[bools[i]][2]);
+//        }
+//        leds.show();
+//        mode = 3;
         break;
       case 3: //Transmit data
         
         break;
-    } else {
-      rainbow(20);
     }
+  }
+  rainbow(20);
 }
 
-boolean[] checkConnections() {
-  int vals[numOfPixels];
-  boolean bools[numOfPixels];
-  vals[0] = sensorVal(AI1);
-  vals[1] = sensorVal(AI2);
-  vals[2] = sensorVal(AI3);
-  vals[3] = sensorVal(AI4);
-  vals[4] = sensorVal(AI5);
-  vals[5] = sensorVal(AI6);
-  for(int i = 0; i < numOfPixels; i++) {
-    if(vals[i] == randoms[r][i]) {
-      bools[i] = 1;
-      numCorrect++;
-    } else {
-      bools[i] = 0;
-    }
-  return bools[];
+void transmit(int score) {
+  digitalWrite(data0, score & 1 ? HIGH : LOW);
+  Serial.println(score & 1 ? "HIGH" : "LOW");
+  digitalWrite(data1, score & 2 ? HIGH : LOW);
+  Serial.println(score & 2 ? "HIGH" : "LOW");
+  digitalWrite(data2, score & 4 ? HIGH : LOW);
+  Serial.println(score & 4 ? "HIGH" : "LOW");
+  digitalWrite(clk, HIGH);
+  delay(100);
+  digitalWrite(clk, LOW);
 }
+//
+//boolean[] checkConnections() {
+//  int vals[numOfPixels];
+//  boolean bools[numOfPixels];
+//  vals[0] = sensorVal(AI1);
+//  vals[1] = sensorVal(AI2);
+//  vals[2] = sensorVal(AI3);
+//  vals[3] = sensorVal(AI4);
+//  vals[4] = sensorVal(AI5);
+//  vals[5] = sensorVal(AI6);
+//  for(int i = 0; i < numOfPixels; i++) {
+//    if(vals[i] == randoms[r][i]) {
+//      bools[i] = 1;
+//      numCorrect++;
+//    } else {
+//      bools[i] = 0;
+//    }
+//  }
+//  return bools[];
+//}
   
 int sensorVal(int pin) {
   int val = analogRead(pin);
@@ -192,17 +211,4 @@ uint32_t Wheel(byte WheelPos) {
   }
 }
 
-
-//
-//
-//int[] randomInts(int amount) {
-//  int numbers[amount];
-//  for (int i = 0; i < amount; i++) {
-//    numbers[i] = i;
-//  }
-//  int shuffle[amount];
-//  for (int i = 0; i < amount; i++) {
-//    rand = random(0,amount - i);
-//  }
-//}
 
