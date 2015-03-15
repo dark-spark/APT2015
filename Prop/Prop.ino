@@ -94,43 +94,42 @@ void loop(){
   while (digitalRead(canPin) == LOW) {
     
     switch(mode) {
-      case 0: //Set timer 
+      case 0: //Display Random Colours
         time0 = millis();
-        mode = 1;
-        break;
-        
-      case 1: //Display Random Colors
         numCorrect = 0;
         r = random(30);
         displayRand();
+        mode = 10;
+        break;
         
+      case 10: //Clear display
         if(millis() - time0 > 4000) {
-          mode = 2;
+          mode = 20;
           displayNothing();
         }
         break;
         
-      case 2: //Wait for button press
+      case 20: //Wait for button press
         if(digitalRead(buttonPin) == LOW) {
-          mode = 3;
+          mode = 30;
         }
         break;
         
-      case 3: //Check sensors and Display pass or fail
+      case 30: //Check sensors and Display pass or fail
         checkConnections(score);
         for(int i = 0; i < numOfPixels; i++) {
           leds.setPixelColor(i, colors[score[i]][0], colors[score[i]][1], colors[score[i]][2]);
         }
         leds.show();
-        mode = 4;
+        mode = 40;
         break;
         
-      case 4: //Transmit data
+      case 40: //Transmit data
         transmit(numCorrect);
-        mode = 5;
+        mode = 50;
         break;
         
-      case 5:
+      case 50:
         break;
     }
   }
