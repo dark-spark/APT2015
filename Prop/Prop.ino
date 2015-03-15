@@ -5,7 +5,7 @@ int colors[][3] = {
 {0, 255, 0},
 {0, 0, 255},
 {255, 0, 255},
-{0, 255, 255},
+{255, 255, 255},
 {255, 255, 0},
 {0, 0, 0}};
 
@@ -64,6 +64,7 @@ int r;
 boolean score[numOfPixels];
 int numCorrect = 0;
 int mode = 0;
+int time0, time1;
 
 Adafruit_NeoPixel leds = Adafruit_NeoPixel(numOfPixels, ledPin, NEO_GRB + NEO_KHZ800);
 
@@ -89,71 +90,80 @@ void setup(){
 }
 
 void loop(){
-//  for(int i = 0; i < 7; i++) {
-//    transmit(i);
-//    Serial.println("");
-//  }
-//  delay(1000);
-  while(digitalRead(canPin == LOW)) {
+  
+  while (digitalRead(canPin) == LOW) {
+    
     switch(mode) {
-      case 0: //Display Random Colors
-        numCorrect = 0;
-        r = random(30);
-        displayRand(5000);
+      case 0: //Set timer 
+        time0 = millis();
         mode = 1;
         break;
-      case 1: //Wait for button press
-        if(digitalRead(buttonPin) == LOW) {
+        
+      case 1: //Display Random Colors
+        numCorrect = 0;
+        r = random(30);
+        displayRand();
+        
+        if(millis() - time0 > 4000) {
           mode = 2;
+          displayNothing();
         }
         break;
-      case 2: //Check sensors and Display pass or fail
-//        score[numOfPixels] = checkConnections();
-//        for(int i = 0; i < numOfPixels; i++) {
-//          leds.setPixelColor(i, colors[bools[i]][0], colors[bools[i]][1], colors[bools[i]][2]);
-//        }
-//        leds.show();
-//        mode = 3;
-        break;
-      case 3: //Transmit data
         
+      case 2: //Wait for button press
+        if(digitalRead(buttonPin) == LOW) {
+          mode = 3;
+        }
+        break;
+        
+      case 3: //Check sensors and Display pass or fail
+        checkConnections(score);
+        for(int i = 0; i < numOfPixels; i++) {
+          leds.setPixelColor(i, colors[score[i]][0], colors[score[i]][1], colors[score[i]][2]);
+        }
+        leds.show();
+        mode = 4;
+        break;
+        
+      case 4: //Transmit data
+        transmit(numCorrect);
+        mode = 5;
+        break;
+        
+      case 5:
         break;
     }
   }
   rainbow(20);
+  mode = 0;
 }
 
-void transmit(int score) {
-  digitalWrite(data0, score & 1 ? HIGH : LOW);
-  Serial.println(score & 1 ? "HIGH" : "LOW");
-  digitalWrite(data1, score & 2 ? HIGH : LOW);
-  Serial.println(score & 2 ? "HIGH" : "LOW");
-  digitalWrite(data2, score & 4 ? HIGH : LOW);
-  Serial.println(score & 4 ? "HIGH" : "LOW");
+void transmit(int i) {
+  digitalWrite(data0, i & 1 ? HIGH : LOW);
+  digitalWrite(data1, i & 2 ? HIGH : LOW);
+  digitalWrite(data2, i & 4 ? HIGH : LOW);
   digitalWrite(clk, HIGH);
   delay(100);
   digitalWrite(clk, LOW);
 }
-//
-//boolean[] checkConnections() {
-//  int vals[numOfPixels];
-//  boolean bools[numOfPixels];
-//  vals[0] = sensorVal(AI1);
-//  vals[1] = sensorVal(AI2);
-//  vals[2] = sensorVal(AI3);
-//  vals[3] = sensorVal(AI4);
-//  vals[4] = sensorVal(AI5);
-//  vals[5] = sensorVal(AI6);
-//  for(int i = 0; i < numOfPixels; i++) {
-//    if(vals[i] == randoms[r][i]) {
-//      bools[i] = 1;
-//      numCorrect++;
-//    } else {
-//      bools[i] = 0;
-//    }
-//  }
-//  return bools[];
-//}
+
+void checkConnections(boolean bools[]) {
+  int vals[numOfPixels];
+  vals[0] = sensorVal(AI0);
+  vals[1] = sensorVal(AI1);
+  vals[2] = sensorVal(AI2);
+  vals[3] = sensorVal(AI3);
+  vals[4] = sensorVal(AI4);
+  vals[5] = sensorVal(AI5);
+  for(int i = 0; i < numOfPixels; i++) {
+    if(vals[i] == randoms[r][i]) {
+      bools[i] = 1;
+      numCorrect++;
+    } else {
+      bools[i] = 0;
+    }
+  }
+}
   
 int sensorVal(int pin) {
   int val = analogRead(pin);
@@ -174,14 +184,16 @@ int sensorVal(int pin) {
   }
 }
 
-void displayRand(int wait) {
+void displayRand() {
   for(int i = 0; i < numOfPixels; i++) {
     leds.setPixelColor(i, colors[randoms[r][i]][0], colors[randoms[r][i]][1], colors[randoms[r][i]][2]);
   }
   leds.show();
-  delay(wait);
+}
+
+void displayNothing() {
   for(int i = 0; i < leds.numPixels(); i++) {
-    leds.setPixelColor(i, colors[7][0], colors[7][1], colors[7][2]);
+    leds.setPixelColor(i, colors[6][0], colors[6][1], colors[6][2]);
   }
   leds.show();
 }
@@ -194,6 +206,9 @@ void rainbow(uint8_t wait) {
       leds.setPixelColor(i, Wheel((i+j) & 255));
     }
     leds.show();
+    if(digitalRead(canPin) == LOW) {
+      break;
+    }
     delay(wait);
   }
 }
