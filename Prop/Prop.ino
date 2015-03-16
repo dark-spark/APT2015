@@ -43,13 +43,13 @@ int randoms[30][6] = {
 
 const int numOfPixels = 6;
 
-const int floatingPin = A0;
-const int AI0 = A1;
-const int AI1 = A2;
-const int AI2 = A3;
-const int AI3 = A4;
-const int AI4 = A5;
-const int AI5 = A6;
+const int floatingPin = A6;
+const int AI0 = A0;
+const int AI1 = A1;
+const int AI2 = A2;
+const int AI3 = A3;
+const int AI4 = A4;
+const int AI5 = A5;
 const int ledPin = 2;
 const int canPin = 3;
 const int buttonPin = 4;
@@ -91,9 +91,9 @@ void setup(){
 
 void loop(){
   
-  while (digitalRead(canPin) == LOW) {
-    
+  while (digitalRead(canPin) == LOW) { 
     switch(mode) {
+      
       case 0: //Display Random Colours
         time0 = millis();
         numCorrect = 0;
@@ -117,15 +117,13 @@ void loop(){
         
       case 30: //Check sensors and Display pass or fail
         checkConnections(score);
-        for(int i = 0; i < numOfPixels; i++) {
-          leds.setPixelColor(i, colors[score[i]][0], colors[score[i]][1], colors[score[i]][2]);
-        }
-        leds.show();
+        displayScore();
         mode = 40;
         break;
         
       case 40: //Transmit data
         transmit(numCorrect);
+        digitalWrite(enableShootingRange, HIGH);
         mode = 50;
         break;
         
@@ -133,8 +131,8 @@ void loop(){
         break;
     }
   }
-  rainbow(20);
   mode = 0;
+  rainbow(20);
 }
 
 void transmit(int i) {
@@ -181,6 +179,13 @@ int sensorVal(int pin) {
   } else {
     return 6;
   }
+}
+
+void displayScore() {
+  for(int i = 0; i < numOfPixels; i++) {
+    leds.setPixelColor(i, colors[score[i]][0], colors[score[i]][1], colors[score[i]][2]);
+  }
+  leds.show();
 }
 
 void displayRand() {
