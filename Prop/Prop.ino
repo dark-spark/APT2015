@@ -100,22 +100,12 @@ void loop(){
         r = random(30);
         displayRand();
         mode = 10;
-        Serial.print("time0: ");
-        Serial.println(time0);
-        Serial.print("Millis: ");
-        Serial.println(millis());
         break;
         
       case 10: //Clear display
         if(millis() - time0 > 4000) {
           mode = 20;
           displayNothing();
-          Serial.print("Time1:");
-          Serial.println(time0);
-          Serial.print("millis:");
-          Serial.println(millis());
-          Serial.print("millis - time: ");
-          Serial.println(millis() - time0);
         }
         break;
         
