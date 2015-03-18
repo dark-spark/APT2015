@@ -1,4 +1,6 @@
 #include <Adafruit_NeoPixel.h>
+#include <LedControl.h>
+#include <TimerOne.h>
 
 int colors[][3] = {
 {255, 0, 0},
@@ -41,8 +43,6 @@ int randoms[30][6] = {
 {0,5,2,4,3,1},
 {4,0,3,2,1,5}};
 
-const int numOfPixels = 6;
-
 const int floatingPin = A6;
 const int AI0 = A0;
 const int AI1 = A1;
@@ -59,80 +59,156 @@ const int data1 = 7;
 const int data2 = 8;
 const int clk = 9;
 const int enableShootingRange = 10;
+const int digitDINPin = 11;
+const int digitCLKPin = 12;
+const int digitLoadPin = 13;
+
+const int numOfPixels = 6;
 
 int r;
 boolean score[numOfPixels];
 int numCorrect = 0;
 int mode = 0;
 unsigned long time0, time1;
+int d0, d1, d2, d3;
 
 Adafruit_NeoPixel leds = Adafruit_NeoPixel(numOfPixels, ledPin, NEO_GRB + NEO_KHZ800);
 
+LedControl digit = LedControl(digitDINPin, digitCLKPin, digitLoadPin);
+
+
 void setup(){
-  
+
   leds.begin();
   leds.show();
-  
+
   randomSeed(analogRead(floatingPin));
 
   Serial.begin(9600);
-  
+
   pinMode(canPin, INPUT_PULLUP);
   pinMode(buttonPin, INPUT_PULLUP);
   pinMode(buttonPin1, INPUT_PULLUP);
-  
+
   pinMode(data0, OUTPUT);
   pinMode(data1, OUTPUT);
   pinMode(data2, OUTPUT);
   pinMode(clk, OUTPUT);
   pinMode(enableShootingRange, OUTPUT);
 
+  digit.shutdown(0,false);
+  digit.setIntensity(0,8);
+  digit.clearDisplay(0);
+
+  Timer1.initialize(10000);
+
 }
 
 void loop(){
-  
+
   while (digitalRead(canPin) == LOW) { 
     switch(mode) {
+
+    case 0: //Display Random Colours
+      time0 = millis();
+      numCorrect = 0;
+      r = random(30);
+      displayRand();
+      mode = 5;
+      Timer1.attachInterrupt(decrement);
+      break;
       
-      case 0: //Display Random Colours
-        time0 = millis();
-        numCorrect = 0;
-        r = random(30);
-        displayRand();
-        mode = 10;
-        break;
-        
-      case 10: //Clear display
-        if(millis() - time0 > 4000) {
-          mode = 20;
-          displayNothing();
-        }
-        break;
-        
-      case 20: //Wait for button press
-        if(digitalRead(buttonPin) == LOW) {
-          mode = 30;
-        }
-        break;
-        
-      case 30: //Check sensors and Display pass or fail
-        checkConnections(score);
-        displayScore();
-        mode = 40;
-        break;
-        
-      case 40: //Transmit data
-        transmit(numCorrect);
-        digitalWrite(enableShootingRange, HIGH);
-        mode = 50;
-        break;
-        
-      case 50:
-        break;
+    case 5:
+      //Wait for counter to finish decrement() will move to next mode
+      break;
+
+    case 10: //Clear display
+      displayNothing();
+      mode = 20;
+      break;
+
+    case 20: //Wait for button press
+      if(digitalRead(buttonPin) == LOW) {
+        mode = 30;
+      }
+      break;
+
+    case 30: //Check sensors and Display pass or fail
+      checkConnections(score);
+      displayScore();
+      mode = 40;
+      break;
+
+    case 40: //Transmit data
+      transmit(numCorrect);
+      digitalWrite(enableShootingRange, HIGH);
+      mode = 50;
+      break;
+
+    case 50:
+      break;
     }
   }
   mode = 0;
   rainbow(20);
+}
+
+void updatedigit() {
+
+  digit.clearDisplay(0);  
+  digit.setDigit(0,0,d0,false);
+  digit.setDigit(0,1,d1,false);
+  digit.setDigit(0,2,d2,false);
+  digit.setDigit(0,3,d3,false);
+
+}
+
+void count(boolean negative) {
+  if(negative = false) {
+    d0++;
+    if(d0 > 9) {
+      d0 = 0;
+      d1++;
+    }
+    if(d1 > 9) {
+      d1 = 0;
+      d2++;
+    }
+    if(d2 > 9) {
+      d2 = 0;
+      d3++;
+    }
+    if(d3 > 9) {
+      d3 = 0;
+    }
+  }
+  if(negative) {
+    d0--;
+    if(d0 < 0) {
+      d0 = 9;
+      d1--;
+    }
+    if(d1 < 0) {
+      d1 = 9;
+      d2--;
+    }
+    if(d2 < 0) {
+      d2 = 9;
+      d3--;
+    }
+    if(d3 < 0) {
+      d3 = 9;
+    }
+  }  
+}
+
+void decrement() {
+  count(true);
+  updatedigit();
+  if(d2 == 0 && d1 == 0 && d0 == 0) {
+    Timer1.detachInterrupt(decrement);
+    mode = 10;
+  }
 }
 
 void transmit(int i) {
@@ -156,27 +232,34 @@ void checkConnections(boolean bools[]) {
     if(vals[i] == randoms[r][i]) {
       bools[i] = 1;
       numCorrect++;
-    } else {
+    } 
+    else {
       bools[i] = 0;
     }
   }
 }
-  
+
 int sensorVal(int pin) {
   int val = analogRead(pin);
   if(val > 96 && val < 196) {
     return 0;
-  } else if (val >= 243 && val <= 343) {
+  } 
+  else if (val >= 243 && val <= 343) {
     return 1;
-  } else if (val >= 389 && val <= 489) {
+  } 
+  else if (val >= 389 && val <= 489) {
     return 2;
-  } else if (val >= 535 && val <= 635) {
+  } 
+  else if (val >= 535 && val <= 635) {
     return 3;
-  } else if (val >= 681 && val <= 781) {
+  } 
+  else if (val >= 681 && val <= 781) {
     return 4;
-  } else if (val >= 828 && val <= 928) {
+  } 
+  else if (val >= 828 && val <= 928) {
     return 5;
-  } else {
+  } 
+  else {
     return 6;
   }
 }
@@ -220,14 +303,17 @@ void rainbow(uint8_t wait) {
 uint32_t Wheel(byte WheelPos) {
   WheelPos = 255 - WheelPos;
   if(WheelPos < 85) {
-   return leds.Color(255 - WheelPos * 3, 0, WheelPos * 3);
-  } else if(WheelPos < 170) {
+    return leds.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+  } 
+  else if(WheelPos < 170) {
     WheelPos -= 85;
-   return leds.Color(0, WheelPos * 3, 255 - WheelPos * 3);
-  } else {
-   WheelPos -= 170;
-   return leds.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+    return leds.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+  } 
+  else {
+    WheelPos -= 170;
+    return leds.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
   }
 }
+
 
 
