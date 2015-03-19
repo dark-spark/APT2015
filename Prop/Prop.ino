@@ -60,8 +60,8 @@ const int data2 = 8;
 const int clk = 9;
 const int enableShootingRange = 10;
 const int digitDINPin = 11;
-const int digitCLKPin = 12;
-const int digitLoadPin = 13;
+const int digitCLKPin = 13;
+const int digitLoadPin = 12;
 
 const int numOfPixels = 6;
 
@@ -70,11 +70,12 @@ boolean score[numOfPixels];
 int numCorrect = 0;
 int mode = 0;
 unsigned long time0, time1;
-int d0, d1, d2, d3;
+//int d0, d1, d2, d3;
+int time;
 
 Adafruit_NeoPixel leds = Adafruit_NeoPixel(numOfPixels, ledPin, NEO_GRB + NEO_KHZ800);
 
-LedControl digit = LedControl(digitDINPin, digitCLKPin, digitLoadPin);
+LedControl digit = LedControl(digitDINPin, digitCLKPin, digitLoadPin, 1);
 
 
 void setup(){
@@ -95,13 +96,13 @@ void setup(){
   pinMode(data2, OUTPUT);
   pinMode(clk, OUTPUT);
   pinMode(enableShootingRange, OUTPUT);
-
+  
   digit.shutdown(0,false);
   digit.setIntensity(0,8);
   digit.clearDisplay(0);
-
+  
   Timer1.initialize(10000);
-
+  
 }
 
 void loop(){
@@ -109,12 +110,24 @@ void loop(){
   while (digitalRead(canPin) == LOW) { 
     switch(mode) {
 
-    case 0: //Display Random Colours
+    case 0: //Set clock display
+      updateDigit(500);
+      mode = 1;
+      break;
+      
+    case 1: //Wait for Start Button
+//      if(digitalRead(buttonPin1)) {
+      if(true) {
+        mode = 2;
+      }
+      
+    case 2:  //Display Random Colours
       time0 = millis();
       numCorrect = 0;
       r = random(30);
       displayRand();
       mode = 5;
+      time = 500;
       Timer1.attachInterrupt(decrement);
       break;
       
@@ -153,61 +166,29 @@ void loop(){
   rainbow(20);
 }
 
-void updatedigit() {
-
+void updateDigit(int value) {
+  
+  char buf [4];
+  sprintf(buf, "%04i", value);
+  int d0 = buf[3] - '0';
+  int d1 = buf[2] - '0';
+  int d2 = buf[1] - '0';
+  int d3 = buf[0] - '0';
+  
   digit.clearDisplay(0);  
-  digit.setDigit(0,0,d0,false);
-  digit.setDigit(0,1,d1,false);
-  digit.setDigit(0,2,d2,false);
-  digit.setDigit(0,3,d3,false);
+  digit.setDigit(0,4,d0,false);
+  digit.setDigit(0,5,d1,false);
+  digit.setDigit(0,6,d2,true);
+  digit.setDigit(0,7,d3,false);
 
-}
-
-void count(boolean negative) {
-  if(negative = false) {
-    d0++;
-    if(d0 > 9) {
-      d0 = 0;
-      d1++;
-    }
-    if(d1 > 9) {
-      d1 = 0;
-      d2++;
-    }
-    if(d2 > 9) {
-      d2 = 0;
-      d3++;
-    }
-    if(d3 > 9) {
-      d3 = 0;
-    }
-  }
-  if(negative) {
-    d0--;
-    if(d0 < 0) {
-      d0 = 9;
-      d1--;
-    }
-    if(d1 < 0) {
-      d1 = 9;
-      d2--;
-    }
-    if(d2 < 0) {
-      d2 = 9;
-      d3--;
-    }
-    if(d3 < 0) {
-      d3 = 9;
-    }
-  }  
 }
 
 void decrement() {
-  count(true);
-  updatedigit();
-  if(d2 == 0 && d1 == 0 && d0 == 0) {
-    Timer1.detachInterrupt(decrement);
+  time--;
+  updateDigit(time);
+  if(time <= 0) {
     mode = 10;
+    Timer1.detachInterrupt();
   }
 }
 
