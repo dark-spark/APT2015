@@ -3,45 +3,119 @@
 #include <TimerOne.h>
 
 int colors[][3] = {
-{255, 0, 0},
-{0, 255, 0},
-{0, 0, 255},
-{255, 0, 255},
-{255, 255, 255},
-{255, 255, 0},
-{0, 0, 0}};
+  {
+    255, 0, 0    }
+  ,
+  {
+    0, 255, 0    }
+  ,
+  {
+    0, 0, 255    }
+  ,
+  {
+    255, 0, 255    }
+  ,
+  {
+    255, 255, 255    }
+  ,
+  {
+    255, 255, 0    }
+  ,
+  {
+    0, 0, 0    }
+};
 
 int randoms[30][6] = {
-{0,5,4,3,2,1},
-{5,0,3,2,1,4},
-{1,0,5,2,4,3},
-{5,3,0,4,1,2},
-{1,0,3,4,5,2},
-{3,5,0,2,1,4},
-{0,3,1,5,2,4},
-{2,5,0,3,4,1},
-{4,2,0,1,5,3},
-{5,1,0,4,2,3},
-{1,0,2,5,3,4},
-{0,1,5,4,2,3},
-{1,0,3,5,4,2},
-{0,4,3,1,5,2},
-{4,0,5,1,2,3},
-{3,2,5,1,4,0},
-{0,2,1,3,5,4},
-{2,4,3,0,1,5},
-{1,5,4,2,0,3},
-{0,4,5,3,2,1},
-{4,0,3,2,5,1},
-{3,5,2,4,1,0},
-{3,4,5,2,0,1},
-{1,5,4,2,3,0},
-{5,4,3,1,0,2},
-{2,4,0,5,1,3},
-{0,2,1,3,5,4},
-{0,1,5,2,4,3},
-{0,5,2,4,3,1},
-{4,0,3,2,1,5}};
+  {
+    0,5,4,3,2,1    }
+  ,
+  {
+    5,0,3,2,1,4    }
+  ,
+  {
+    1,0,5,2,4,3    }
+  ,
+  {
+    5,3,0,4,1,2    }
+  ,
+  {
+    1,0,3,4,5,2    }
+  ,
+  {
+    3,5,0,2,1,4    }
+  ,
+  {
+    0,3,1,5,2,4    }
+  ,
+  {
+    2,5,0,3,4,1    }
+  ,
+  {
+    4,2,0,1,5,3    }
+  ,
+  {
+    5,1,0,4,2,3    }
+  ,
+  {
+    1,0,2,5,3,4    }
+  ,
+  {
+    0,1,5,4,2,3    }
+  ,
+  {
+    1,0,3,5,4,2    }
+  ,
+  {
+    0,4,3,1,5,2    }
+  ,
+  {
+    4,0,5,1,2,3    }
+  ,
+  {
+    3,2,5,1,4,0    }
+  ,
+  {
+    0,2,1,3,5,4    }
+  ,
+  {
+    2,4,3,0,1,5    }
+  ,
+  {
+    1,5,4,2,0,3    }
+  ,
+  {
+    0,4,5,3,2,1    }
+  ,
+  {
+    4,0,3,2,5,1    }
+  ,
+  {
+    3,5,2,4,1,0    }
+  ,
+  {
+    3,4,5,2,0,1    }
+  ,
+  {
+    1,5,4,2,3,0    }
+  ,
+  {
+    5,4,3,1,0,2    }
+  ,
+  {
+    2,4,0,5,1,3    }
+  ,
+  {
+    0,2,1,3,5,4    }
+  ,
+  {
+    0,1,5,2,4,3    }
+  ,
+  {
+    0,5,2,4,3,1    }
+  ,
+  {
+    4,0,3,2,1,5    }
+};
 
 const int floatingPin = A6;
 const int AI0 = A0;
@@ -96,33 +170,38 @@ void setup(){
   pinMode(data2, OUTPUT);
   pinMode(clk, OUTPUT);
   pinMode(enableShootingRange, OUTPUT);
-  
+
   digit.shutdown(0,false);
   digit.setIntensity(0,8);
   digit.clearDisplay(0);
-  
+
   Timer1.initialize(10000);
-  
+
 }
 
 void loop(){
 
   while (digitalRead(canPin) == LOW) { 
+    
     switch(mode) {
 
     case 0: //Set clock display
       updateDigit(500);
+      Serial.println("0");
       mode = 1;
       break;
-      
+
     case 1: //Wait for Start Button
-//      if(digitalRead(buttonPin1)) {
+      //      if(digitalRead(buttonPin1)) 
       if(true) {
+        Serial.println("1");
         mode = 2;
       }
-      
+      break;
+
     case 2:  //Display Random Colours
       time0 = millis();
+      Serial.println("2");
       numCorrect = 0;
       r = random(30);
       displayRand();
@@ -130,7 +209,7 @@ void loop(){
       time = 500;
       Timer1.attachInterrupt(decrement);
       break;
-      
+
     case 5:
       //Wait for counter to finish decrement() will move to next mode
       break;
@@ -167,14 +246,19 @@ void loop(){
 }
 
 void updateDigit(int value) {
-  
-  char buf [4];
-  sprintf(buf, "%04i", value);
-  int d0 = buf[3] - '0';
-  int d1 = buf[2] - '0';
-  int d2 = buf[1] - '0';
-  int d3 = buf[0] - '0';
-  
+
+//  char buf [4];
+//  sprintf(buf, "%04i", value);
+//  int d0 = buf[3] - '0';
+//  int d1 = buf[2] - '0';
+//  int d2 = buf[1] - '0';
+//  int d3 = buf[0] - '0';
+
+  int d0 = value % 10;
+  int d1 = (((value - d0) / 10) % 10);
+  int d2 = (((value - d0 - (d1 * 10)) / 100) % 10);
+  int d3 = (((value - d0 - (d1 * 10) - (d2 * 100)) / 1000) % 10);
+
   digit.clearDisplay(0);  
   digit.setDigit(0,4,d0,false);
   digit.setDigit(0,5,d1,false);
@@ -295,6 +379,8 @@ uint32_t Wheel(byte WheelPos) {
     return leds.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
   }
 }
+
+
 
 
 
