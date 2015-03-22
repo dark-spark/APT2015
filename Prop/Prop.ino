@@ -25,9 +25,12 @@ int colors[][3] = {
     0, 0, 0    }
 };
 
-int randoms[30][6] = {
+int randoms[31][6] = {
   {
     0,5,4,3,2,1    }
+  ,
+  {
+    0,1,2,3,4,5    }
   ,
   {
     5,0,3,2,1,4    }
@@ -146,6 +149,7 @@ int mode = 0;
 unsigned long time0, time1;
 //int d0, d1, d2, d3;
 int time;
+boolean colon = true;
 
 Adafruit_NeoPixel leds = Adafruit_NeoPixel(numOfPixels, ledPin, NEO_GRB + NEO_KHZ800);
 
@@ -187,23 +191,21 @@ void loop(){
 
     case 0: //Set clock display
       updateDigit(500);
-      Serial.println("0");
+      displayNothing();
       mode = 1;
       break;
 
     case 1: //Wait for Start Button
-      //      if(digitalRead(buttonPin1)) 
-      if(true) {
-        Serial.println("1");
+      if(digitalRead(buttonPin1) == LOW) {
         mode = 2;
       }
       break;
 
     case 2:  //Display Random Colours
       time0 = millis();
-      Serial.println("2");
       numCorrect = 0;
-      r = random(30);
+//      r = random(30);
+      r = 1;
       displayRand();
       mode = 5;
       time = 500;
@@ -242,27 +244,29 @@ void loop(){
     }
   }
   mode = 0;
-  rainbow(20);
+  Timer1.detachInterrupt();
+  digitalWrite(enableShootingRange, LOW);
+  updateDigit(500);
+  rainbowCycle(20);
 }
 
 void updateDigit(int value) {
-
-//  char buf [4];
-//  sprintf(buf, "%04i", value);
-//  int d0 = buf[3] - '0';
-//  int d1 = buf[2] - '0';
-//  int d2 = buf[1] - '0';
-//  int d3 = buf[0] - '0';
 
   int d0 = value % 10;
   int d1 = (((value - d0) / 10) % 10);
   int d2 = (((value - d0 - (d1 * 10)) / 100) % 10);
   int d3 = (((value - d0 - (d1 * 10) - (d2 * 100)) / 1000) % 10);
+  
+  if(d1 == 5) {
+    colon = false;
+  } else if (d1 == 0) {
+    colon = true;
+  }
 
   digit.clearDisplay(0);  
   digit.setDigit(0,4,d0,false);
   digit.setDigit(0,5,d1,false);
-  digit.setDigit(0,6,d2,true);
+  digit.setDigit(0,6,d2,colon);
   digit.setDigit(0,7,d3,false);
 
 }
@@ -380,6 +384,20 @@ uint32_t Wheel(byte WheelPos) {
   }
 }
 
+void rainbowCycle(uint8_t wait) {
+  uint16_t i, j;
+
+  for(j=0; j<256*5; j++) { // 5 cycles of all colors on wheel
+    for(i=0; i< leds.numPixels(); i++) {
+      leds.setPixelColor(i, Wheel(((i * 256 / leds.numPixels()) + j) & 255));
+    }
+    leds.show();
+    if(digitalRead(canPin) == LOW) {
+      break;
+    }
+    delay(wait);
+  }
+}
 
 
 
