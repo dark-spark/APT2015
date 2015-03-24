@@ -1,20 +1,21 @@
 import controlP5.*;
 import processing.serial.*;
 import javax.swing.*;
-SecondApplet s;
+SecondApplet sScreen;
 
 void setup() {
   
   size(1024, 786);
 
-  PFrame f = new PFrame(width, height);
+  PFrame f = new PFrame(1024, 786);
   frame.setTitle("Apocalypse Party 2015");
-  f.setTitle("second window");
+  f.setTitle("Timer");
   fill(0);
   
   if (frame != null) {
     frame.setResizable(true);
   }
+  
   frameRate(100);
   frame.setTitle("Apocalypse Party 2015");
   index = 0;
@@ -23,16 +24,12 @@ void setup() {
 
   //Start serial comms and initialise
   serial = startSerial();
-  if (serial) {
-    myPort.write("redOFF.greenOFF.blueOFF.yellowOFF.");
-  }
 
   //Create fonts
   f1 = createFont("Calibri", 50);
   f2 = createFont("Calibri Bold", 20);
   f3 = createFont("Calibri Bold", 17);
   f4 = createFont("Arial Unicode MS", 15);
-  f5 = createFont("Arial Unicode MS", 15);
   f6 = createFont("Arial Unicode MS", 12);
 
   //Set up listbox
@@ -80,6 +77,8 @@ void draw() {
   sortResults();
   create();
   mimicLights();
+  
+  frame.setTitle("Apocalypse Party 2015. FPS = " + int(frameRate));
 
   switch(mode) {
   case 0:  //Set lights for initial position, no barcode set
@@ -372,7 +371,6 @@ void draw() {
     break;
   }
 
-  frame.setTitle("Apocalypse Party 2015. FPS = " + int(frameRate));
 
   //  stroke(225);
   //   fill(225);
