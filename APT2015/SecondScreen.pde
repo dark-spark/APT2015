@@ -13,7 +13,7 @@ public class SecondApplet extends PApplet {
   int time = 123;
   int startTime, stopTime;
   int t0 = 0;
-  int fontSize = 100;
+  int fontSize = 200;
   PFont f;
   boolean run = false;
 
@@ -23,12 +23,14 @@ public class SecondApplet extends PApplet {
     f = createFont("Arial Unicode MS", fontSize);
     textAlign(CENTER);
     textFont(f);
+    fontSize = width / 5;
   }
 
   public void draw() {
     background(0);
     updateTime();
     display(time);
+    fontSize = width / 5;
   }
 
   public void display(int val) { 
@@ -66,8 +68,8 @@ public class SecondApplet extends PApplet {
 
   public void resetTimer() {
     time = 0;
-    startTime = 0;
-    stopTime = 0; 
+    startTime = millis();
+    stopTime = 0;
     t0 = 0;
   }
 
