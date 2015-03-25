@@ -5,7 +5,7 @@ String inData[] = new String[1];
 int mode = 0;
 int runUpTimer = 3000;
 int runUpTimer1 = runUpTimer + 2700;
-int time0, time1, time2;
+int time0, time1, time2, timer;
 int sectorIndex = 0, lightIndex = 0, lightTimer, countDown, reactionTime, reactionTime0, reactionTime1, r;
 boolean serialData = false;
 boolean redON, greenON, blueON, yellowON, whiteON, running, jumpStart, jumpEnable, lightsFinished, serial, yesReceived, noReceived = false, pingFailed, heartbeat;
@@ -44,6 +44,8 @@ int srIndex;
 int selection;
 ControlP5 cp5;
 ListBox l;
+
+boolean updateTimer;
 
 int cnt=0;
 PFont f1, f2, f3, f4, f5, f6;
