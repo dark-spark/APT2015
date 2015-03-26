@@ -28,9 +28,14 @@ public class SecondApplet extends PApplet {
 
   public void draw() {
     background(0);
+    
+    fontSize = width / 5;
+    f = createFont("Arial Unicode MS", fontSize);
+    textAlign(CENTER);
+    textFont(f);
+    
     updateTime();
     display(time);
-    fontSize = width / 5;
   }
 
   public void display(int val) { 
