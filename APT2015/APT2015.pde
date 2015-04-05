@@ -8,7 +8,6 @@ void setup() {
   size(1024, 786);
 
   PFrame f = new PFrame(1024, 786);
-  frame.setTitle("Apocalypse Party 2015");
   f.setTitle("Timer");
   fill(0);
 
@@ -17,7 +16,6 @@ void setup() {
   }
 
   frameRate(100);
-  frame.setTitle("Apocalypse Party 2015");
   index = 0;
 
   loadFiles();
@@ -69,6 +67,8 @@ void setup() {
   if (salesForce) {
     salesForceLogin();
   }
+  
+  sScreen.resetTimer();
 }
 
 void draw() {
@@ -76,308 +76,12 @@ void draw() {
   background(0);
   sortResults();
   create();
-  mimicLights();
 
   frame.setTitle("Apocalypse Party 2015. FPS = " + int(frameRate));
 
   if (updateTimer) {
     timer = millis();
   }
-
-  /*
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   switch(mode) {
-   case 0:  //Set lights for initial position, no barcode set
-   redOFF();
-   greenOFF();
-   blueOFF();
-   yellowOFF();
-   whiteON();
-   mode = 1;
-   jumpStart = false;
-   time2 = millis();
-   break;
-   
-   case 1: //Check for barcode or name clicked, while waiting ping uC every 2 seconds to make sure its still alive.
-   if (nameSet) {
-   mode = 2;
-   tone3ON();
-   break;
-   }
-   if (millis() - time2 > 5000) {
-   heartbeat = !heartbeat;
-   if (!ping()) {
-   mode = 11;
-   heartbeat = false;
-   }
-   time2 = millis();
-   }
-   if (noReceived) {
-   mode = 12;
-   }
-   //Heartbeat
-   if (heartbeat) {
-   drawPixelArray(bigHeart, red, 1200, 20, 2);
-   } else { 
-   drawPixelArray(smallHeart, red, 1200, 20, 2);
-   }
-   break;
-   
-   case 12: //Sensor Blocked
-   whiteOFF();
-   if (millis() - time2 > 2000) {
-   heartbeat = !heartbeat;
-   if (!ping()) {
-   mode = 11;
-   heartbeat = false;
-   }
-   time2 = millis();
-   }
-   if (yesReceived) {
-   mode = 0;
-   }
-   if (noReceived) {
-   stroke(255, 0, 0);
-   fill(255, 0, 0);
-   textSize(200);
-   text("Sensor", 200, 200);
-   text("Blocked", 200, 350);
-   String match[] = match(blockedSensors, "1");
-   if (match != null) {  
-   text("1", 100, 500);
-   }
-   match = match(blockedSensors, "2");
-   if (match != null) {  
-   text("2", 200, 500);
-   }
-   match = match(blockedSensors, "3");
-   if (match != null) {  
-   text("3", 300, 500);
-   }
-   match = match(blockedSensors, "4");
-   if (match != null) {  
-   text("4", 400, 500);
-   }
-   match = match(blockedSensors, "5");
-   if (match != null) {  
-   text("5", 500, 500);
-   }
-   }
-   //Heartbeat
-   if (heartbeat) {
-   drawPixelArray(bigHeart, red, 1200, 20, 2);
-   } else { 
-   drawPixelArray(smallHeart, red, 1200, 20, 2);
-   }
-   break;
-   
-   case 2:  //Barcode set
-   reset();
-   blueON();
-   whiteOFF();
-   mode = 10;
-   countDown = millis();
-   if (!pNameSet) {
-   pName = name;
-   pBarcode = barcode;
-   pNameSet = true;
-   }
-   break;
-   case 10: //Timer for run up
-   if (millis() - countDown > runUpTimer) {
-   mode = 3;
-   }
-   if (serialData) {
-   jumpStart = true;
-   mode = 9;
-   flash = true;
-   toneFalseStart();
-   serialData = true;
-   }
-   break;
-   case 3: //Flash run up light and tones.
-   if (serialData) {
-   jumpStart = true;
-   mode = 9;
-   toneFalseStart();
-   flash = true;
-   }
-   if (millis() - lightTimer > toneTime) {
-   lightTimer = millis();
-   lightFlash++;
-   }
-   if (lightFlash % 2 == 1) {
-   blueON();
-   tone1ON();
-   } else {
-   blueOFF();
-   }
-   if (millis() - countDown > runUpTimer1) {
-   mode = 4;
-   lightFlash = 0;
-   }
-   break;
-   case 4:  //Set lights
-   blueOFF();
-   greenON();
-   tone2ON();
-   reactionTime0 = millis();
-   nameSet = false;
-   running = true;
-   mode = 6;
-   break;
-   case 5:
-   break;
-   case 6:  //Recieve Data
-   if (serialData) {
-   if (sectorIndex == 0) {
-   reactionTime = millis() - reactionTime0;
-   count++;
-   } else {
-   if (sectorIndex == 1) {
-   String trapTime = inData[0];
-   String trapTime1 = trapTime.substring(2);
-   timeArray[sectorIndex] = str(time1);
-   timeArray[0] = trapTime1;
-   count = count+2;
-   } else {
-   timeArray[sectorIndex] = str(time1);
-   count++;
-   }
-   }
-   serialData = false;
-   sectorIndex++;
-   greenOFF();
-   yellowON();
-   }
-   
-   if (sectorIndex >= 5) {
-   sectorIndex = 0;
-   pNameSet = false;
-   running = false;
-   
-   String match[] = match("Mugen", name);
-   if (match != null) {
-   formatPostData(mugenMulti);
-   } else {
-   formatPostData(1);
-   }
-   
-   fillData();
-   redOFF();
-   greenOFF();
-   blueOFF();
-   yellowON();
-   index++;
-   writeTextFile();
-   count = 0;
-   mode = 8;
-   }
-   
-   if (jumpStart) {
-   mode = 9;
-   toneFalseStart();
-   flash = true;
-   }
-   break;
-   case 7:
-   break;
-   case 8:  //Send Data
-   if (data[index -  1][8] <= min[8]) {
-   play1upTone();
-   }
-   if (salesForce) {
-   salesForceSendData();
-   }
-   mode = 0;
-   break;
-   case 9:  //Jump start
-   
-   nameSet = false;
-   running = true;
-   
-   if (serialData) {
-   if (sectorIndex == 0) {
-   reactionTime = millis() - countDown - runUpTimer1;
-   count++;
-   } else {
-   if (sectorIndex == 1) {
-   String[] split = split(inData[0], " ");
-   timeArray[sectorIndex] = str(time1);
-   timeArray[0] = split[1];
-   count = count+2;
-   } else {
-   timeArray[sectorIndex] = str(time1);
-   count++;
-   }
-   }
-   serialData = false;
-   sectorIndex++;
-   greenOFF();
-   redON();
-   }
-   
-   blueOFF();
-   
-   if (flash) {
-   if (millis() - lightTimer > 100) {
-   lightTimer = millis();
-   lightFlash++;
-   }
-   if (lightFlash % 2 == 1) {
-   redON();
-   } else {
-   redOFF();
-   }
-   if (lightFlash > 10) {
-   flash = false;
-   lightFlash = 0;
-   redON();
-   }
-   }
-   
-   if (sectorIndex >= 5) {
-   sectorIndex = 0;
-   pNameSet = false;
-   running = false;
-   if (name.equals("Mugen")) {
-   formatPostData(mugenMulti);
-   } else {
-   formatPostData(1);
-   }
-   fillData();
-   redOFF();
-   greenOFF();
-   blueOFF();
-   yellowON();
-   index++;
-   writeTextFile();
-   count = 0;
-   mode = 8;
-   }
-   break;
-   
-   case 11:
-   pingFailed = true;
-   if (millis() - time2 > 1000) {
-   if (ping()) {
-   pingFailed = false;
-   mode = 0;
-   }
-   time2 = millis();
-   }
-   drawPixelArray(brokenHeart, red, 1200, 20, 2);
-   
-   stroke(255, 0, 0);
-   fill(255, 0, 0);
-   textSize(300);
-   if (yesReceived) {
-   text("Ping \nFailed", 350, 250);
-   }
-   break;
-   }
-   
-   */  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //  stroke(225);
   //   fill(225);
@@ -422,24 +126,23 @@ void keyPressed() {
   }
 }
 
-boolean test;
 void mousePressed() {
   //Check if Mouse is over button and toggle on
   if (mouseX > boxX && mouseX < boxX+boxSize && mouseY >boxY && mouseY < boxY+boxSize) {
-    //    if (sortFastest) {
-    //      sortFastest = false;
-    //      c3 = c2;
-    //    } 
-    //    else {
-    //      sortFastest = true;
-    //      c3 = c1;
-    //    }
-    test = !test;
-    if (test) {
-      sScreen.startTimer();
-    } else {
-      sScreen.stopTimer();
-    }
+//    if (sortFastest) {
+//      sortFastest = false;
+//      c3 = c2;
+//    } 
+//    else {
+//      sortFastest = true;
+//      c3 = c1;
+//    }
+//    test = !test;
+//    if (test) {
+//      sScreen.startTimer();
+//    } else {
+//      sScreen.stopTimer();
+//    }
   }
 
 

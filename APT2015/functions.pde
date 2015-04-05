@@ -13,23 +13,20 @@ void create() {
   stroke(40);
   rectMode(CENTER);
   for (int i = 1; i < index + 1 && i < 25; i = i + 2) {
-    rect(width/2 + 77, (201 + (i * 20)), 1035, 19, 7);
+    rect(width/2, (201 + (i * 20)), 900, 19, 7);
   }
-  rect(width/2 + 77, 114, 1035, 24, 7);
+  rect(width/2, 114, 900, 24, 7);
 
   //Text for Current Session
   fill(255);
   textFont(f2);
   textAlign(CENTER);
-  text("Name", width/2 - (115 * 4) + 57, 96);
-  text("Reaction Time", width/2 - (115 * 3) + 57, 96);
-  text("Speed", width/2 - (115 * 2) + 57, 96);
-  text("Sector 1", width/2 - (115 * 1) + 57, 96);
-  text("Sector 2", width/2 - (115 * 0) + 57, 96);
-  text("Sector 3", width/2 + (115 * 1) + 57, 96);
-  text("Sector 4", width/2 + (115 * 2) + 57, 96);
-  text("ET", width/2 + (115 * 3) + 57, 96);
-  text("Total Time", width/2 + (115 * 4) + 57, 96);
+  text("Name", width/2 - (115 * 3), 96);
+  text("Sector 1", width/2 - (115 * 2), 96);
+  text("Sector 2", width/2 - (115 * 1), 96);
+  text("Sector 3", width/2 - (115 * 0), 96);
+  text("Sector 4", width/2 + (115 * 1), 96);
+  text("Total Time", width/2 + (115 * 2), 96);
 
   //Text for times and name of current session
   if (count == 7 && nameSet == false) {

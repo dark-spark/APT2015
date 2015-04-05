@@ -25,12 +25,12 @@ int colors[][3] = {
     0, 0, 0    }
 };
 
-int randoms[31][6] = {
+int randoms[30][6] = {
   {
     0,5,4,3,2,1    }
-  ,
-  {
-    0,1,2,3,4,5    }
+//  ,
+//  {
+//    0,1,2,3,4,5    }
   ,
   {
     5,0,3,2,1,4    }
@@ -204,8 +204,7 @@ void loop(){
     case 2:  //Display Random Colours
       time0 = millis();
       numCorrect = 0;
-//      r = random(30);
-      r = 1;
+      r = random(30);
       displayRand();
       mode = 5;
       time = 500;
