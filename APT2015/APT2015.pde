@@ -5,7 +5,7 @@ SecondApplet sScreen;
 
 void setup() {
 
-  size(1024, 786);
+  size(1200, 786);
 
   PFrame f = new PFrame(1024, 786);
   f.setTitle("Timer");
@@ -40,7 +40,8 @@ void setup() {
             .setColorBackground(color(255, 255, 255))
               .setColorActive(color(50))
                 .setColorForeground(color(255, 100, 100))
-                  .setColorLabel(color(0));
+                  .setColorLabel(color(0))
+                    .actAsPulldownMenu(true);
   ;
 
   l.captionLabel().toUpperCase(true);

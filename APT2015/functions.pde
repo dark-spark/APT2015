@@ -1,6 +1,9 @@
 
 void create() {
 
+  int columGap = 150;
+  int headingHeight = 96;
+
   //Text
   fill(255);
   textFont(f1);
@@ -8,25 +11,25 @@ void create() {
   text("Current Session", width/2, 50);
   text("Ranking", width/2, 180);
 
-  //Alternating Bars    
-  fill(40);
-  stroke(40);
-  rectMode(CENTER);
-  for (int i = 1; i < index + 1 && i < 25; i = i + 2) {
-    rect(width/2, (201 + (i * 20)), 900, 19, 7);
-  }
-  rect(width/2, 114, 900, 24, 7);
+  alternatingBars();
 
   //Text for Current Session
   fill(255);
   textFont(f2);
   textAlign(CENTER);
-  text("Name", width/2 - (115 * 3), 96);
-  text("Sector 1", width/2 - (115 * 2), 96);
-  text("Sector 2", width/2 - (115 * 1), 96);
-  text("Sector 3", width/2 - (115 * 0), 96);
-  text("Sector 4", width/2 + (115 * 1), 96);
-  text("Total Time", width/2 + (115 * 2), 96);
+
+  String[] headings = {
+    "Name", 
+    "Obstacle Course", 
+    "Smash and Grab", 
+    "Obstacle Course", 
+    "Zombies", 
+    "Ammo Used", 
+    "Total Time"
+  };
+  
+  rowOfText(headings, columGap, headingHeight);
+
 
   //Text for times and name of current session
   if (count == 7 && nameSet == false) {
@@ -35,37 +38,37 @@ void create() {
       if (data[index -  1][i] <= min[i]) {
         rectMode(CORNERS);
         fill(c1);
-        text(String.format("%.2f", data[index -  1][i]), width/2 - (115 * (4 - i)) + 57, 120);
+        text(String.format("%.2f", data[index -  1][i]), width/2 - (columGap * (4 - i)) + 57, 120);
       } else if (data[index -  1][i] >= max[i]) {
         rectMode(CORNERS);
         fill(c2);
-        text(String.format("%.2f", data[index -  1][i]), width/2 - (115 * (4 - i)) + 57, 120);
+        text(String.format("%.2f", data[index -  1][i]), width/2 - (columGap * (4 - i)) + 57, 120);
       } else {
         fill(255);
-        text(String.format("%.2f", data[index -  1][i]), width/2 - (115 * (4 - i)) + 57, 120);
+        text(String.format("%.2f", data[index -  1][i]), width/2 - (columGap * (4 - i)) + 57, 120);
       }
     }
     fill(255);
-    text(names[int(data[index - 1][0])], width/2 - (115 * 4) + 57, 120);
+    text(names[int(data[index - 1][0])], width/2 - (columGap * 4) + 57, 120);
   } else {
     for (int i = 1; i < count + 1; i++) {
       //Check for minimum time 
       if (data[index][i] <= min[i]) {
         rectMode(CORNERS);
         fill(c1);
-        //        text(String.format("%.2f", data[index][i]), width/2 - (115 * (4 - i)) + 57, 120);
+        //        text(String.format("%.2f", data[index][i]), width/2 - (columGap * (4 - i)) + 57, 120);
       } else if (data[index][i] >= max[i]) {
         rectMode(CORNERS);
         fill(c2);
-        //        text(String.format("%.2f", data[index][i]), width/2 - (115 * (4 - i)) + 57, 120);
+        //        text(String.format("%.2f", data[index][i]), width/2 - (columGap * (4 - i)) + 57, 120);
       } else {
         fill(255);
-        //        text(String.format("%.2f", data[index][i]), width/2 - (115 * (4 - i)) + 57, 120);
+        //        text(String.format("%.2f", data[index][i]), width/2 - (columGap * (4 - i)) + 57, 120);
       }
-      text("Hit", width/2 - (115 * (4 - i)) + 57, 120);
+      text("Hit", width/2 - (columGap * (4 - i)) + 57, 120);
     }
     fill(255);
-    text(names[int(data[index][0])], width/2 - (115 * 4) + 57, 120);
+    text(names[int(data[index][0])], width/2 - (columGap * 4) + 57, 120);
   }
 
 
@@ -75,24 +78,24 @@ void create() {
     for (int i = 0; i < index && i < 24; i++) {
       fill(255);
       textAlign(LEFT);
-      text((i + 1) + ".", width/2 - (115 * 5) + 100, 226 + (20 * i));
+      text((i + 1) + ".", width/2 - (columGap * 5) + 100, 226 + (20 * i));
       textAlign(CENTER);
-      text(names[int(data[sortListPos[i]][0])], width/2 - (115 * 4) + 57, 226 + (20 * i));
+      text(names[int(data[sortListPos[i]][0])], width/2 - (columGap * 4) + 57, 226 + (20 * i));
       for (int j = 1; j < 8 + 1; j++) {
         //Check for minimum time 
         if (data[sortListPos[i]][j] <= min[j]) {
           rectMode(CORNERS);
           fill(c1);
-          //          rect(410 + ((j - 1) * 115), 210+(i*20), 525 + ((j-1)*115), 230+(i*20));
-          text(String.format("%.2f", data[sortListPos[i]][j]), width/2 - (115 * (4 - j)) + 57, 226 + (20 * i));
+          //          rect(410 + ((j - 1) * columGap), 210+(i*20), 525 + ((j-1)*columGap), 230+(i*20));
+          text(String.format("%.2f", data[sortListPos[i]][j]), width/2 - (columGap * (4 - j)) + 57, 226 + (20 * i));
         } else if (data[sortListPos[i]][j] >= max[j]) {
           rectMode(CORNERS);
           fill(c2);
-          //          rect(410 + ((j - 1) * 115), 210+(i*20), 525 + ((j-1)*115), 230+(i*20));
-          text(String.format("%.2f", data[sortListPos[i]][j]), width/2 - (115 * (4 - j)) + 57, 226 + (20 * i));
+          //          rect(410 + ((j - 1) * columGap), 210+(i*20), 525 + ((j-1)*columGap), 230+(i*20));
+          text(String.format("%.2f", data[sortListPos[i]][j]), width/2 - (columGap * (4 - j)) + 57, 226 + (20 * i));
         } else {
           fill(255);
-          text(String.format("%.2f", data[sortListPos[i]][j]), width/2 - (115 * (4 - j)) + 57, 226 + (20 * i));
+          text(String.format("%.2f", data[sortListPos[i]][j]), width/2 - (columGap * (4 - j)) + 57, 226 + (20 * i));
         }
       }
     }
@@ -101,24 +104,24 @@ void create() {
     for (int i = 0; i < index && i < 24; i++) {
       fill(255);
       textAlign(LEFT);
-      text((i + 1) + ".", width/2 - (115 * 5) + 100, 226 + (20 * i));
+      text((i + 1) + ".", width/2 - (columGap * 5) + 100, 226 + (20 * i));
       textAlign(CENTER);
-      text(names[int(data[sortListPos[index-i-1]][0])], width/2 - (115 * 4) + 57, 226 + (20 * i));
+      text(names[int(data[sortListPos[index-i-1]][0])], width/2 - (columGap * 4) + 57, 226 + (20 * i));
       for (int j = 1; j < 8 + 1; j++) {
         //Check for minimum time 
         if (data[sortListPos[index - 1-i]][j] <= min[j]) {
           rectMode(CORNERS);
           fill(c1);
-          //          rect(410 + ((j - 1) * 115), 210+(i*20), 525 + ((j-1)*115), 230+(i*20));
-          text(String.format("%.2f", data[sortListPos[index-1-i]][j]), width/2 - (115 * (4 - j)) + 57, 226 + (20 * i));
+          //          rect(410 + ((j - 1) * columGap), 210+(i*20), 525 + ((j-1)*columGap), 230+(i*20));
+          text(String.format("%.2f", data[sortListPos[index-1-i]][j]), width/2 - (columGap * (4 - j)) + 57, 226 + (20 * i));
         } else if (data[sortListPos[index - 1-i]][j] >= max[j]) {
           rectMode(CORNERS);
           fill(c2);
-          //          rect(410 + ((j - 1) * 115), 210+(i*20), 525 + ((j-1)*115), 230+(i*20));
-          text(String.format("%.2f", data[sortListPos[index-1-i]][j]), width/2 - (115 * (4 - j)) + 57, 226 + (20 * i));
+          //          rect(410 + ((j - 1) * columGap), 210+(i*20), 525 + ((j-1)*columGap), 230+(i*20));
+          text(String.format("%.2f", data[sortListPos[index-1-i]][j]), width/2 - (columGap * (4 - j)) + 57, 226 + (20 * i));
         } else {
           fill(255);
-          text(String.format("%.2f", data[sortListPos[index-1-i]][j]), width/2 - (115 * (4 - j)) + 57, 226 + (20 * i));
+          text(String.format("%.2f", data[sortListPos[index-1-i]][j]), width/2 - (columGap * (4 - j)) + 57, 226 + (20 * i));
         }
       }
     }
@@ -154,7 +157,7 @@ void create() {
 
 
 void delay(int delay) {
-  
+
   int time = millis();
   while (millis () - time <= delay);
 }
@@ -163,7 +166,7 @@ void drawPixelArray(int[][] image, color color1, int posx, int posy, int multipl
 
   fill(color1);
   stroke(color1);
-  
+
   for (int i = 0; i < brokenHeart[0].length; i++) {
     for (int j = 0; j < brokenHeart.length; j++) {
       if (image[j][i] > 0) {
@@ -174,7 +177,7 @@ void drawPixelArray(int[][] image, color color1, int posx, int posy, int multipl
 }
 
 void sortResults() {
-  
+
   //Find Minimum sector time
   for (int j = 0; j < 9; j++) {
     for (int i = 0; i < index; i++) {
@@ -210,7 +213,7 @@ void sortResults() {
 }
 
 void mimicLights() {
-  
+
   //Text for current mode for the swtich
   textFont(f1);
   stroke(255);
@@ -261,7 +264,7 @@ void mimicLights() {
 
 
 boolean barcodeGood(String text) {
-  
+
   text = trim(text);
   boolean good = false;
   for (int i = 0; i < barcodes.length; i++) {
@@ -292,20 +295,20 @@ void updateName() {
 }
 
 void formatPostData(float multiplier) {
-  
-//  println("Multipler = " + multiplier);
-  
+
+  //  println("Multipler = " + multiplier);
+
   float rt = reactionTime * multiplier;
   float ta0 = float(timeArray[0]) * multiplier;
   float ta1 = float(timeArray[1]) * multiplier;
   float ta2 = float(timeArray[2]) * multiplier;
   float ta3 = float(timeArray[3]) * multiplier;
   float ta4 = float(timeArray[4]) * multiplier;
-  
+
   float speed = float(trapDistance) / ta0 * 3.6;
   int et = int(ta1) + int(ta2) + int(ta3) + int(ta4);
   int totalTime = et + int(abs(rt));
-  
+
   postData[0] = pBarcode;
   postData[1] = str(reactionTime + .0);
   postData[2] = str(speed);
@@ -319,8 +322,34 @@ void formatPostData(float multiplier) {
 }
 
 void fillData() {
-  
+
   for (int i = 0; i < 9; i++) {
     data[index][i] = float(postData[i]);
+  }
+}
+
+void alternatingBars() {
+
+  int w = 1100;
+
+  //Alternating Bars    
+  fill(40);
+  stroke(40);
+  rectMode(CENTER);
+
+  for (int i = 1; i < index + 1 && i < 25; i = i + 2) {
+    rect(width/2, (201 + (i * 20)), w, 19, 7);
+  }
+
+  rect(width/2, 114, w, 24, 7);
+}
+
+void rowOfText(String[] text, int colSpacing, int hheight) {
+
+  float numOfCols = text.length;
+  int ceil = ceil(numOfCols / 2);
+
+  for (int i = 0; i < numOfCols; i++) {
+    text(text[i], width/2 + (colSpacing * (i - numOfCols + ceil)), hheight);
   }
 }
