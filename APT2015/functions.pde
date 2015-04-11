@@ -13,11 +13,6 @@ void create() {
 
   alternatingBars();
 
-  //Text for Current Session
-  fill(255);
-  textFont(f2);
-  textAlign(CENTER);
-
   String[] headings = {
     "Name", 
     "Obstacle Course", 
@@ -28,6 +23,10 @@ void create() {
     "Total Time"
   };
   
+  //Text for Current Session
+  fill(255);
+  textFont(f2);
+  textAlign(CENTER);  
   rowOfText(headings, columGap, headingHeight);
 
 
@@ -167,8 +166,8 @@ void drawPixelArray(int[][] image, color color1, int posx, int posy, int multipl
   fill(color1);
   stroke(color1);
 
-  for (int i = 0; i < brokenHeart[0].length; i++) {
-    for (int j = 0; j < brokenHeart.length; j++) {
+  for (int i = 0; i < image[0].length; i++) {
+    for (int j = 0; j < image.length; j++) {
       if (image[j][i] > 0) {
         rect((i*multiplier) + posx, (j*multiplier) + posy, multiplier, multiplier);
       }
@@ -223,7 +222,6 @@ void mimicLights() {
   rect(boxX, boxY, boxSize, boxSize);
   rect(boxX1, boxY1, boxSize, boxSize);
 
-
   //Mimic lights
   ellipseMode(CORNER);
   if (redON) {
@@ -232,34 +230,14 @@ void mimicLights() {
     fill(50, 0, 0);
   }
   ellipse(20, 360, 40, 40);
-
-  if (blueON) {
-    fill(0, 0, 255);
-  } else {
-    fill(0, 0, 50);
-  }
-  ellipse(20, 410, 40, 40);
-
+  
   if (greenON) {
     fill(0, 255, 0);
   } else {
     fill(0, 50, 0);
   }
-  ellipse(20, 460, 40, 40);
+  ellipse(20, 410, 40, 40);
 
-  if (whiteON) {
-    fill(255);
-  } else {
-    fill(50);
-  }
-  ellipse(20, 510, 40, 40);
-
-  if (yellowON) {
-    fill(255, 255, 0);
-  } else {
-    fill(50, 50, 0);
-  }
-  ellipse(20, 560, 40, 40);
 }
 
 
@@ -285,8 +263,8 @@ void controlEvent(ControlEvent theEvent) {
 }
 
 void updateName() {
+  
   firstClick = false;
-  //  println(names[selection]);
   l.captionLabel().set(names[selection]);
   data[index][0] = selection;
   name = names[int(data[index][0])];
@@ -295,8 +273,6 @@ void updateName() {
 }
 
 void formatPostData(float multiplier) {
-
-  //  println("Multipler = " + multiplier);
 
   float rt = reactionTime * multiplier;
   float ta0 = float(timeArray[0]) * multiplier;
@@ -353,3 +329,14 @@ void rowOfText(String[] text, int colSpacing, int hheight) {
     text(text[i], width/2 + (colSpacing * (i - numOfCols + ceil)), hheight);
   }
 }
+
+void rowOfText(String[] text, int colSpacing, int hheight, color[] colors) {
+  
+  float numOfCols = text.length;
+  int ceil = ceil(numOfCols / 2);
+
+  for (int i = 0; i < numOfCols; i++) {
+    fill(colors[i]);
+    text(text[i], width/2 + (colSpacing * (i - numOfCols + ceil)), hheight);
+  }
+} 

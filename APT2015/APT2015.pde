@@ -75,7 +75,7 @@ void setup() {
 void draw() {
 
   background(0);
-  sortResults();
+//  sortResults();
   create();
 
   frame.setTitle("Apocalypse Party 2015. FPS = " + int(frameRate));
