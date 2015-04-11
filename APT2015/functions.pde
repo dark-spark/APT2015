@@ -28,8 +28,13 @@ void create() {
   textFont(f2);
   textAlign(CENTER);  
   rowOfText(headings, columGap, headingHeight);
-
-
+  
+  currentSession.init(t1, 120, columGap, rgb);
+  currentSession.display();
+  ranking.init(t1, 226, columGap, rgb);
+  ranking.display();
+  
+/*
   //Text for times and name of current session
   if (count == 7 && nameSet == false) {
     for (int i = 1; i < count + 2; i++) {
@@ -125,6 +130,7 @@ void create() {
       }
     }
   }
+  */
 
   //Draw box and text for sort selection
   rectMode(CORNER);
@@ -306,7 +312,7 @@ void fillData() {
 
 void alternatingBars() {
 
-  int w = 1100;
+  int w = 1000;
 
   //Alternating Bars    
   fill(40);

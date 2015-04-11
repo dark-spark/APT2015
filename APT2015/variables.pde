@@ -258,3 +258,15 @@ int[][] bigHeart = {
   }
   ,
 };
+
+String[][] t1 = {
+  {"Steven", "1.02", "1.2", "2342", "12", "565", "1232.34"}
+};
+
+int pink = color(255, 220, 0);
+int yellow = color(255, 50, 255);
+int white = color(255, 255, 255);
+
+int[][] rgb = {
+  {pink, yellow, white, yellow, pink, white, white}
+};

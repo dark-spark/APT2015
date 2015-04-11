@@ -2,6 +2,8 @@ import controlP5.*;
 import processing.serial.*;
 import javax.swing.*;
 SecondApplet sScreen;
+tableOfStrings currentSession;
+tableOfStrings ranking;
 
 void setup() {
 
@@ -11,6 +13,9 @@ void setup() {
   f.setTitle("Timer");
   fill(0);
 
+  currentSession = new tableOfStrings();
+  ranking = new tableOfStrings();
+  
   if (frame != null) {
     frame.setResizable(true);
   }
