@@ -1,6 +1,6 @@
 Serial myPort;        
 SecondApplet s;
-int arrayLength = 1000;
+int arrayLength = 100;
 String inData[] = new String[1];
 int mode = 0;
 int runUpTimer = 3000;
@@ -21,7 +21,7 @@ int currentPerson;
 int count = 0;
 String total;
 String name;
-float data[][] = new float[arrayLength][10];
+float data[][] = new float[arrayLength][7];
 float sortList[] = new float[arrayLength];
 String names[] = new String[arrayLength];
 String songs[] = new String[arrayLength];
@@ -267,6 +267,4 @@ int pink = color(255, 220, 0);
 int yellow = color(255, 50, 255);
 int white = color(255, 255, 255);
 
-int[][] rgb = {
-  {pink, yellow, white, yellow, pink, white, white}
-};
+int[][] rankingColorArray;

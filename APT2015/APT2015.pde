@@ -20,10 +20,12 @@ void setup() {
     frame.setResizable(true);
   }
 
-  frameRate(100);
+  frameRate(30);
   index = 0;
 
   loadFiles();
+  
+  rankingColorArray = whiteColor2dArray(100, 7);
 
   //Start serial comms and initialise
   serial = startSerial();

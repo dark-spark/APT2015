@@ -66,7 +66,7 @@ class tableOfStrings {
 
       rows = new ArrayList<rowOfStrings>();
       for (int i = 0; i < table.length; i++) {
-        rows.add(new rowOfStrings(table[i], rowHeights[i], colSpacing, colours[i]));
+        rows.add(new rowOfStrings(table[i], rowHeights[i], colSpacing, colours[0]));
       }
 
       initialised = true;

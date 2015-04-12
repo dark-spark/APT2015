@@ -29,9 +29,9 @@ void create() {
   textAlign(CENTER);  
   rowOfText(headings, columGap, headingHeight);
   
-  currentSession.init(t1, 120, columGap, rgb);
+  currentSession.init(create2dArray(data, 1, 7), 120, columGap, rankingColorArray);
   currentSession.display();
-  ranking.init(t1, 226, columGap, rgb);
+  ranking.init(create2dArray(data, index, 7), 226, columGap, rankingColorArray);
   ranking.display();
   
 /*
@@ -133,31 +133,31 @@ void create() {
   */
 
   //Draw box and text for sort selection
-  rectMode(CORNER);
-  textFont(f3);
-  textAlign(LEFT);
+//  rectMode(CORNER);
+//  textFont(f3);
+//  textAlign(LEFT);
+//
+//  stroke(255);  
+//  fill(255);
+//  if (sortFastest) {
+//    text("Fastest", boxX+20, boxY+13);
+//  } else {
+//    text("Slowest", boxX+20, boxY+13);
+//  }
+//  fill(c3);
+//  stroke(50);
+//  rect(boxX, boxY, boxSize, boxSize);
 
-  stroke(255);  
-  fill(255);
-  if (sortFastest) {
-    text("Fastest", boxX+20, boxY+13);
-  } else {
-    text("Slowest", boxX+20, boxY+13);
-  }
-  fill(c3);
-  stroke(50);
-  rect(boxX, boxY, boxSize, boxSize);
-
-  //Draw text for Ready
-  textFont(f1);
-  textAlign(LEFT);
-  if (count == 0 && nameSet == true) {
-    fill(0, 255, 0);
-    //    text("Ready", 20, 300);
-  } else {
-    fill(255, 0, 0);
-    //    text("Not Ready", 20, 300);
-  }
+//  //Draw text for Ready
+//  textFont(f1);
+//  textAlign(LEFT);
+//  if (count == 0 && nameSet == true) {
+//    fill(0, 255, 0);
+//    //    text("Ready", 20, 300);
+//  } else {
+//    fill(255, 0, 0);
+//    //    text("Not Ready", 20, 300);
+//  }
 }
 
 
@@ -346,3 +346,26 @@ void rowOfText(String[] text, int colSpacing, int hheight, color[] colors) {
     text(text[i], width/2 + (colSpacing * (i - numOfCols + ceil)), hheight);
   }
 } 
+
+String[][] create2dArray(float[][] data, int a, int b) {
+  
+  String[][] string = new String[a][b];
+  
+  for(int i = 0; i < a; i++) {
+    string[i][0] = names[int(data[i][0])];
+    for(int j = 1; j < b; j++) {
+      string[i][j] = String.format("%.2f", (data[i][j]));
+    }
+  }
+  return string;
+}
+
+int[][] whiteColor2dArray(int a, int b) {
+  int[][] array = new int[a][b];
+  for(int i = 0; i < a; i++) {
+    for(int j = 0; j < b; j++) {
+      array[i][j] = color(255, 255, 255);
+    }
+  }
+  return array;
+}

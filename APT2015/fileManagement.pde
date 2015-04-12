@@ -20,7 +20,7 @@ void loadFiles() {
   loadlist = loadStrings("list.txt");
   for (int i = 0; i < loadlist.length; i++) {
     String[] split = split(loadlist[i], ',');
-    for (int j = 0; j < 10; j++) {
+    for (int j = 0; j < split.length; j++) {
       data[i][j] = float(split[j]);
     }
     index++;
@@ -33,6 +33,7 @@ void loadFiles() {
     names[i] = split[0];
     barcodes[i] = split[1];
   }
+  println("");
 
   // Import barcodes
   //  String barcodeString[] = loadStrings("barcodes.txt");
