@@ -2,7 +2,6 @@ import controlP5.*;
 import processing.serial.*;
 import javax.swing.*;
 SecondApplet sScreen;
-tableOfStrings currentSession;
 tableOfStrings ranking;
 
 void setup() {
@@ -13,7 +12,6 @@ void setup() {
   f.setTitle("Timer");
   fill(0);
 
-  currentSession = new tableOfStrings();
   ranking = new tableOfStrings();
 
   if (frame != null) {
@@ -78,6 +76,25 @@ void setup() {
 }
 
 boolean sorted = false;
+String[] currentSesh = {
+  "", 
+  "", 
+  "", 
+  "", 
+  "", 
+  "", 
+  ""
+};
+
+String[] headings = {
+  "Name", 
+  "Obstacle Course", 
+  "Smash and Grab", 
+  "Obstacle Course", 
+  "Zombies", 
+  "Ammo Used", 
+  "Total Time"
+};
 
 void draw() {
 
@@ -86,6 +103,10 @@ void draw() {
 
   int columGap = 150;
   int headingHeight = 96;
+  int currentSeshHeight = 120;
+
+  control();
+  mimicLights();
 
   //Text
   fill(255);
@@ -94,32 +115,23 @@ void draw() {
   text("Current Session", width/2, 50);
   text("Ranking", width/2, 180);
 
-  String[] headings = {
-    "Name", 
-    "Obstacle Course", 
-    "Smash and Grab", 
-    "Obstacle Course", 
-    "Zombies", 
-    "Ammo Used", 
-    "Total Time"
-  };
+  alternatingBars(index, 25);
 
-  //Text for Current Session
+  //Text for Headings and Current Session
   fill(255);
   textFont(f2);
   textAlign(CENTER);  
   rowOfText(headings, columGap, headingHeight);
+  rowOfText(currentSesh, columGap, currentSeshHeight);
 
-  alternatingBars(index, 25);
-
+  //Text for ranking table
   boolean max = false;
-  ranking.init(data, 226, columGap, 24);
+  ranking.init(data, 226, columGap, 24); //Only triggered once
   if (!sorted) {
     ranking.sortResults(max);
   }
   ranking.colorResults(max);
   ranking.display();
-
 
   if (updateTimer) {
     timer = millis();

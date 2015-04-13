@@ -2,7 +2,7 @@ Serial myPort;
 SecondApplet s;
 int arrayLength = 100;
 String inData[] = new String[1];
-int mode = 0;
+int mode = 10;
 int runUpTimer = 3000;
 int runUpTimer1 = runUpTimer + 2700;
 int time0, time1, time2, timer;
