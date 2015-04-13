@@ -122,6 +122,8 @@ void draw() {
 //  rankingColorArray = formatColorArray(rankingColorArray, data, max, index);
   
   ranking.init(data, 226, columGap, 24);
+  ranking.sortResults();
+  ranking.colorResults(false);
   ranking.display();
 
 

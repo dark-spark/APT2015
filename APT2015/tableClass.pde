@@ -1,6 +1,7 @@
 class tableOfStrings {
-  //Gloabal variables
+  //Class variables
   float[][] table;
+  float[][] sortedTable;
   int[][] colours;
   int tableHeight, colSpacing, maxLength;
   int[] rowHeights;
@@ -23,19 +24,18 @@ class tableOfStrings {
         rowHeights[i] = tableHeight + (i * 20);
       }
 
-      String[][] tableToDisplay = floatToStringArray(table, 0, table.length, table[0].length, maxLength);
+      String[][] tableToDisplay = floatToStringArray(table, 0, index, table[0].length, maxLength);
 
       rows = new ArrayList<rowOfStrings>();
-      for (int i = 0; i < maxLength; i++) {
+      for (int i = 0; i < index && i < maxLength; i++) {
         rows.add(new rowOfStrings(tableToDisplay[i], rowHeights[i], colSpacing, colours[i]));
       }
 
       initialised = true;
     }
-  }  
+  }
 
   String[][] floatToStringArray(float[][] data, int a, int b, int c, int max) {
-
     String[][] string;
     if (b-a < max) {
       string = new String[b-a][c];
@@ -59,61 +59,107 @@ class tableOfStrings {
   }
 
   void colorResults(boolean max) {
-    for (int i = 0; i < table.length; i++) {
-      for (int j = 0; j < table[0].length; j++) {
+
+    int[][] colourArray = colorArray(table, max, index);
+
+    for (int i = 0; i < rows.size (); i++) {
+      for (int j = 1; j < colourArray[0].length; j++) {
+        rowOfStrings ros = rows.get(i);
+        ros.setColor(j, colourArray[i][j]);
       }
     }
   }
 
-  int[][] formatColorArray(int[][] colorArray, float[][] dat, boolean max, int count) {
+  int[][] colorArray(float[][] dat, boolean max, int count) {
 
-    int[][] maskedColorArray = colorArray;
-    float[] mask = sortResults(dat, max, count);
+    float[] mask = findMinMax(dat, max, count);
     int colour;
+    int[][] colourArray = new int[count][dat[0].length];
     if (max) {
       colour = pink;
     } else {
       colour = yellow;
     };
 
-    for (int i = 0; i < colorArray[0].length; i++) {
-      for (int j = 0; j < colorArray.length; j++) {
+    for (int i = 0; i < dat[0].length; i++) {
+      for (int j = 0; j < count; j++) {
         if (dat[j][i] == mask[i]) {
-          maskedColorArray[j][i] = colour;
+          colourArray[j][i] = colour;
         } else {
-          maskedColorArray[j][i] = white;
+          colourArray[j][i] = white;
         }
       }
     }
-    return maskedColorArray;
+    return colourArray;
   }
 
-  float[] sortResults(float[][] dat, boolean max, int count) {
+  private float[] findMinMax(float[][] dat, boolean max, int count) {
 
-    float[] sorted = new float[count];
+    float[] minMax = new float[count];
+    for (int i = 0; i < count; i++) {
+      if (!max) {
+        minMax[i] = 2147483647;
+      }
+    } 
 
     for (int i = 0; i < dat[0].length; i++) {
       for (int j = 0; j < count; j++) {
         if (max) {
-          if (data[j][i] < sorted[i]) {
-            sorted[i] = data[j][i];
+          if (data[j][i] > minMax[i]) {
+            minMax[i] = data[j][i];
           }
         } else {
-          if (data[j][i] > sorted[i]) {
-            sorted[i] = data[j][i];
+          if (data[j][i] < minMax[i]) {
+            minMax[i] = data[j][i];
           }
         }
       }
     }
-    return sorted;
+    return minMax;
   }
 
   void display() {
     if (initialised) {
-      for (int i = 0; i < maxLength; i++) {
+      for (int i = 0; i < index && i < maxLength; i++) {
         rowOfStrings ros = rows.get(i);
         ros.display();
       }
     }
+  }
+
+  void pushTable(float[][] pushTable) {
+
+    String[][] tableToDisplay = floatToStringArray(pushTable, 0, index, pushTable[0].length, maxLength);
+    for (int i = 0; i < index && i < maxLength; i++) {
+      rowOfStrings ros = rows.get(i);
+      for(int j = 0; j < pushTable.length; j++) {
+        ros.setText(j, tableToDisplay[i][j]);
+      }
+    }
+  }
+  
+  public void sortResults(boolean max) {
+     pushTable(sortResults(6, max, table)); 
+  }
+
+  private float[][] sortResults(int row, boolean max, float[][] data) {
+
+    float[][] sortedTable = new float[index][data[0].length];
+    float[] sortList = new float[index];
+
+    for (int i = 0; i < index; i++) {
+      sortList[i] = data[i][row];
+    }
+    sortList = sort(sortList);
+
+    //Generate a list of the ranked positions
+    for (int i = 0; i < index; i++) {
+      for (int j = 0; j < index; j++) {
+        if (data[j][row] == sortList[i]) {
+          sortedTable[i] = table[j];
+        }
+      }
+    }
+    return sortedTable;
   }
 }
