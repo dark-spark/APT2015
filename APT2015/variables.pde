@@ -42,8 +42,20 @@ String typing = "";
 String player = "";
 int srIndex;
 int selection;
+boolean lcsg = false;
+boolean dfr = false;
+boolean pbr = false;
+boolean obstacleCourse = false;
+
+int currentRun[] = new int[6];
+int runIndex = 0;
+
 ControlP5 cp5;
 ListBox l;
+controlP5.Button startButton;
+controlP5.Button dfrButton;
+controlP5.Button lcsgButton;
+controlP5.Button pbrButton;
 
 boolean updateTimer;
 

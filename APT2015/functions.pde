@@ -1,21 +1,140 @@
 
 void control() {
   switch(mode) {
+
   case 10:
-    if(nameSet) {
+    redON();
+    if (nameSet) {
       mode = 20;
       currentSesh[0] = name;
+      startButton.show();
     }
     break;
 
   case 20:
-    displayGoButton();
+    //Wait for start button to be pressed, start() will advance to next mode
+    break;
+
+  case 30:
+
+    redOFF();
+    greenON();
+    time0 = millis();
+    sScreen.startTimer();
+    mode = 40;
+    break;
+
+  case 40:
+    startButton.hide();
+    lcsgButton.show();
+    mode = 60;
+    break;
+
+  case 60: //First obstacle course
+    if (serialData) {
+      redON();
+      greenOFF();
+      float t = float(sScreen.getTime());
+      currentRun[0] = int(t);
+      float ft = t/1000;
+      currentSesh[1] = String.format("%.2f", ft);
+      resetSerialData();
+      pbrButton.show();
+      lcsgButton.hide();
+      mode = 70;
+    }
+    break;
+
+  case 70: //Smash and grab
+    if (serialData) {
+      float t = float(sScreen.getTime());
+      currentRun[1] = int(t);
+      float ft = t/1000;
+      currentSesh[2] = String.format("%.2f", ft);
+      resetSerialData();
+      dfrButton.show();
+      lcsgButton.show();
+      pbrButton.hide();
+      mode = 80;
+    }
+    break;
+
+  case 80:
+    if (serialData) {
+      if (lcsg) {
+        obstacleCourse = true;
+        resetSerialData();
+        lcsgButton.hide();
+        mode = 90;
+        break;
+      } else { //If zombie run this should trigger, only dfr should be hit, with out lcsg.
+        float t = float(sScreen.getTime());
+        currentRun[3] = int(t);
+        float ft = t/1000;
+        currentSesh[4] = String.format("%.2f", ft);
+        resetSerialData();
+        hideAllButtons();
+        mode = 100;
+      }
+    }
+    break;
+
+  case 90: 
+    if (serialData) {
+      float t = float(sScreen.getTime());
+      currentRun[2] = int(t);
+      float ft = t/1000;
+      currentSesh[3] = String.format("%.2f", ft);
+      resetSerialData();
+      hideAllButtons();
+      mode = 100;
+    }
+    break;
+
+  case 100:
+    greenOFF();
+    redON();
     break;
   }
+} 
+
+public void resetSerialData() {
+  serialData = false;
+  lcsg = false;
+  dfr = false;
+  pbr = false;
 }
 
-void displayGoButton() {
-  
+public void hideAllButtons() {
+  lcsgButton.hide();
+  pbrButton.hide();
+  dfrButton.hide();
+  startButton.hide();
+}
+
+public void serialDataTrigger() {
+  serialData = true;
+}
+
+public void Start(int theValue) {
+  mode += 10;
+}
+
+public void LCSG(int theValue) {
+  lscg = true;
+  serialDataTrigger();
+}
+
+public void DFR(int theValue) {
+  dfr = true;
+  serialDataTrigger();
+}
+
+public void PBR(int theValue) {
+  pbr = true;
+  serialDataTrigger();
+}
+
 void delay(int delay) {
 
   int time = millis();
@@ -39,29 +158,26 @@ void drawPixelArray(int[][] image, color color1, int posx, int posy, int multipl
 void mimicLights() {
 
   //Text for current mode for the swtich
-  textFont(f1);
+  textFont(f2);
   stroke(255);
   text(mode, 20, 350);
-//  noStroke();
-//  fill(255);
-//  rect(boxX, boxY, boxSize, boxSize);
-//  rect(boxX1, boxY1, boxSize, boxSize);
-//
-//  //Mimic lights
-//  ellipseMode(CORNER);
-//  if (redON) {
-//    fill(255, 0, 0);
-//  } else { 
-//    fill(50, 0, 0);
-//  }
-//  ellipse(20, 360, 40, 40);
-//
-//  if (greenON) {
-//    fill(0, 255, 0);
-//  } else {
-//    fill(0, 50, 0);
-//  }
-//  ellipse(20, 410, 40, 40);
+
+  //Mimic lights
+  noStroke();
+  ellipseMode(CORNER);
+  if (redON) {
+    fill(255, 0, 0);
+  } else { 
+    fill(50, 0, 0);
+  }
+  ellipse(20, 360, 40, 40);
+
+  if (greenON) {
+    fill(0, 255, 0);
+  } else {
+    fill(0, 50, 0);
+  }
+  ellipse(20, 410, 40, 40);
 }
 
 void controlEvent(ControlEvent theEvent) {

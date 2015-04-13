@@ -17,17 +17,19 @@ void serialEvent (Serial myPort) {
   print(inString);
   if (inString != null) {
     blockedSensors = "";
-    String match[] = match(inString, "t");
+    
+    String match[] = match(inString, "lcsg");
     if (match != null) {
-      time1 = millis() - time0;
-      time0 = millis();
+      lcsg = true;
       serialData = true;
-      inString = trim(inString);
-      String[] split = split(inString, ',');
-      for (int i = 0; i < split.length; i++) {
-        inData[i] = split[i];
-      }
     }
+    
+    match = match(inString, "dfr");
+    if (match != null) {
+      dfr = true;
+      serialData = true;
+    }
+    
     inString = trim(inString);
     String match2[] = match(inString, "yes.");
     if (match2 != null) {

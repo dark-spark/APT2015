@@ -47,10 +47,11 @@ void setup() {
                     .actAsPulldownMenu(true);
   ;
 
-  l.captionLabel().toUpperCase(true);
-  l.captionLabel().set("Select a Name");
-  l.captionLabel().setColor(#000000);
-  l.captionLabel().style().marginTop = 3;
+  l.captionLabel()
+    .toUpperCase(true)
+      .set("Select a Name")
+        .setColor(#000000)
+          .style().marginTop = 3;
   l.valueLabel().style().marginTop = 3;
 
   for (int i=0; i< nameString.length; i++) {
@@ -58,21 +59,69 @@ void setup() {
     lbi.setColorBackground(#EAEAEA);
   }
 
-  //Fill array for min times
-  for (int i = 0; i < 9; i++) {
-    min[i] = 2147483647;
-  }  
+  ControlFont cFont = new ControlFont(f2);
 
-  //Fill array for times times
-  for (int i = 0; i < 6; i++) {
-    timeArray[i] = "1";
-  }
+  startButton = cp5.addButton("Start")
+    .setValue(0)
+      .setPosition(1100, 20)
+        .setSize(60, 25)
+          .setId(0)
+            .activateBy(ControlP5.RELEASE)
+              .hide()
+                ;
 
-  if (salesForce) {
-    salesForceLogin();
-  }
+  startButton.captionLabel()
+    .setFont(cFont)
+      .setSize(20)
+        .toUpperCase(false)
+          .align(ControlP5.CENTER, ControlP5.CENTER)
+            ;
+
+  lcsgButton = cp5.addButton("LCSG")
+    .setPosition(1000, 20)
+      .setSize(60, 25)
+        .setId(1)
+          .hide()
+            ;
+
+  lcsgButton.captionLabel()
+    .setFont(cFont)
+      .setSize(20)
+        .toUpperCase(false)
+          .align(ControlP5.CENTER, ControlP5.CENTER)
+            ;
+
+  dfrButton = cp5.addButton("DFR")
+    .setPosition(1100, 20)
+      .setSize(60, 25)
+        .setId(1)
+          .hide()
+            ;
+
+  dfrButton.captionLabel()
+    .setFont(cFont)
+      .setSize(20)
+        .toUpperCase(false)
+          .align(ControlP5.CENTER, ControlP5.CENTER)
+            ;
+
+  pbrButton = cp5.addButton("PBR")
+    .setPosition(900, 20)
+      .setSize(60, 25)
+        .setId(1)
+          .hide()
+            ;
+
+  pbrButton.captionLabel()
+    .setFont(cFont)
+      .setSize(20)
+        .toUpperCase(false)
+          .align(ControlP5.CENTER, ControlP5.CENTER)
+            ;
 
   sScreen.resetTimer();
+  
+  mode = 10; //Resets the mode to the start as the button callback is triggered during setup of button
 }
 
 boolean sorted = false;
