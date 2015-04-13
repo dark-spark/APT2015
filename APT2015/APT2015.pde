@@ -15,7 +15,7 @@ void setup() {
 
   currentSession = new tableOfStrings();
   ranking = new tableOfStrings();
-  
+
   if (frame != null) {
     frame.setResizable(true);
   }
@@ -24,7 +24,7 @@ void setup() {
   index = 0;
 
   loadFiles();
-  
+
   rankingColorArray = whiteColor2dArray(arrayLength, 7);
 
   //Start serial comms and initialise
@@ -75,15 +75,17 @@ void setup() {
   if (salesForce) {
     salesForceLogin();
   }
-  
+
   sScreen.resetTimer();
 }
+
+boolean sorted = false;
 
 void draw() {
 
   background(0);
   frame.setTitle("Apocalypse Party 2015. FPS = " + int(frameRate));
-  
+
   int columGap = 150;
   int headingHeight = 96;
 
@@ -112,79 +114,16 @@ void draw() {
 
   alternatingBars(index, 25);
 
-//  String[][] currentSesh = create2dArray(data, 0, 1, 7, 1);
-
-//  currentSession.init(currentSesh, 120, columGap, rankingColorArray);
-//  currentSession.display();
-
-//  String[][] rankList = create2dArray(data, 0, index, 7, 24);
-//  boolean max = true;
-//  rankingColorArray = formatColorArray(rankingColorArray, data, max, index);
-  
+  boolean max = false;
   ranking.init(data, 226, columGap, 24);
-  ranking.sortResults();
-  ranking.colorResults(false);
+  if (!sorted) {
+    ranking.sortResults(max);
+  }
+  ranking.colorResults(max);
   ranking.display();
 
 
   if (updateTimer) {
     timer = millis();
-  }
-  
-}
-
-void keyPressed() {
-
-  valueX = mouseX;
-  valueY = mouseY;
-
-  if (key == '\n' || keyCode == RETURN || keyCode == ENTER) {
-    if (barcodeGood(typing)) {
-      player = typing;
-      typing = "";
-      for (int i = 0; i < barcodes.length; i++) {
-        if (player.equals(barcodes[i]) && mode == 1 && !(player.equals("00"))) {
-          firstClick = false;
-          int selection = i;
-          l.captionLabel().set(names[selection]);
-          data[index][0] = selection;
-          name = names[int(data[index][0])];
-          barcode = barcodes[selection];
-          count = 0;
-          nameSet = true;
-        }
-      }
-    }
-  } else {
-    typing = typing + key;
-  }
-
-  if (typing.length() > 2) {
-    typing = typing.substring(1);
-  }
-}
-
-void mousePressed() {
-  //Check if Mouse is over button and toggle on
-  if (mouseX > boxX && mouseX < boxX+boxSize && mouseY >boxY && mouseY < boxY+boxSize) {
-//    if (sortFastest) {
-//      sortFastest = false;
-//      c3 = c2;
-//    } 
-//    else {
-//      sortFastest = true;
-//      c3 = c1;
-//    }
-//    test = !test;
-//    if (test) {
-//      sScreen.startTimer();
-//    } else {
-//      sScreen.stopTimer();
-//    }
-  }
-
-
-  if (mouseX > boxX1 && mouseX < boxX1+boxSize && mouseY >boxY1 && mouseY < boxY1+boxSize) {
-    sScreen.resetTimer();
   }
 }

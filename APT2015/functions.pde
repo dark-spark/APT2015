@@ -403,3 +403,59 @@ float[] sortResults(float[][] dat, boolean max, int count) {
   }
   return sorted;
 }
+
+void keyPressed() {
+
+  valueX = mouseX;
+  valueY = mouseY;
+
+  if (key == '\n' || keyCode == RETURN || keyCode == ENTER) {
+    if (barcodeGood(typing)) {
+      player = typing;
+      typing = "";
+      for (int i = 0; i < barcodes.length; i++) {
+        if (player.equals(barcodes[i]) && mode == 1 && !(player.equals("00"))) {
+          firstClick = false;
+          int selection = i;
+          l.captionLabel().set(names[selection]);
+          data[index][0] = selection;
+          name = names[int(data[index][0])];
+          barcode = barcodes[selection];
+          count = 0;
+          nameSet = true;
+        }
+      }
+    }
+  } else {
+    typing = typing + key;
+  }
+
+  if (typing.length() > 2) {
+    typing = typing.substring(1);
+  }
+}
+
+void mousePressed() {
+  //Check if Mouse is over button and toggle on
+  if (mouseX > boxX && mouseX < boxX+boxSize && mouseY >boxY && mouseY < boxY+boxSize) {
+    //    if (sortFastest) {
+    //      sortFastest = false;
+    //      c3 = c2;
+    //    } 
+    //    else {
+    //      sortFastest = true;
+    //      c3 = c1;
+    //    }
+    //    test = !test;
+    //    if (test) {
+    //      sScreen.startTimer();
+    //    } else {
+    //      sScreen.stopTimer();
+    //    }
+  }
+
+
+  if (mouseX > boxX1 && mouseX < boxX1+boxSize && mouseY >boxY1 && mouseY < boxY1+boxSize) {
+    sScreen.resetTimer();
+  }
+}

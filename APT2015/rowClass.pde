@@ -40,4 +40,14 @@ class rowOfStrings {
   void setText(int pos, String ttext) {
     text.set(pos, ttext);
   }
+  
+  public String getText(int pos) {
+    String t = text.get(pos);
+    return t;
+  }
+  
+  public int sizeOf() {
+    int s = text.size();
+    return s;
+  }
 }

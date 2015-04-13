@@ -60,7 +60,8 @@ class tableOfStrings {
 
   void colorResults(boolean max) {
 
-    int[][] colourArray = colorArray(table, max, index);
+    float[][] current = getCurrent();
+    int[][] colourArray = colorArray(current, max, index);
 
     for (int i = 0; i < rows.size (); i++) {
       for (int j = 1; j < colourArray[0].length; j++) {
@@ -68,6 +69,20 @@ class tableOfStrings {
         ros.setColor(j, colourArray[i][j]);
       }
     }
+  }
+
+  float[][] getCurrent() {
+    int a = rows.size();
+    rowOfStrings r = rows.get(0);
+    int b = r.sizeOf();
+    float[][] current = new float[a][b];
+    for (int i = 0; i < a; i++) {
+      r = rows.get(i);
+      for (int j = 1; j < b; j++) {
+        current[i][j] = float(r.getText(j));
+      }
+    }
+    return current;
   }
 
   int[][] colorArray(float[][] dat, boolean max, int count) {
@@ -128,34 +143,40 @@ class tableOfStrings {
   }
 
   void pushTable(float[][] pushTable) {
-
     String[][] tableToDisplay = floatToStringArray(pushTable, 0, index, pushTable[0].length, maxLength);
     for (int i = 0; i < index && i < maxLength; i++) {
       rowOfStrings ros = rows.get(i);
-      for(int j = 0; j < pushTable.length; j++) {
+      for (int j = 0; j < pushTable[0].length; j++) {
         ros.setText(j, tableToDisplay[i][j]);
       }
     }
   }
-  
+
   public void sortResults(boolean max) {
-     pushTable(sortResults(6, max, table)); 
+
+    pushTable(sortResults(6, max, table));
   }
 
   private float[][] sortResults(int row, boolean max, float[][] data) {
 
+    FloatList sortList;
     float[][] sortedTable = new float[index][data[0].length];
-    float[] sortList = new float[index];
+    sortList = new FloatList();
 
     for (int i = 0; i < index; i++) {
-      sortList[i] = data[i][row];
+      sortList.append(data[i][row]);
     }
-    sortList = sort(sortList);
+
+    if (!max) {
+      sortList.sort();
+    } else {
+      sortList.sortReverse();
+    }
 
     //Generate a list of the ranked positions
     for (int i = 0; i < index; i++) {
       for (int j = 0; j < index; j++) {
-        if (data[j][row] == sortList[i]) {
+        if (data[j][row] == sortList.get(i)) {
           sortedTable[i] = table[j];
         }
       }
