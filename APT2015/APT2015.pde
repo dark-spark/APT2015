@@ -25,7 +25,7 @@ void setup() {
 
   loadFiles();
   
-  rankingColorArray = whiteColor2dArray(100, 7);
+  rankingColorArray = whiteColor2dArray(arrayLength, 7);
 
   //Start serial comms and initialise
   serial = startSerial();
@@ -82,25 +82,53 @@ void setup() {
 void draw() {
 
   background(0);
-//  sortResults();
-  create();
-
   frame.setTitle("Apocalypse Party 2015. FPS = " + int(frameRate));
+  
+  int columGap = 150;
+  int headingHeight = 96;
+
+  //Text
+  fill(255);
+  textFont(f1);
+  textAlign(CENTER);
+  text("Current Session", width/2, 50);
+  text("Ranking", width/2, 180);
+
+  String[] headings = {
+    "Name", 
+    "Obstacle Course", 
+    "Smash and Grab", 
+    "Obstacle Course", 
+    "Zombies", 
+    "Ammo Used", 
+    "Total Time"
+  };
+
+  //Text for Current Session
+  fill(255);
+  textFont(f2);
+  textAlign(CENTER);  
+  rowOfText(headings, columGap, headingHeight);
+
+  alternatingBars(index, 25);
+
+//  String[][] currentSesh = create2dArray(data, 0, 1, 7, 1);
+
+//  currentSession.init(currentSesh, 120, columGap, rankingColorArray);
+//  currentSession.display();
+
+//  String[][] rankList = create2dArray(data, 0, index, 7, 24);
+//  boolean max = true;
+//  rankingColorArray = formatColorArray(rankingColorArray, data, max, index);
+  
+  ranking.init(data, 226, columGap, 24);
+  ranking.display();
+
 
   if (updateTimer) {
     timer = millis();
   }
-
-  //  stroke(225);
-  //   fill(225);
-  //   rectMode(CORNER);
-  //   rect(0, 0, 500, 20); 
-  //   fill(0);
-  //   textFont(f6);
-  //   text(mouseX, 130, 20);
-  //   text(mouseY, 160, 20);
-  //   text(mouseX - valueX, 190, 20);
-  //   text(mouseY - valueY, 220, 20);
+  
 }
 
 void keyPressed() {

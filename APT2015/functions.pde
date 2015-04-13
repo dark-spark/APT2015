@@ -1,163 +1,130 @@
 
 void create() {
 
-  int columGap = 150;
-  int headingHeight = 96;
-
-  //Text
-  fill(255);
-  textFont(f1);
-  textAlign(CENTER);
-  text("Current Session", width/2, 50);
-  text("Ranking", width/2, 180);
-
-  alternatingBars();
-
-  String[] headings = {
-    "Name", 
-    "Obstacle Course", 
-    "Smash and Grab", 
-    "Obstacle Course", 
-    "Zombies", 
-    "Ammo Used", 
-    "Total Time"
-  };
-  
-  //Text for Current Session
-  fill(255);
-  textFont(f2);
-  textAlign(CENTER);  
-  rowOfText(headings, columGap, headingHeight);
-  
-  currentSession.init(create2dArray(data, 1, 7), 120, columGap, rankingColorArray);
-  currentSession.display();
-  ranking.init(create2dArray(data, index, 7), 226, columGap, rankingColorArray);
-  ranking.display();
-  
-/*
+  /*
   //Text for times and name of current session
-  if (count == 7 && nameSet == false) {
-    for (int i = 1; i < count + 2; i++) {
-      //Check for minimum time 
-      if (data[index -  1][i] <= min[i]) {
-        rectMode(CORNERS);
-        fill(c1);
-        text(String.format("%.2f", data[index -  1][i]), width/2 - (columGap * (4 - i)) + 57, 120);
-      } else if (data[index -  1][i] >= max[i]) {
-        rectMode(CORNERS);
-        fill(c2);
-        text(String.format("%.2f", data[index -  1][i]), width/2 - (columGap * (4 - i)) + 57, 120);
-      } else {
-        fill(255);
-        text(String.format("%.2f", data[index -  1][i]), width/2 - (columGap * (4 - i)) + 57, 120);
-      }
-    }
-    fill(255);
-    text(names[int(data[index - 1][0])], width/2 - (columGap * 4) + 57, 120);
-  } else {
-    for (int i = 1; i < count + 1; i++) {
-      //Check for minimum time 
-      if (data[index][i] <= min[i]) {
-        rectMode(CORNERS);
-        fill(c1);
-        //        text(String.format("%.2f", data[index][i]), width/2 - (columGap * (4 - i)) + 57, 120);
-      } else if (data[index][i] >= max[i]) {
-        rectMode(CORNERS);
-        fill(c2);
-        //        text(String.format("%.2f", data[index][i]), width/2 - (columGap * (4 - i)) + 57, 120);
-      } else {
-        fill(255);
-        //        text(String.format("%.2f", data[index][i]), width/2 - (columGap * (4 - i)) + 57, 120);
-      }
-      text("Hit", width/2 - (columGap * (4 - i)) + 57, 120);
-    }
-    fill(255);
-    text(names[int(data[index][0])], width/2 - (columGap * 4) + 57, 120);
-  }
-
-
-  //text for times and names of Ranking
-  if (sortFastest) { //For fastest first
-    textFont(f3);
-    for (int i = 0; i < index && i < 24; i++) {
-      fill(255);
-      textAlign(LEFT);
-      text((i + 1) + ".", width/2 - (columGap * 5) + 100, 226 + (20 * i));
-      textAlign(CENTER);
-      text(names[int(data[sortListPos[i]][0])], width/2 - (columGap * 4) + 57, 226 + (20 * i));
-      for (int j = 1; j < 8 + 1; j++) {
-        //Check for minimum time 
-        if (data[sortListPos[i]][j] <= min[j]) {
-          rectMode(CORNERS);
-          fill(c1);
-          //          rect(410 + ((j - 1) * columGap), 210+(i*20), 525 + ((j-1)*columGap), 230+(i*20));
-          text(String.format("%.2f", data[sortListPos[i]][j]), width/2 - (columGap * (4 - j)) + 57, 226 + (20 * i));
-        } else if (data[sortListPos[i]][j] >= max[j]) {
-          rectMode(CORNERS);
-          fill(c2);
-          //          rect(410 + ((j - 1) * columGap), 210+(i*20), 525 + ((j-1)*columGap), 230+(i*20));
-          text(String.format("%.2f", data[sortListPos[i]][j]), width/2 - (columGap * (4 - j)) + 57, 226 + (20 * i));
-        } else {
-          fill(255);
-          text(String.format("%.2f", data[sortListPos[i]][j]), width/2 - (columGap * (4 - j)) + 57, 226 + (20 * i));
-        }
-      }
-    }
-  } else { //For slowest first
-    textFont(f3);
-    for (int i = 0; i < index && i < 24; i++) {
-      fill(255);
-      textAlign(LEFT);
-      text((i + 1) + ".", width/2 - (columGap * 5) + 100, 226 + (20 * i));
-      textAlign(CENTER);
-      text(names[int(data[sortListPos[index-i-1]][0])], width/2 - (columGap * 4) + 57, 226 + (20 * i));
-      for (int j = 1; j < 8 + 1; j++) {
-        //Check for minimum time 
-        if (data[sortListPos[index - 1-i]][j] <= min[j]) {
-          rectMode(CORNERS);
-          fill(c1);
-          //          rect(410 + ((j - 1) * columGap), 210+(i*20), 525 + ((j-1)*columGap), 230+(i*20));
-          text(String.format("%.2f", data[sortListPos[index-1-i]][j]), width/2 - (columGap * (4 - j)) + 57, 226 + (20 * i));
-        } else if (data[sortListPos[index - 1-i]][j] >= max[j]) {
-          rectMode(CORNERS);
-          fill(c2);
-          //          rect(410 + ((j - 1) * columGap), 210+(i*20), 525 + ((j-1)*columGap), 230+(i*20));
-          text(String.format("%.2f", data[sortListPos[index-1-i]][j]), width/2 - (columGap * (4 - j)) + 57, 226 + (20 * i));
-        } else {
-          fill(255);
-          text(String.format("%.2f", data[sortListPos[index-1-i]][j]), width/2 - (columGap * (4 - j)) + 57, 226 + (20 * i));
-        }
-      }
-    }
-  }
-  */
+   if (count == 7 && nameSet == false) {
+   for (int i = 1; i < count + 2; i++) {
+   //Check for minimum time 
+   if (data[index -  1][i] <= min[i]) {
+   rectMode(CORNERS);
+   fill(c1);
+   text(String.format("%.2f", data[index -  1][i]), width/2 - (columGap * (4 - i)) + 57, 120);
+   } else if (data[index -  1][i] >= max[i]) {
+   rectMode(CORNERS);
+   fill(c2);
+   text(String.format("%.2f", data[index -  1][i]), width/2 - (columGap * (4 - i)) + 57, 120);
+   } else {
+   fill(255);
+   text(String.format("%.2f", data[index -  1][i]), width/2 - (columGap * (4 - i)) + 57, 120);
+   }
+   }
+   fill(255);
+   text(names[int(data[index - 1][0])], width/2 - (columGap * 4) + 57, 120);
+   } else {
+   for (int i = 1; i < count + 1; i++) {
+   //Check for minimum time 
+   if (data[index][i] <= min[i]) {
+   rectMode(CORNERS);
+   fill(c1);
+   //        text(String.format("%.2f", data[index][i]), width/2 - (columGap * (4 - i)) + 57, 120);
+   } else if (data[index][i] >= max[i]) {
+   rectMode(CORNERS);
+   fill(c2);
+   //        text(String.format("%.2f", data[index][i]), width/2 - (columGap * (4 - i)) + 57, 120);
+   } else {
+   fill(255);
+   //        text(String.format("%.2f", data[index][i]), width/2 - (columGap * (4 - i)) + 57, 120);
+   }
+   text("Hit", width/2 - (columGap * (4 - i)) + 57, 120);
+   }
+   fill(255);
+   text(names[int(data[index][0])], width/2 - (columGap * 4) + 57, 120);
+   }
+   
+   
+   //text for times and names of Ranking
+   if (sortFastest) { //For fastest first
+   textFont(f3);
+   for (int i = 0; i < index && i < 24; i++) {
+   fill(255);
+   textAlign(LEFT);
+   text((i + 1) + ".", width/2 - (columGap * 5) + 100, 226 + (20 * i));
+   textAlign(CENTER);
+   text(names[int(data[sortListPos[i]][0])], width/2 - (columGap * 4) + 57, 226 + (20 * i));
+   for (int j = 1; j < 8 + 1; j++) {
+   //Check for minimum time 
+   if (data[sortListPos[i]][j] <= min[j]) {
+   rectMode(CORNERS);
+   fill(c1);
+   //          rect(410 + ((j - 1) * columGap), 210+(i*20), 525 + ((j-1)*columGap), 230+(i*20));
+   text(String.format("%.2f", data[sortListPos[i]][j]), width/2 - (columGap * (4 - j)) + 57, 226 + (20 * i));
+   } else if (data[sortListPos[i]][j] >= max[j]) {
+   rectMode(CORNERS);
+   fill(c2);
+   //          rect(410 + ((j - 1) * columGap), 210+(i*20), 525 + ((j-1)*columGap), 230+(i*20));
+   text(String.format("%.2f", data[sortListPos[i]][j]), width/2 - (columGap * (4 - j)) + 57, 226 + (20 * i));
+   } else {
+   fill(255);
+   text(String.format("%.2f", data[sortListPos[i]][j]), width/2 - (columGap * (4 - j)) + 57, 226 + (20 * i));
+   }
+   }
+   }
+   } else { //For slowest first
+   textFont(f3);
+   for (int i = 0; i < index && i < 24; i++) {
+   fill(255);
+   textAlign(LEFT);
+   text((i + 1) + ".", width/2 - (columGap * 5) + 100, 226 + (20 * i));
+   textAlign(CENTER);
+   text(names[int(data[sortListPos[index-i-1]][0])], width/2 - (columGap * 4) + 57, 226 + (20 * i));
+   for (int j = 1; j < 8 + 1; j++) {
+   //Check for minimum time 
+   if (data[sortListPos[index - 1-i]][j] <= min[j]) {
+   rectMode(CORNERS);
+   fill(c1);
+   //          rect(410 + ((j - 1) * columGap), 210+(i*20), 525 + ((j-1)*columGap), 230+(i*20));
+   text(String.format("%.2f", data[sortListPos[index-1-i]][j]), width/2 - (columGap * (4 - j)) + 57, 226 + (20 * i));
+   } else if (data[sortListPos[index - 1-i]][j] >= max[j]) {
+   rectMode(CORNERS);
+   fill(c2);
+   //          rect(410 + ((j - 1) * columGap), 210+(i*20), 525 + ((j-1)*columGap), 230+(i*20));
+   text(String.format("%.2f", data[sortListPos[index-1-i]][j]), width/2 - (columGap * (4 - j)) + 57, 226 + (20 * i));
+   } else {
+   fill(255);
+   text(String.format("%.2f", data[sortListPos[index-1-i]][j]), width/2 - (columGap * (4 - j)) + 57, 226 + (20 * i));
+   }
+   }
+   }
+   }
+   */
 
   //Draw box and text for sort selection
-//  rectMode(CORNER);
-//  textFont(f3);
-//  textAlign(LEFT);
-//
-//  stroke(255);  
-//  fill(255);
-//  if (sortFastest) {
-//    text("Fastest", boxX+20, boxY+13);
-//  } else {
-//    text("Slowest", boxX+20, boxY+13);
-//  }
-//  fill(c3);
-//  stroke(50);
-//  rect(boxX, boxY, boxSize, boxSize);
+  //  rectMode(CORNER);
+  //  textFont(f3);
+  //  textAlign(LEFT);
+  //
+  //  stroke(255);  
+  //  fill(255);
+  //  if (sortFastest) {
+  //    text("Fastest", boxX+20, boxY+13);
+  //  } else {
+  //    text("Slowest", boxX+20, boxY+13);
+  //  }
+  //  fill(c3);
+  //  stroke(50);
+  //  rect(boxX, boxY, boxSize, boxSize);
 
-//  //Draw text for Ready
-//  textFont(f1);
-//  textAlign(LEFT);
-//  if (count == 0 && nameSet == true) {
-//    fill(0, 255, 0);
-//    //    text("Ready", 20, 300);
-//  } else {
-//    fill(255, 0, 0);
-//    //    text("Not Ready", 20, 300);
-//  }
+  //  //Draw text for Ready
+  //  textFont(f1);
+  //  textAlign(LEFT);
+  //  if (count == 0 && nameSet == true) {
+  //    fill(0, 255, 0);
+  //    //    text("Ready", 20, 300);
+  //  } else {
+  //    fill(255, 0, 0);
+  //    //    text("Not Ready", 20, 300);
+  //  }
 }
 
 
@@ -180,6 +147,7 @@ void drawPixelArray(int[][] image, color color1, int posx, int posy, int multipl
     }
   }
 }
+
 
 void sortResults() {
 
@@ -236,14 +204,13 @@ void mimicLights() {
     fill(50, 0, 0);
   }
   ellipse(20, 360, 40, 40);
-  
+
   if (greenON) {
     fill(0, 255, 0);
   } else {
     fill(0, 50, 0);
   }
   ellipse(20, 410, 40, 40);
-
 }
 
 
@@ -269,7 +236,7 @@ void controlEvent(ControlEvent theEvent) {
 }
 
 void updateName() {
-  
+
   firstClick = false;
   l.captionLabel().set(names[selection]);
   data[index][0] = selection;
@@ -310,7 +277,7 @@ void fillData() {
   }
 }
 
-void alternatingBars() {
+void alternatingBars(int count, int max) {
 
   int w = 1000;
 
@@ -319,7 +286,7 @@ void alternatingBars() {
   stroke(40);
   rectMode(CENTER);
 
-  for (int i = 1; i < index + 1 && i < 25; i = i + 2) {
+  for (int i = 1; i < count + 1 && i < max; i = i + 2) {
     rect(width/2, (201 + (i * 20)), w, 19, 7);
   }
 
@@ -337,7 +304,7 @@ void rowOfText(String[] text, int colSpacing, int hheight) {
 }
 
 void rowOfText(String[] text, int colSpacing, int hheight, color[] colors) {
-  
+
   float numOfCols = text.length;
   int ceil = ceil(numOfCols / 2);
 
@@ -347,25 +314,92 @@ void rowOfText(String[] text, int colSpacing, int hheight, color[] colors) {
   }
 } 
 
-String[][] create2dArray(float[][] data, int a, int b) {
-  
-  String[][] string = new String[a][b];
-  
-  for(int i = 0; i < a; i++) {
-    string[i][0] = names[int(data[i][0])];
-    for(int j = 1; j < b; j++) {
-      string[i][j] = String.format("%.2f", (data[i][j]));
+String[][] create2dArray(float[][] data, int a, int b, int c, int max) {
+
+  String[][] string;
+  if (b-a < max) {
+    string = new String[b-a][c];
+    for (int i = a; i < b; i++) {
+      string[i][0] = names[int(data[i][0])];
+      for (int j = 1; j < c; j++) {
+        string[i][j] = String.format("%.2f", (data[i][j]));
+      }
     }
+    return string;
+  } else {
+    string = new String[max][c];
+    for (int i = a; i < max + a; i++) {
+      string[i][0] = names[int(data[i][0])];
+      for (int j = 1; j < c; j++) {
+        string[i][j] = String.format("%.2f", (data[i][j]));
+      }
+    }
+    return string;
   }
-  return string;
 }
 
 int[][] whiteColor2dArray(int a, int b) {
   int[][] array = new int[a][b];
-  for(int i = 0; i < a; i++) {
-    for(int j = 0; j < b; j++) {
+  for (int i = 0; i < a; i++) {
+    for (int j = 0; j < b; j++) {
       array[i][j] = color(255, 255, 255);
     }
   }
   return array;
+}
+
+void mousePositionDisplay() {
+  stroke(225);
+  fill(225);
+  rectMode(CORNER);
+  rect(0, 0, 500, 20); 
+  fill(0);
+  textFont(f6);
+  text(mouseX, 130, 20);
+  text(mouseY, 160, 20);
+  text(mouseX - valueX, 190, 20);
+  text(mouseY - valueY, 220, 20);
+}
+
+int[][] formatColorArray(int[][] colorArray, float[][] dat, boolean max, int count) {
+
+  int[][] maskedColorArray = colorArray;
+  float[] mask = sortResults(dat, max, count);
+  int colour;
+  if (max) {
+    colour = pink;
+  } else {
+    colour = yellow;
+  };
+
+  for (int i = 0; i < colorArray[0].length; i++) {
+    for (int j = 0; j < colorArray.length; j++) {
+      if (dat[j][i] == mask[i]) {
+        maskedColorArray[j][i] = colour;
+      } else {
+        maskedColorArray[j][i] = white;
+      }
+    }
+  }
+  return maskedColorArray;
+}
+
+float[] sortResults(float[][] dat, boolean max, int count) {
+
+  float[] sorted = new float[count];
+
+  for (int i = 0; i < dat[0].length; i++) {
+    for (int j = 0; j < count; j++) {
+      if (max) {
+        if (data[j][i] < sorted[i]) {
+          sorted[i] = data[j][i];
+        }
+      } else {
+        if (data[j][i] > sorted[i]) {
+          sorted[i] = data[j][i];
+        }
+      }
+    }
+  }
+  return sorted;
 }
