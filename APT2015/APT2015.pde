@@ -18,7 +18,7 @@ void setup() {
     frame.setResizable(true);
   }
 
-  frameRate(30);
+  frameRate(10);
   index = 0;
 
   loadFiles();
