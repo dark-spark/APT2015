@@ -35,7 +35,7 @@ void control() {
       redON();
       greenOFF();
       float t = float(sScreen.getTime());
-      currentRun[0] = int(t);
+      currentRun[0] = t;
       float ft = t/1000;
       currentSesh[1] = String.format("%.2f", ft);
       resetSerialData();
@@ -48,8 +48,8 @@ void control() {
   case 70: //Smash and grab
     if (serialData) {
       float t = float(sScreen.getTime());
-      currentRun[1] = int(t);
-      float ft = t/1000;
+      currentRun[1] = t - currentRun[0];
+      float ft = (t/1000) - currentRun[0]/1000;
       currentSesh[2] = String.format("%.2f", ft);
       resetSerialData();
       dfrButton.show();
@@ -67,10 +67,10 @@ void control() {
         lcsgButton.hide();
         mode = 90;
         break;
-      } else { //If zombie run this should trigger, only dfr should be hit, with out lcsg.
+      } else if (dfr) { //If zombie run this should trigger, only dfr should be hit, with out lcsg.
         float t = float(sScreen.getTime());
-        currentRun[3] = int(t);
-        float ft = t/1000;
+        currentRun[3] = t - currentRun[1] - currentRun[0];
+        float ft = (t/1000) - currentRun[1]/1000 - currentRun[0]/1000;
         currentSesh[4] = String.format("%.2f", ft);
         resetSerialData();
         hideAllButtons();
@@ -79,11 +79,11 @@ void control() {
     }
     break;
 
-  case 90: 
+  case 90: //If obstacle course run this should trigger.
     if (serialData) {
       float t = float(sScreen.getTime());
-      currentRun[2] = int(t);
-      float ft = t/1000;
+      currentRun[2] = t - currentRun[0] - currentRun[1];
+      float ft =(t/1000) - currentRun[0]/1000 - currentRun[1]/1000;
       currentSesh[3] = String.format("%.2f", ft);
       resetSerialData();
       hideAllButtons();
@@ -92,11 +92,32 @@ void control() {
     break;
 
   case 100:
-    greenOFF();
-    redON();
+    sScreen.stopTimer();
+    float t = float(sScreen.getTime());
+    currentRun[5] = t;
+    t /= 1000;
+    currentSesh[6] = String.format("%.2f", t);
+    data = appendArray(currentRun, data, index);
+    ranking.pushNewData(data);
+    mode = 110;
+    nameSet = false;
     break;
+
+  case 110:
+    //Wait for name to be set
+    if (nameSet) {
+      mode = 10;
+      sScreen.resetTimer();
+    }
   }
 } 
+
+public float[][] appendArray(float[] newData, float[][] da, int ind) {
+  float[][] d = new float[da.length][da[0].length];
+  d[index] = newData;
+  index++;
+  return d;
+}
 
 public void resetSerialData() {
   serialData = false;
@@ -112,27 +133,23 @@ public void hideAllButtons() {
   startButton.hide();
 }
 
-public void serialDataTrigger() {
-  serialData = true;
-}
-
 public void Start(int theValue) {
   mode += 10;
 }
 
 public void LCSG(int theValue) {
-  lscg = true;
-  serialDataTrigger();
+  lcsg = true;
+  serialData = true;
 }
 
 public void DFR(int theValue) {
   dfr = true;
-  serialDataTrigger();
+  serialData = true;
 }
 
 public void PBR(int theValue) {
   pbr = true;
-  serialDataTrigger();
+  serialData = true;
 }
 
 void delay(int delay) {

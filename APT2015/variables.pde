@@ -47,7 +47,7 @@ boolean dfr = false;
 boolean pbr = false;
 boolean obstacleCourse = false;
 
-int currentRun[] = new int[6];
+float currentRun[] = new float[6];
 int runIndex = 0;
 
 ControlP5 cp5;

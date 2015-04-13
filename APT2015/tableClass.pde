@@ -14,10 +14,31 @@ class tableOfStrings {
   void init(float[][] _table, int _tableHeight, int _colSpacing, int _maxLength) {
     if (!initialised) {
       table = _table;
-      colours = whiteColor2dArray(100, table[0].length);
+      colours = whiteColor2dArray(arrayLength, table[0].length);
       tableHeight = _tableHeight;
       colSpacing = _colSpacing; 
       maxLength = _maxLength;
+
+      rowHeights = new int[table.length];
+      for (int i = 0; i < rowHeights.length; i++) {
+        rowHeights[i] = tableHeight + (i * 20);
+      }
+
+      String[][] tableToDisplay = floatToStringArray(table, 0, index, table[0].length, maxLength);
+
+      rows = new ArrayList<rowOfStrings>();
+      for (int i = 0; i < index && i < maxLength; i++) {
+        rows.add(new rowOfStrings(tableToDisplay[i], rowHeights[i], colSpacing, colours[i]));
+      }
+
+      initialised = true;
+    }
+  }
+
+  void init(float[][] _table) {
+    if (!initialised) {
+      table = _table;
+      colours = whiteColor2dArray(arrayLength, table[0].length);
 
       rowHeights = new int[table.length];
       for (int i = 0; i < rowHeights.length; i++) {
@@ -62,7 +83,7 @@ class tableOfStrings {
     float[][] current = getCurrent();
     int[][] colourArray = colorArray(current, max);
 
-    for (int i = 0; i < rows.size(); i++) {
+    for (int i = 0; i < rows.size (); i++) {
       for (int j = 1; j < colourArray[0].length; j++) {
         rowOfStrings ros = rows.get(i);
         ros.setColor(j, colourArray[i][j]);
@@ -117,7 +138,7 @@ class tableOfStrings {
     } 
     for (int i = 0; i < dat[0].length; i++) {
       for (int j = 0; j < dat.length; j++) {
-//        println("i="+i+"j="+j);
+        //        println("i="+i+"j="+j);
         if (max) {
           if (dat[j][i] > minMax[i]) {
             minMax[i] = dat[j][i];
@@ -181,5 +202,17 @@ class tableOfStrings {
       }
     }
     return sortedTable;
+  }
+
+  public void clearTable() {
+    for (int i = 0; i < rows.size (); i++) {
+      rows.remove(i);
+    }
+    initialised = false;
+  }
+
+  public void pushNewData(float[][] _data) {
+    clearTable();
+    init(_data);
   }
 }
