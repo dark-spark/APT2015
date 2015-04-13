@@ -59,11 +59,10 @@ class tableOfStrings {
   }
 
   void colorResults(boolean max) {
-
     float[][] current = getCurrent();
-    int[][] colourArray = colorArray(current, max, index);
+    int[][] colourArray = colorArray(current, max);
 
-    for (int i = 0; i < rows.size (); i++) {
+    for (int i = 0; i < rows.size(); i++) {
       for (int j = 1; j < colourArray[0].length; j++) {
         rowOfStrings ros = rows.get(i);
         ros.setColor(j, colourArray[i][j]);
@@ -85,11 +84,11 @@ class tableOfStrings {
     return current;
   }
 
-  int[][] colorArray(float[][] dat, boolean max, int count) {
+  int[][] colorArray(float[][] dat, boolean max) {
 
-    float[] mask = findMinMax(dat, max, count);
+    float[] mask = findMinMax(dat, max, dat.length);
     int colour;
-    int[][] colourArray = new int[count][dat[0].length];
+    int[][] colourArray = new int[dat.length][dat[0].length];
     if (max) {
       colour = pink;
     } else {
@@ -97,7 +96,7 @@ class tableOfStrings {
     };
 
     for (int i = 0; i < dat[0].length; i++) {
-      for (int j = 0; j < count; j++) {
+      for (int j = 0; j < dat.length; j++) {
         if (dat[j][i] == mask[i]) {
           colourArray[j][i] = colour;
         } else {
@@ -110,22 +109,22 @@ class tableOfStrings {
 
   private float[] findMinMax(float[][] dat, boolean max, int count) {
 
-    float[] minMax = new float[count];
-    for (int i = 0; i < count; i++) {
+    float[] minMax = new float[dat[0].length];
+    for (int i = 0; i < dat[0].length; i++) {
       if (!max) {
         minMax[i] = 2147483647;
       }
     } 
-
     for (int i = 0; i < dat[0].length; i++) {
-      for (int j = 0; j < count; j++) {
+      for (int j = 0; j < dat.length; j++) {
+//        println("i="+i+"j="+j);
         if (max) {
-          if (data[j][i] > minMax[i]) {
-            minMax[i] = data[j][i];
+          if (dat[j][i] > minMax[i]) {
+            minMax[i] = dat[j][i];
           }
         } else {
-          if (data[j][i] < minMax[i]) {
-            minMax[i] = data[j][i];
+          if (dat[j][i] < minMax[i]) {
+            minMax[i] = dat[j][i];
           }
         }
       }

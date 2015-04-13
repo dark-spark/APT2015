@@ -25,8 +25,6 @@ void setup() {
 
   loadFiles();
 
-  rankingColorArray = whiteColor2dArray(arrayLength, 7);
-
   //Start serial comms and initialise
   serial = startSerial();
 
