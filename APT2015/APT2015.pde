@@ -120,7 +120,7 @@ void setup() {
             ;
 
   sScreen.resetTimer();
-  
+
   mode = 10; //Resets the mode to the start as the button callback is triggered during setup of button
 }
 
@@ -144,7 +144,7 @@ String[] headings = {
   "Ammo Used", 
   "Total Time"
 };
-
+boolean initRankingTable = false;
 void draw() {
 
   background(0);
@@ -170,12 +170,15 @@ void draw() {
   fill(255);
   textFont(f2);
   textAlign(CENTER);  
+
   rowOfText(headings, columGap, headingHeight);
   rowOfText(currentSesh, columGap, currentSeshHeight);
 
   //Text for ranking table
   boolean max = false;
-  ranking.init(data, 226, columGap, 24); //Only triggered once
+  if (!initRankingTable) {
+    ranking.init(data, 226, columGap, 24); //Only triggered once
+  }
   if (!sorted) {
     ranking.pushSortResults(max);
   }
