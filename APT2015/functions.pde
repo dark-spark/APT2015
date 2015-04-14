@@ -7,6 +7,7 @@ void control() {
     if (nameSet) {
       mode = 20;
       currentSesh[0] = name;
+      currentRun[0] = nameCode(name, names);
       startButton.show();
     }
     break;
@@ -35,7 +36,7 @@ void control() {
       redON();
       greenOFF();
       float t = float(sScreen.getTime());
-      currentRun[0] = t;
+      currentRun[1] = t;
       float ft = t/1000;
       currentSesh[1] = String.format("%.2f", ft);
       resetSerialData();
@@ -48,7 +49,7 @@ void control() {
   case 70: //Smash and grab
     if (serialData) {
       float t = float(sScreen.getTime());
-      currentRun[1] = t - currentRun[0];
+      currentRun[2] = t - currentRun[0];
       float ft = (t/1000) - currentRun[0]/1000;
       currentSesh[2] = String.format("%.2f", ft);
       resetSerialData();
@@ -69,8 +70,8 @@ void control() {
         break;
       } else if (dfr) { //If zombie run this should trigger, only dfr should be hit, with out lcsg.
         float t = float(sScreen.getTime());
-        currentRun[3] = t - currentRun[1] - currentRun[0];
-        float ft = (t/1000) - currentRun[1]/1000 - currentRun[0]/1000;
+        currentRun[4] = t - currentRun[2] - currentRun[1];
+        float ft = (t/1000) - currentRun[2]/1000 - currentRun[1]/1000;
         currentSesh[4] = String.format("%.2f", ft);
         resetSerialData();
         hideAllButtons();
@@ -82,8 +83,8 @@ void control() {
   case 90: //If obstacle course run this should trigger.
     if (serialData) {
       float t = float(sScreen.getTime());
-      currentRun[2] = t - currentRun[0] - currentRun[1];
-      float ft =(t/1000) - currentRun[0]/1000 - currentRun[1]/1000;
+      currentRun[3] = t - currentRun[1] - currentRun[2];
+      float ft =(t/1000) - currentRun[1]/1000 - currentRun[2]/1000;
       currentSesh[3] = String.format("%.2f", ft);
       resetSerialData();
       hideAllButtons();
@@ -94,7 +95,7 @@ void control() {
   case 100:
     sScreen.stopTimer();
     float t = float(sScreen.getTime());
-    currentRun[5] = t;
+    currentRun[6] = t;
     t /= 1000;
     currentSesh[6] = String.format("%.2f", t);
     data = appendArray(currentRun, data, index);
@@ -112,9 +113,19 @@ void control() {
   }
 } 
 
+private int nameCode(String _name, String[] _names) {
+  int code = 99;
+  for(int i = 0; i < _names.length; i++) {
+    if(_name.equals(_names[i])) {
+      code = i; 
+    } 
+  }
+  return code;
+}
+
 public float[][] appendArray(float[] newData, float[][] da, int ind) {
-  float[][] d = new float[da.length][da[0].length];
-  d[index] = newData;
+  float[][] d = da;
+  d[ind] = newData;
   index++;
   return d;
 }
@@ -309,7 +320,7 @@ void mousePositionDisplay() {
 int[][] formatColorArray(int[][] colorArray, float[][] dat, boolean max, int count) {
 
   int[][] maskedColorArray = colorArray;
-  float[] mask = sortResults(dat, max, count);
+  float[] mask = sortResults1(dat, max, count);
   int colour;
   if (max) {
     colour = pink;
@@ -329,7 +340,7 @@ int[][] formatColorArray(int[][] colorArray, float[][] dat, boolean max, int cou
   return maskedColorArray;
 }
 
-float[] sortResults(float[][] dat, boolean max, int count) {
+float[] sortResults1(float[][] dat, boolean max, int count) {
 
   float[] sorted = new float[count];
 

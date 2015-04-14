@@ -177,7 +177,7 @@ void draw() {
   boolean max = false;
   ranking.init(data, 226, columGap, 24); //Only triggered once
   if (!sorted) {
-    ranking.sortResults(max);
+    ranking.pushSortResults(max);
   }
   ranking.colorResults(max);
   ranking.display();

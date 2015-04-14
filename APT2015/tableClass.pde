@@ -45,9 +45,7 @@ class tableOfStrings {
         rowHeights[i] = tableHeight + (i * 20);
       }
 
-      println("1");
       String[][] tableToDisplay = floatToStringArray(table, 0, index, table[0].length, maxLength);
-      println("2");
 
       rows = new ArrayList<rowOfStrings>();
       for (int i = 0; i < index && i < maxLength; i++) {
@@ -59,45 +57,28 @@ class tableOfStrings {
   }
 
   String[][] floatToStringArray(float[][] data, int a, int b, int c, int max) {
-    String[][] string = new String[0][0];
+    String[][] string;
     if (b-a < max) {
       string = new String[b-a][c];
       for (int i = a; i < b; i++) {
-        p('k');
         string[i][0] = names[int(data[i][0])];
         for (int j = 1; j < c; j++) {
-//          println("a="+a+" b="+b+" c="+c+" i="+i+" j="+j+" d size="+data.length+" s="+data[0].length);
           string[i][j] = String.format("%.2f", (data[i][j]));
-          p('a');
         }
-          p('b');
       }
-          p('c');
-    } else if(b-a > max) {
-          p('d');
+      return string;
+    } else {
       string = new String[max][c];
-          p('e');
       for (int i = a; i < max + a; i++) {
-          p('f');
         string[i][0] = names[int(data[i][0])];
-          p('g');
         for (int j = 1; j < c; j++) {
-          p('h');
           string[i][j] = String.format("%.2f", (data[i][j]));
-          p('i');
         }
       }
+      return string;
     }
-          p('j');
-    return string;
   }
-  
-  int z;
-  void p(char c) {
-    z++;
-    print(z);
-    println(c);
-}
+
 
   void colorResults(boolean max) {
     float[][] current = getCurrent();
@@ -192,8 +173,7 @@ class tableOfStrings {
     }
   }
 
-  public void sortResults(boolean max) {
-
+  public void pushSortResults(boolean max) {
     pushTable(sortResults(6, max, table));
   }
 
@@ -203,10 +183,12 @@ class tableOfStrings {
     float[][] sortedTable = new float[index][data[0].length];
     sortList = new FloatList();
 
+    //Create List of values in the row that you want to sort, list used because it has a sort method.
     for (int i = 0; i < index; i++) {
       sortList.append(data[i][row]);
     }
-
+    
+    //Sort for fastest or slowest
     if (!max) {
       sortList.sort();
     } else {
