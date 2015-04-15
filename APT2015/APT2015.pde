@@ -18,7 +18,7 @@ void setup() {
     frame.setResizable(true);
   }
 
-  frameRate(10);
+  frameRate(30);
   index = 0;
 
   loadFiles();
@@ -121,7 +121,7 @@ void setup() {
 
   sScreen.resetTimer();
 
-  mode = 10; //Resets the mode to the start as the button callback is triggered during setup of button
+  mode = 10; //Resets the mode to the start as the button callback is triggered during setup of buttons
 }
 
 boolean sorted = false;
@@ -144,15 +144,17 @@ String[] headings = {
   "Ammo Used", 
   "Total Time"
 };
+
 boolean initRankingTable = false;
+
+int columGap = 150;
+int headingHeight = 96;
+int currentSeshHeight = 120;
+
 void draw() {
 
   background(0);
   frame.setTitle("Apocalypse Party 2015. FPS = " + int(frameRate));
-
-  int columGap = 150;
-  int headingHeight = 96;
-  int currentSeshHeight = 120;
 
   control();
   mimicLights();
@@ -177,11 +179,10 @@ void draw() {
   //Text for ranking table
   boolean max = false;
   if (!initRankingTable) {
-    ranking.init(data, 226, columGap, 24); //Only triggered once
+    ranking.init(data, 226, columGap, 24, index); //Only triggered once
   }
-  if (!sorted) {
-    ranking.pushSortResults(max);
-  }
+
+  ranking.setSorting(max);
   ranking.colorResults(max);
   ranking.display();
 
@@ -189,3 +190,18 @@ void draw() {
     timer = millis();
   }
 }
+
+
+/*
+To-do list
+ 
+ Fix pushNewResults
+ Add count up and count down sequences in secondScreen
+ Fix saving of files after added rows
+ Add penalty bits recieve serial commands
+ Add penalty bits data point and display
+ Add pop up for ammo used
+ 
+ 
+ 
+ */

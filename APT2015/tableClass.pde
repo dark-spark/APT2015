@@ -2,16 +2,21 @@ class tableOfStrings {
   //Class variables
   float[][] table;
   float[][] sortedTable;
+  String[][] displayedTable;
   int[][] colours;
+  int[][] dColorTable;
   int tableHeight, colSpacing, maxLength;
   int[] rowHeights;
   ArrayList<rowOfStrings> rows;
+  ArrayList<float[]> mainTable;
   boolean initialised = false;
-
+  boolean sort = false;
+  boolean minMax = true;
+  
   tableOfStrings() {
   }
 
-  void init(float[][] _table, int _tableHeight, int _colSpacing, int _maxLength) {
+  void init(float[][] _table, int _tableHeight, int _colSpacing, int _maxLength, int _index) {
     if (!initialised) {
       table = _table;
       colours = whiteColor2dArray(arrayLength, table[0].length);
@@ -24,18 +29,32 @@ class tableOfStrings {
         rowHeights[i] = tableHeight + (i * 20);
       }
 
-      String[][] tableToDisplay = floatToStringArray(table, 0, index, table[0].length, maxLength);
+      String[][] tableToDisplay = floatToStringArray(table, 0, _index, table[0].length, maxLength);
 
+      mainTable = new ArrayList<float[]>();
+      for (int i = 0; i < _index; i++) {
+        mainTable.add(new float[7]);
+        float[] fArray = mainTable.get(i);
+        for (int j = 0; j < fArray.length; j++) {
+          fArray[j] = table[i][j];
+        }
+      }
+      
       rows = new ArrayList<rowOfStrings>();
-      for (int i = 0; i < index && i < maxLength; i++) {
+      for (int i = 0; i < _index && i < maxLength; i++) {
         rows.add(new rowOfStrings(tableToDisplay[i], rowHeights[i], colSpacing, colours[i]));
       }
 
       initialised = true;
     }
   }
+  
+  void setSorting(boolean _sort, boolean _minMax) {
+    sort = _sort;
+    minMax = _minMax;
+  }
 
-  void init(float[][] _table) {
+  void init(float[][] _table, int _index) {
     if (!initialised) {
       table = _table;
       colours = whiteColor2dArray(arrayLength, table[0].length);
@@ -163,6 +182,23 @@ class tableOfStrings {
     }
   }
 
+  void display1() {
+    if (initialised) {
+      float [][] tempTable = table;
+      tempTable = sortResults(6, minMax, tempTable);
+      
+      //code to color
+      for (int i = 0; i < index && i < maxLength; i++) {
+        rowOfStrings ros = rows.get(i);
+        for(int j = 0; j < ros.sizeOf(); j++) {
+          ros.setText(j, displayedTable[i][j]);
+          ros.setColor(j, dColorTable[i][j]);
+        }
+        ros.display();
+      }
+    }
+  }
+
   void pushTable(float[][] pushTable) {
     String[][] tableToDisplay = floatToStringArray(pushTable, 0, index, pushTable[0].length, maxLength);
     for (int i = 0; i < index && i < maxLength; i++) {
@@ -215,6 +251,6 @@ class tableOfStrings {
 
   public void pushNewData(float[][] _data) {
     clearTable();
-    init(_data);
+    init(_data, index);
   }
 }

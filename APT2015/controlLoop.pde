@@ -98,7 +98,7 @@ void control() {
     currentRun[6] = t;
     t /= 1000;
     currentSesh[6] = String.format("%.2f", t);
-    data = appendArray(currentRun, data, index);
+    data = appendArray(currentRun, data);
     ranking.pushNewData(data);
     mode = 110;
     nameSet = false;

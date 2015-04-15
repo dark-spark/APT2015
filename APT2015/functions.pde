@@ -9,10 +9,10 @@ private int nameCode(String _name, String[] _names) {
   return code;
 }
 
-public float[][] appendArray(float[] newData, float[][] da, int ind) {
+public float[][] appendArray(float[] newData, float[][] da) {
   float[][] d = da;
-  d[ind] = newData;
   index++;
+  d[index] = newData;
   return d;
 }
 
