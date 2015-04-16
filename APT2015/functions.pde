@@ -1,4 +1,11 @@
 
+void clearCurrentArrays() {
+  for(int i = 0; i < currentSesh.length; i++) {
+    currentSesh[i] = "";
+    currentRun[i] = 0;
+  }
+}
+
 int nameCode(String _name, String[] _names) {
   int c = 99;
   for (int i = 0; i < _names.length; i++) {

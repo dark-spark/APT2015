@@ -8,7 +8,7 @@ void setup() {
 
   size(1200, 786);
 
-  PFrame f = new PFrame(1024, 786);
+  PFrame f = new PFrame(500, 786);
   f.setTitle("Timer");
   fill(0);
 
@@ -110,7 +110,6 @@ void draw() {
 To-do list
  
  Fix pushNewResults
- Add count up and count down sequences in secondScreen
  Fix saving of files after added rows
  Add penalty bits recieve serial commands
  Add penalty bits data point and display

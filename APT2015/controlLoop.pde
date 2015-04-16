@@ -6,15 +6,18 @@ void control() {
     redON();
     if (nameSet) {
       mode = 20;
+      debugB();
+      clearCurrentArrays();
       currentSesh[0] = name;
-//      currentRun[0] = nameCode(name, names);  
-      for (int i = 0; i < names.length; i++) {
-        if (name.equals(names[i])) {
-//      debugB();
-          currentRun[0] = i;
-//      debugA();
-        }
-      }
+      currentRun[0] = nameCode(name, names);  
+      debugA();
+      //      for (int i = 0; i < names.length; i++) {
+//        if (name.equals(names[i])) {
+
+//          currentRun[0] = i;
+
+//        }
+//      }
       startButton.show();
       sScreen.setTime1(10000);
     }
@@ -28,7 +31,6 @@ void control() {
     redOFF();
     greenON();
     sScreen.startTimer();
-    sScreen.startTimer1();
     mode = 40;
     break;
 
@@ -63,7 +65,7 @@ void control() {
       dfrButton.show();
       lcsgButton.show();
       pbrButton.hide();
-      sScreen.setTime1(10000);
+      sScreen.setTime1(12340);
       sScreen.startTimer1();
       sScreen.timerSwap();
       sScreen.showTimer1();
@@ -111,8 +113,9 @@ void control() {
     currentSesh[6] = String.format("%.2f", t);
     data = appendArray(currentRun, data);
     ranking.addNewRow(currentRun);
-    mode = 110;
     index++;
+    writeTextFile();
+    mode = 110;
     nameSet = false;
     break;
 

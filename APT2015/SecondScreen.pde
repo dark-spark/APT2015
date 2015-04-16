@@ -63,8 +63,18 @@ public class SecondApplet extends PApplet {
       }
     }
     if(checkForZero()) {
-      timerNotSwap();
+      timerSwap = false;
       hideTimer1(); 
+    }
+  }
+  
+  public void flash(char[] chars) {
+    if(time1 <= 10000) {
+      if(chars[4] == '1') {
+        showTimer();
+      } else if (chars[4] == '6') {
+        hideTimer();
+      }  
     }
   }
 
@@ -74,6 +84,7 @@ public class SecondApplet extends PApplet {
     char[] chars = millisToChar(val);
     String display = "" + chars[0] + chars[1] + ":" + chars[2] + chars[3] + ":" + chars[4] + chars [5];
     text(display, width/2, (height/5) + (fontSize1/3));
+    flash(chars);
   }
 
   public void display(int val) { 
@@ -152,6 +163,8 @@ public class SecondApplet extends PApplet {
     if (!run1) {
       run1 = true;
       startTime1 = millis();
+      println(startTime1);
+      println(millis());
     }
   }
 
