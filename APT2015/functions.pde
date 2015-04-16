@@ -1,12 +1,12 @@
 
 int nameCode(String _name, String[] _names) {
-  int code = 99;
-  for(int i = 0; i < _names.length; i++) {
-    if(_name.equals(_names[i])) {
-      code = i; 
-    } 
+  int c = 99;
+  for (int i = 0; i < _names.length; i++) {
+    if (_name.equals(_names[i])) {
+      c = i;
+    }
   }
-  return code;
+  return c;
 }
 
 float[][] appendArray(float[] newData, float[][] da) {
@@ -102,12 +102,36 @@ void controlEvent(ControlEvent theEvent) {
 }
 
 void updateName() {
-
+  
   firstClick = false;
   l.captionLabel().set(names[selection]);
   data[index][0] = selection;
   name = names[int(data[index][0])];
   nameSet = true;
+//  debugT();/////////////////////////////////////////////////////////////////////////////////////////////////////////
+}
+
+void debugT() {
+  println("DEBUG TRIGGERED!!!!!!!!!!!!");
+  if (first) {
+    stop = true;
+  }
+  first = true;
+}
+
+void debugB() {
+  println("Before");
+  ranking.printMainTable();
+}
+
+void debugA() {
+  println("After");
+  ranking.printMainTable();
+  if (stop) {
+    while (stop) {
+      //Stop
+    }
+  }
 }
 
 
@@ -302,7 +326,7 @@ void mousePressed() {
 }
 
 void setupListBoxandButtons() {
-  
+
   //Set up listbox
   cp5 = new ControlP5(this);
   l = cp5.addListBox("myList")

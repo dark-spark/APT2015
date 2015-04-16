@@ -41,8 +41,11 @@ void setup() {
   ranking.init(data, 226, columGap, 24, index, names);
 
   sScreen.resetTimer();
+  sScreen.resetTimer1();
 
   mode = 10; //Resets the mode to the start as the button callback is triggered during setup of buttons
+  stop = false;
+  first = false;
 }
 
 boolean sorted = false;
@@ -100,9 +103,6 @@ void draw() {
   //Text for ranking table
   ranking.display();
 
-  if (updateTimer) {
-    timer = millis();
-  }
 }
 
 

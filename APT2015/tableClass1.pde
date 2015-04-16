@@ -18,8 +18,8 @@ class tableOfStrings1 {
   void init(float[][] _table, int _tableHeight, int _colSpacing, int _maxLength, int _index, String[] _names) {
     if (!initialised) {
 
-      float[][] table = _table;
-      arrayWidth = table[0].length;
+      float[][] ttable = _table;
+      arrayWidth = ttable[0].length;
       tableHeight = _tableHeight;
       colSpacing = _colSpacing; 
       maxLength = _maxLength;
@@ -30,7 +30,7 @@ class tableOfStrings1 {
         mainTable.add(new float[7]);
         float[] fArray = mainTable.get(i);
         for (int j = 0; j < fArray.length; j++) {
-          fArray[j] = table[i][j];
+          fArray[j] = ttable[i][j];
         }
       }
 
@@ -45,7 +45,7 @@ class tableOfStrings1 {
         }
       }
 
-      rowHeights = new int[table.length];
+      rowHeights = new int[ttable.length];
       for (int i = 0; i < rowHeights.length; i++) {
         rowHeights[i] = tableHeight + (i * 20);
       }
@@ -62,20 +62,18 @@ class tableOfStrings1 {
     if (sort) {
       float[][] main = getMain();
       displayTable = sortResults(6, minMax, main);
-    } else {
+    } else if (!sort) {
       displayTable = getMain();
     }
     if (coloured) {
       colourTableColoured();
-    } else {
+    } else if (!coloured) {
       colourTableWhite();
     }
     for (int i = 0; i < displayTable.length; i++) {  
-      float[] floatArray = displayTable[i];
-      String[] displayArray = floatToStringRow(floatArray);
+      String[] displayArray = floatToStringRow(displayTable[i]);
       rowOfText(displayArray, colSpacing, rowHeights[i], colours[i]);
     }
-//    printMainTable(2);
   }
 
   void printMainTable(int seconds) { 
@@ -88,6 +86,14 @@ class tableOfStrings1 {
         float[] a = mainTable.get(i);
         println(a);
       }
+    }
+  }
+
+  void printMainTable() { 
+    println("mainTable");
+    for (int i = 0; i < mainTable.size (); i++) {
+      float[] a = mainTable.get(i);
+      println(a);
     }
   }
 
@@ -157,14 +163,14 @@ class tableOfStrings1 {
     int a = mainTable.size();
     float[] r = mainTable.get(0);
     int b = r.length;
-    float[][] current = new float[a][b];
+    float[][] ccurrent = new float[a][b];
     for (int i = 0; i < a; i++) {
       r = mainTable.get(i);
       for (int j = 0; j < b; j++) {
-        current[i][j] = r[j];
+        ccurrent[i][j] = r[j];
       }
     }
-    return current;
+    return ccurrent;
   }
 
   float[] findMinMax(float[][] dat, boolean max) {

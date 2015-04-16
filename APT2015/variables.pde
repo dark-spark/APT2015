@@ -3,9 +3,7 @@ SecondApplet s;
 int arrayLength = 100;
 String inData[] = new String[1];
 int mode = 10;
-int runUpTimer = 3000;
-int runUpTimer1 = runUpTimer + 2700;
-int time0, time1, time2, timer;
+int timer;
 int sectorIndex = 0, lightIndex = 0, lightTimer, countDown, reactionTime, reactionTime0, reactionTime1, r;
 boolean serialData = false;
 boolean redON, greenON, blueON, yellowON, whiteON, running, jumpStart, jumpEnable, lightsFinished, serial, yesReceived, noReceived = false, pingFailed, heartbeat;
@@ -56,6 +54,8 @@ controlP5.Button lcsgButton;
 controlP5.Button pbrButton;
 
 boolean updateTimer;
+boolean stop = false;
+boolean first = false;
 
 int cnt=0;
 PFont f1, f2, f3, f4, f5, f6;

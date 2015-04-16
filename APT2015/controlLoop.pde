@@ -7,8 +7,16 @@ void control() {
     if (nameSet) {
       mode = 20;
       currentSesh[0] = name;
-      currentRun[0] = nameCode(name, names);
+//      currentRun[0] = nameCode(name, names);  
+      for (int i = 0; i < names.length; i++) {
+        if (name.equals(names[i])) {
+//      debugB();
+          currentRun[0] = i;
+//      debugA();
+        }
+      }
       startButton.show();
+      sScreen.setTime1(10000);
     }
     break;
 
@@ -17,11 +25,10 @@ void control() {
     break;
 
   case 30:
-
     redOFF();
     greenON();
-    time0 = millis();
     sScreen.startTimer();
+    sScreen.startTimer1();
     mode = 40;
     break;
 
@@ -56,6 +63,10 @@ void control() {
       dfrButton.show();
       lcsgButton.show();
       pbrButton.hide();
+      sScreen.setTime1(10000);
+      sScreen.startTimer1();
+      sScreen.timerSwap();
+      sScreen.showTimer1();
       mode = 80;
     }
     break;
@@ -93,11 +104,12 @@ void control() {
 
   case 100:
     sScreen.stopTimer();
+    sScreen.stopTimer1();
     float t = float(sScreen.getTime());
     currentRun[6] = t;
     t /= 1000;
     currentSesh[6] = String.format("%.2f", t);
-//    data = appendArray(currentRun, data);
+    data = appendArray(currentRun, data);
     ranking.addNewRow(currentRun);
     mode = 110;
     index++;
@@ -109,6 +121,7 @@ void control() {
     if (nameSet) {
       mode = 10;
       sScreen.resetTimer();
+    sScreen.resetTimer1();
     }
     break;
   }
