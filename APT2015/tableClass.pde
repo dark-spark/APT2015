@@ -31,14 +31,14 @@ class tableOfStrings {
 
       String[][] tableToDisplay = floatToStringArray(table, 0, _index, table[0].length, maxLength);
 
-      mainTable = new ArrayList<float[]>();
-      for (int i = 0; i < _index; i++) {
-        mainTable.add(new float[7]);
-        float[] fArray = mainTable.get(i);
-        for (int j = 0; j < fArray.length; j++) {
-          fArray[j] = table[i][j];
-        }
-      }
+//      mainTable = new ArrayList<float[]>();
+//      for (int i = 0; i < _index; i++) {
+//        mainTable.add(new float[7]);
+//        float[] fArray = mainTable.get(i);
+//        for (int j = 0; j < fArray.length; j++) {
+//          fArray[j] = table[i][j];
+//        }
+//      }
       
       rows = new ArrayList<rowOfStrings>();
       for (int i = 0; i < _index && i < maxLength; i++) {
@@ -49,6 +49,64 @@ class tableOfStrings {
     }
   }
   
+
+  void addNewRow(float[] _data) {
+    int i = rows.size();
+    String[] _sdata = floatToStringRow(_data);
+    rows.add(new rowOfStrings(_sdata, rowHeights[i], colSpacing, colours[i]));
+  }
+  
+  void addNewRow(String _name, float[] _data) {
+    int i = rows.size();
+    String[] _sdata = floatToStringRow(_data);
+    rows.add(new rowOfStrings(_sdata, rowHeights[i], colSpacing, colours[i]));
+  }
+  
+  String[] floatToStringRow(float[] _data) {
+    String[] strings;
+    int a = _data.length;
+    strings = new String[a];
+    strings[0] = names[int(_data[0])];
+    for(int i = 1; i < a; i++) {
+      strings[i] = String.format("%.2f", _data[i]); 
+    }
+    return strings;
+  }  
+  
+  String[] floatToStringRow(String _name, float[] _data) {
+    String[] strings;
+    int a = _data.length;
+    strings = new String[a];
+    strings[0] = _name;
+    for(int i = 1; i < a; i++) {
+      strings[i] = String.format("%.2f", _data[i]); 
+    }
+    return strings;
+  }
+    
+  String[][] floatToStringArray(float[][] data, int a, int b, int c, int max) {
+    String[][] string;
+    if (b-a < max) {
+      string = new String[b-a][c];
+      for (int i = a; i < b; i++) {
+        string[i][0] = names[int(data[i][0])];
+        for (int j = 1; j < c; j++) {
+          string[i][j] = String.format("%.2f", (data[i][j]));
+        }
+      }
+      return string;
+    } else {
+      string = new String[max][c];
+      for (int i = a; i < max + a; i++) {
+        string[i][0] = names[int(data[i][0])];
+        for (int j = 1; j < c; j++) {
+          string[i][j] = String.format("%.2f", (data[i][j]));
+        }
+      }
+      return string;
+    }
+  }
+
   void setSorting(boolean _sort, boolean _minMax) {
     sort = _sort;
     minMax = _minMax;
@@ -74,31 +132,7 @@ class tableOfStrings {
       initialised = true;
     }
   }
-
-  String[][] floatToStringArray(float[][] data, int a, int b, int c, int max) {
-    String[][] string;
-    if (b-a < max) {
-      string = new String[b-a][c];
-      for (int i = a; i < b; i++) {
-        string[i][0] = names[int(data[i][0])];
-        for (int j = 1; j < c; j++) {
-          string[i][j] = String.format("%.2f", (data[i][j]));
-        }
-      }
-      return string;
-    } else {
-      string = new String[max][c];
-      for (int i = a; i < max + a; i++) {
-        string[i][0] = names[int(data[i][0])];
-        for (int j = 1; j < c; j++) {
-          string[i][j] = String.format("%.2f", (data[i][j]));
-        }
-      }
-      return string;
-    }
-  }
-
-
+  
   void colorResults(boolean max) {
     float[][] current = getCurrent();
     int[][] colourArray = colorArray(current, max);
@@ -253,4 +287,5 @@ class tableOfStrings {
     clearTable();
     init(_data, index);
   }
+  
 }

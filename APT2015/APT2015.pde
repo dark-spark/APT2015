@@ -182,7 +182,7 @@ void draw() {
     ranking.init(data, 226, columGap, 24, index); //Only triggered once
   }
 
-  ranking.setSorting(max);
+  ranking.setSorting(true, max);
   ranking.colorResults(max);
   ranking.display();
 
