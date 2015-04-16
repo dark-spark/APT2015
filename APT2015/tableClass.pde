@@ -1,3 +1,4 @@
+/*
 class tableOfStrings {
   //Class variables
   float[][] table;
@@ -289,3 +290,4 @@ class tableOfStrings {
   }
   
 }
+*/

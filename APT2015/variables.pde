@@ -32,7 +32,6 @@ boolean sect3min = false;
 boolean sect4min = false;
 boolean totalmin = false;
 boolean flash = false;
-int sortListPos[] = new int[arrayLength];
 boolean firstClick = true;
 String typing = "";
 String player = "";
@@ -43,7 +42,6 @@ boolean dfr = false;
 boolean pbr = false;
 boolean obstacleCourse = false;
 
-float currentRun[] = new float[7];
 int runIndex = 0;
 
 ControlP5 cp5;
@@ -57,6 +55,8 @@ boolean updateTimer;
 boolean stop = false;
 boolean first = false;
 
+float currentRun[] = new float[7];
+
 int cnt=0;
 PFont f1, f2, f3, f4, f5, f6;
 int index;
@@ -68,8 +68,6 @@ color c2 = color(255, 220, 0), c1 = color(255, 50, 255), c3 = c1, c4 = c1;
 int boxX = 1000, boxY = 20, boxSize = 15;
 int boxX1 = 920, boxY1 = 20;
 
-float[] list = new float[0];
-float[] etlist = new float[0];
 float rank;
 float percentage;
 int trapDistance = 1000;

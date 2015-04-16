@@ -1,8 +1,8 @@
 
 void clearCurrentArrays() {
-  for(int i = 0; i < currentSesh.length; i++) {
-    currentSesh[i] = "";
-    currentRun[i] = 0;
+  for(int a = 0; a < 7; a++) {
+    currentSesh[a] = "";
+    currentRun[a] = 0;
   }
 }
 

@@ -110,7 +110,6 @@ void draw() {
 To-do list
  
  Fix pushNewResults
- Fix saving of files after added rows
  Add penalty bits recieve serial commands
  Add penalty bits data point and display
  Add pop up for ammo used

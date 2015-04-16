@@ -7,17 +7,10 @@ void control() {
     if (nameSet) {
       mode = 20;
       debugB();
-      clearCurrentArrays();
-      currentSesh[0] = name;
-      currentRun[0] = nameCode(name, names);  
+      clearCurrentArrays();  
       debugA();
-      //      for (int i = 0; i < names.length; i++) {
-//        if (name.equals(names[i])) {
-
-//          currentRun[0] = i;
-
-//        }
-//      }
+      currentSesh[0] = name;
+      currentRun[0] = nameCode(name, names);
       startButton.show();
       sScreen.setTime1(10000);
     }
