@@ -182,7 +182,7 @@ class tableOfStrings {
     return colourArray;
   }
 
-  private float[] findMinMax(float[][] dat, boolean max, int count) {
+  float[] findMinMax(float[][] dat, boolean max, int count) {
 
     float[] minMax = new float[dat[0].length];
     for (int i = 0; i < dat[0].length; i++) {
@@ -243,11 +243,11 @@ class tableOfStrings {
     }
   }
 
-  public void pushSortResults(boolean max) {
+  void pushSortResults(boolean max) {
     pushTable(sortResults(6, max, table));
   }
 
-  private float[][] sortResults(int row, boolean max, float[][] data) {
+  float[][] sortResults(int row, boolean max, float[][] data) {
 
     FloatList sortList;
     float[][] sortedTable = new float[index][data[0].length];

@@ -99,7 +99,7 @@ void control() {
     t /= 1000;
     currentSesh[6] = String.format("%.2f", t);
     data = appendArray(currentRun, data);
-    ranking.addNewRow(name, currentRun);
+    ranking.addNewRow(currentRun);
     mode = 110;
     index++;
     nameSet = false;

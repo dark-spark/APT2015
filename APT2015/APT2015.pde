@@ -2,7 +2,7 @@ import controlP5.*;
 import processing.serial.*;
 import javax.swing.*;
 SecondApplet sScreen;
-tableOfStrings ranking;
+tableOfStrings1 ranking;
 
 void setup() {
 
@@ -12,7 +12,7 @@ void setup() {
   f.setTitle("Timer");
   fill(0);
 
-  ranking = new tableOfStrings();
+  ranking = new tableOfStrings1();
 
   if (frame != null) {
     frame.setResizable(true);
@@ -33,91 +33,7 @@ void setup() {
   f4 = createFont("Arial Unicode MS", 15);
   f6 = createFont("Arial Unicode MS", 12);
 
-  //Set up listbox
-  cp5 = new ControlP5(this);
-  l = cp5.addListBox("myList")
-    .setPosition(6, 21)
-      .setSize(120, 200)
-        .setItemHeight(15)
-          .setBarHeight(15)
-            .setColorBackground(color(255, 255, 255))
-              .setColorActive(color(50))
-                .setColorForeground(color(255, 100, 100))
-                  .setColorLabel(color(0))
-                    .actAsPulldownMenu(true);
-  ;
-
-  l.captionLabel()
-    .toUpperCase(true)
-      .set("Select a Name")
-        .setColor(#000000)
-          .style().marginTop = 3;
-  l.valueLabel().style().marginTop = 3;
-
-  for (int i=0; i< nameString.length; i++) {
-    ListBoxItem lbi = l.addItem(names[i], i);
-    lbi.setColorBackground(#EAEAEA);
-  }
-
-  ControlFont cFont = new ControlFont(f2);
-
-  startButton = cp5.addButton("Start")
-    .setValue(0)
-      .setPosition(1100, 20)
-        .setSize(60, 25)
-          .setId(0)
-            .activateBy(ControlP5.RELEASE)
-              .hide()
-                ;
-
-  startButton.captionLabel()
-    .setFont(cFont)
-      .setSize(20)
-        .toUpperCase(false)
-          .align(ControlP5.CENTER, ControlP5.CENTER)
-            ;
-
-  lcsgButton = cp5.addButton("LCSG")
-    .setPosition(1000, 20)
-      .setSize(60, 25)
-        .setId(1)
-          .hide()
-            ;
-
-  lcsgButton.captionLabel()
-    .setFont(cFont)
-      .setSize(20)
-        .toUpperCase(false)
-          .align(ControlP5.CENTER, ControlP5.CENTER)
-            ;
-
-  dfrButton = cp5.addButton("DFR")
-    .setPosition(1100, 20)
-      .setSize(60, 25)
-        .setId(1)
-          .hide()
-            ;
-
-  dfrButton.captionLabel()
-    .setFont(cFont)
-      .setSize(20)
-        .toUpperCase(false)
-          .align(ControlP5.CENTER, ControlP5.CENTER)
-            ;
-
-  pbrButton = cp5.addButton("PBR")
-    .setPosition(900, 20)
-      .setSize(60, 25)
-        .setId(1)
-          .hide()
-            ;
-
-  pbrButton.captionLabel()
-    .setFont(cFont)
-      .setSize(20)
-        .toUpperCase(false)
-          .align(ControlP5.CENTER, ControlP5.CENTER)
-            ;
+  setupListBoxandButtons();
 
   sScreen.resetTimer();
 
@@ -178,12 +94,10 @@ void draw() {
 
   //Text for ranking table
   boolean max = false;
-  if (!initRankingTable) {
-    ranking.init(data, 226, columGap, 24, index); //Only triggered once
-  }
+  ranking.init(data, 226, columGap, 24, index); //Only triggered once
 
   ranking.setSorting(true, max);
-  ranking.colorResults(max);
+  ranking.setColoured(true);
   ranking.display();
 
   if (updateTimer) {

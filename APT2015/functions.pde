@@ -1,5 +1,5 @@
 
-private int nameCode(String _name, String[] _names) {
+int nameCode(String _name, String[] _names) {
   int code = 99;
   for(int i = 0; i < _names.length; i++) {
     if(_name.equals(_names[i])) {
@@ -9,42 +9,42 @@ private int nameCode(String _name, String[] _names) {
   return code;
 }
 
-public float[][] appendArray(float[] newData, float[][] da) {
+float[][] appendArray(float[] newData, float[][] da) {
   float[][] d = da;
   index++;
   d[index] = newData;
   return d;
 }
 
-public void resetSerialData() {
+void resetSerialData() {
   serialData = false;
   lcsg = false;
   dfr = false;
   pbr = false;
 }
 
-public void hideAllButtons() {
+void hideAllButtons() {
   lcsgButton.hide();
   pbrButton.hide();
   dfrButton.hide();
   startButton.hide();
 }
 
-public void Start(int theValue) {
+void Start(int theValue) {
   mode += 10;
 }
 
-public void LCSG(int theValue) {
+void LCSG(int theValue) {
   lcsg = true;
   serialData = true;
 }
 
-public void DFR(int theValue) {
+void DFR(int theValue) {
   dfr = true;
   serialData = true;
 }
 
-public void PBR(int theValue) {
+void PBR(int theValue) {
   pbr = true;
   serialData = true;
 }
@@ -300,4 +300,94 @@ void mousePressed() {
   if (mouseX > boxX1 && mouseX < boxX1+boxSize && mouseY >boxY1 && mouseY < boxY1+boxSize) {
     //    sScreen.resetTimer();
   }
+}
+
+void setupListBoxandButtons() {
+  
+  //Set up listbox
+  cp5 = new ControlP5(this);
+  l = cp5.addListBox("myList")
+    .setPosition(6, 21)
+      .setSize(120, 200)
+        .setItemHeight(15)
+          .setBarHeight(15)
+            .setColorBackground(color(255, 255, 255))
+              .setColorActive(color(50))
+                .setColorForeground(color(255, 100, 100))
+                  .setColorLabel(color(0))
+                    .actAsPulldownMenu(true);
+  ;
+
+  l.captionLabel()
+    .toUpperCase(true)
+      .set("Select a Name")
+        .setColor(#000000)
+          .style().marginTop = 3;
+  l.valueLabel().style().marginTop = 3;
+
+  for (int i=0; i< nameString.length; i++) {
+    ListBoxItem lbi = l.addItem(names[i], i);
+    lbi.setColorBackground(#EAEAEA);
+  }
+
+  ControlFont cFont = new ControlFont(f2);
+
+  //Set up buttons
+  startButton = cp5.addButton("Start")
+    .setValue(0)
+      .setPosition(1100, 20)
+        .setSize(60, 25)
+          .setId(0)
+            .activateBy(ControlP5.RELEASE)
+              .hide()
+                ;
+
+  startButton.captionLabel()
+    .setFont(cFont)
+      .setSize(20)
+        .toUpperCase(false)
+          .align(ControlP5.CENTER, ControlP5.CENTER)
+            ;
+
+  lcsgButton = cp5.addButton("LCSG")
+    .setPosition(1000, 20)
+      .setSize(60, 25)
+        .setId(1)
+          .hide()
+            ;
+
+  lcsgButton.captionLabel()
+    .setFont(cFont)
+      .setSize(20)
+        .toUpperCase(false)
+          .align(ControlP5.CENTER, ControlP5.CENTER)
+            ;
+
+  dfrButton = cp5.addButton("DFR")
+    .setPosition(1100, 20)
+      .setSize(60, 25)
+        .setId(1)
+          .hide()
+            ;
+
+  dfrButton.captionLabel()
+    .setFont(cFont)
+      .setSize(20)
+        .toUpperCase(false)
+          .align(ControlP5.CENTER, ControlP5.CENTER)
+            ;
+
+  pbrButton = cp5.addButton("PBR")
+    .setPosition(900, 20)
+      .setSize(60, 25)
+        .setId(1)
+          .hide()
+            ;
+
+  pbrButton.captionLabel()
+    .setFont(cFont)
+      .setSize(20)
+        .toUpperCase(false)
+          .align(ControlP5.CENTER, ControlP5.CENTER)
+            ;
 }

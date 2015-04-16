@@ -1,20 +1,23 @@
-class tableOfStrings1 extends tableOfStrings {
+class tableOfStrings1 {
   //Class variables
-  int tableHeight, colSpacing, maxLength;
+  int tableHeight, colSpacing, maxLength, arrayWidth;
   ArrayList<rowOfStrings> rows;
   ArrayList<int[]> colors;
   ArrayList<float[]> mainTable;
+  float[][] displayTable;
   int[][] colours;
   int[] rowHeights;
   boolean initialised = false;
+  boolean sort, minMax, coloured;
 
   tableOfStrings1() {
   }
 
   void init(float[][] _table, int _tableHeight, int _colSpacing, int _maxLength, int _index) {
     if (!initialised) {
-      
+
       float[][] table = _table;
+      arrayWidth = table[0].length;
       tableHeight = _tableHeight;
       colSpacing = _colSpacing; 
       maxLength = _maxLength;
@@ -27,31 +30,167 @@ class tableOfStrings1 extends tableOfStrings {
           fArray[j] = table[i][j];
         }
       }
-      
-      colours = whiteColor2dArray(arrayLength, table[0].length);
-      
+
+      colours = whiteColor2dArray(arrayLength, arrayWidth);
+
       colors = new ArrayList<int[]>(mainTable.size());
-      for(int i = 0; i < colors.size(); i++) {
+      for (int i = 0; i < colors.size (); i++) {
         int[] _colors = colors.get(i);
         _colors = new int[7];
-        for(int j = 0; j < _colors.length; j++) {
+        for (int j = 0; j < _colors.length; j++) {
           _colors[j] = white;
         }
       }
-        
+
       rowHeights = new int[table.length];
       for (int i = 0; i < rowHeights.length; i++) {
         rowHeights[i] = tableHeight + (i * 20);
       }
-      
-      rows = new ArrayList<rowOfStrings>();
-      for (int i = 0; i < _index && i < maxLength; i++) {
-        float[] arrayToDisplay = mainTable.get(i);
-        String[] stringArrayToDisplay = floatToStringRow(arrayToDisplay);
-        rows.add(new rowOfStrings(stringArrayToDisplay, rowHeights[i], colSpacing, colours[i]));
-      }
 
       initialised = true;
     }
+  }
+
+  void addNewRow(float[] _newRow) {
+    mainTable.add(_newRow);
+  }
+
+  void display() {
+    if (sort) {
+      displayTable = sortResults(6, minMax, getCurrent());
+    } else {
+      displayTable = getCurrent();
+    }
+    if (coloured) {
+      colourTable();
+    } else {
+      colourTableWhite();
+    }
+    for (int i = 0; i < displayTable.length; i++) {  
+      float[] floatArray = displayTable[i];
+      String[] displayArray = floatToStringRow(floatArray);
+      rowOfText(displayArray, colSpacing, rowHeights[i], colours[i]);
+    }
+  }
+
+  void colourTableWhite() {
+    colours = whiteColor2dArray(arrayLength, arrayWidth);
+  }
+
+  void colourTable() {
+    colours = colorArray(displayTable, minMax);
+  }
+
+  float[][] sortResults(int row, boolean max, float[][] _data) {
+
+    FloatList sortList;
+    float[][] sortedTable = new float[_data.length][_data[0].length];
+    sortList = new FloatList();
+
+    for (int i = 0; i < index; i++) {
+      sortList.append(_data[i][row]);
+    }
+
+    //Sort for fastest or slowest
+    if (!max) {
+      sortList.sort();
+    } else {
+      sortList.sortReverse();
+    }
+
+    //Generate a list of the ranked positions
+    for (int i = 0; i < _data.length; i++) {
+      for (int j = 0; j < _data.length; j++) {
+        if (_data[j][row] == sortList.get(i)) {
+          sortedTable[i] = _data[j];
+        }
+      }
+    }
+    return sortedTable;
+  }
+
+  int[][] colorArray(float[][] dat, boolean max) {
+
+    float[] mask = findMinMax(dat, max);
+    int colour;
+    int[][] colourArray = new int[dat.length][dat[0].length];
+    if (max) {
+      colour = pink;
+    } else {
+      colour = yellow;
+    };
+
+    for (int i = 0; i < dat.length; i++) {
+      colourArray[i][0] = white;
+    }
+    for (int i = 1; i < dat[0].length; i++) {
+      for (int j = 0; j < dat.length; j++) {
+        if (dat[j][i] == mask[i]) {
+          colourArray[j][i] = colour;
+        } else {
+          colourArray[j][i] = white;
+        }
+      }
+    }
+    return colourArray;
+  }
+
+  float[][] getCurrent() {
+    int a = mainTable.size();
+    float[] r = mainTable.get(0);
+    int b = r.length;
+    float[][] current = new float[a][b];
+    for (int i = 0; i < a; i++) {
+      r = mainTable.get(i);
+      for (int j = 1; j < b; j++) {
+        current[i][j] = r[j];
+      }
+    }
+    return current;
+  }
+
+  float[] findMinMax(float[][] dat, boolean max) {
+
+    float[] minMax = new float[dat[0].length];
+    for (int i = 0; i < dat[0].length; i++) {
+      if (!max) {
+        minMax[i] = 2147483647;
+      }
+    } 
+    for (int i = 0; i < dat[0].length; i++) {
+      for (int j = 0; j < dat.length; j++) {
+        //        println("i="+i+"j="+j);
+        if (max) {
+          if (dat[j][i] > minMax[i]) {
+            minMax[i] = dat[j][i];
+          }
+        } else {
+          if (dat[j][i] < minMax[i]) {
+            minMax[i] = dat[j][i];
+          }
+        }
+      }
+    }
+    return minMax;
+  }
+
+  void setSorting(boolean _sort, boolean _minMax) {
+    sort = _sort;
+    minMax = _minMax;
+  }
+
+  void setColoured(boolean _coloured) {
+    coloured = _coloured;
+  }
+
+  String[] floatToStringRow(float[] _data) {
+    String[] strings;
+    int a = _data.length;
+    strings = new String[a];
+    strings[0] = names[int(_data[0])];
+    for (int i = 1; i < a; i++) {
+      strings[i] = String.format("%.2f", _data[i]);
+    }
+    return strings;
   }
 }
