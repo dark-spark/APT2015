@@ -12,8 +12,7 @@ void setup() {
   f.setTitle("Timer");
   fill(0);
 
-  ranking = new tableOfStrings1();
-
+  
   if (frame != null) {
     frame.setResizable(true);
   }
@@ -34,6 +33,12 @@ void setup() {
   f6 = createFont("Arial Unicode MS", 12);
 
   setupListBoxandButtons();
+  
+  boolean max = false;
+  ranking = new tableOfStrings1();
+  ranking.setSorting(true, max);
+  ranking.setColoured(true);
+  ranking.init(data, 226, columGap, 24, index, names);
 
   sScreen.resetTimer();
 
@@ -93,11 +98,6 @@ void draw() {
   rowOfText(currentSesh, columGap, currentSeshHeight);
 
   //Text for ranking table
-  boolean max = false;
-  ranking.init(data, 226, columGap, 24, index); //Only triggered once
-
-  ranking.setSorting(true, max);
-  ranking.setColoured(true);
   ranking.display();
 
   if (updateTimer) {

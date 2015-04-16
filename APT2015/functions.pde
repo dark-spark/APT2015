@@ -11,7 +11,6 @@ int nameCode(String _name, String[] _names) {
 
 float[][] appendArray(float[] newData, float[][] da) {
   float[][] d = da;
-  index++;
   d[index] = newData;
   return d;
 }

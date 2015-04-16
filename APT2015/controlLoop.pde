@@ -67,7 +67,6 @@ void control() {
         resetSerialData();
         lcsgButton.hide();
         mode = 90;
-        break;
       } else if (dfr) { //If zombie run this should trigger, only dfr should be hit, with out lcsg.
         float t = float(sScreen.getTime());
         currentRun[4] = t - currentRun[2] - currentRun[1];
@@ -98,7 +97,7 @@ void control() {
     currentRun[6] = t;
     t /= 1000;
     currentSesh[6] = String.format("%.2f", t);
-    data = appendArray(currentRun, data);
+//    data = appendArray(currentRun, data);
     ranking.addNewRow(currentRun);
     mode = 110;
     index++;

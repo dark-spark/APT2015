@@ -7,13 +7,15 @@ class tableOfStrings1 {
   float[][] displayTable;
   int[][] colours;
   int[] rowHeights;
+  String[] nameArray;
   boolean initialised = false;
   boolean sort, minMax, coloured;
+  boolean blinker;
 
   tableOfStrings1() {
   }
 
-  void init(float[][] _table, int _tableHeight, int _colSpacing, int _maxLength, int _index) {
+  void init(float[][] _table, int _tableHeight, int _colSpacing, int _maxLength, int _index, String[] _names) {
     if (!initialised) {
 
       float[][] table = _table;
@@ -21,6 +23,7 @@ class tableOfStrings1 {
       tableHeight = _tableHeight;
       colSpacing = _colSpacing; 
       maxLength = _maxLength;
+      nameArray = _names;
 
       mainTable = new ArrayList<float[]>();
       for (int i = 0; i < _index; i++) {
@@ -57,12 +60,13 @@ class tableOfStrings1 {
 
   void display() {
     if (sort) {
-      displayTable = sortResults(6, minMax, getCurrent());
+      float[][] main = getMain();
+      displayTable = sortResults(6, minMax, main);
     } else {
-      displayTable = getCurrent();
+      displayTable = getMain();
     }
     if (coloured) {
-      colourTable();
+      colourTableColoured();
     } else {
       colourTableWhite();
     }
@@ -71,23 +75,37 @@ class tableOfStrings1 {
       String[] displayArray = floatToStringRow(floatArray);
       rowOfText(displayArray, colSpacing, rowHeights[i], colours[i]);
     }
+//    printMainTable(2);
+  }
+
+  void printMainTable(int seconds) { 
+    if (frameCount % (30 * seconds) == 0) { 
+      blinker = !blinker;
+    }
+    if (blinker) {  
+      println("mainTable");
+      for (int i = 0; i < mainTable.size (); i++) {
+        float[] a = mainTable.get(i);
+        println(a);
+      }
+    }
   }
 
   void colourTableWhite() {
     colours = whiteColor2dArray(arrayLength, arrayWidth);
   }
 
-  void colourTable() {
+  void colourTableColoured() {
     colours = colorArray(displayTable, minMax);
   }
 
   float[][] sortResults(int row, boolean max, float[][] _data) {
 
     FloatList sortList;
-    float[][] sortedTable = new float[_data.length][_data[0].length];
     sortList = new FloatList();
+    float[][] sortedTable = new float[_data.length][_data[0].length];
 
-    for (int i = 0; i < index; i++) {
+    for (int i = 0; i < _data.length; i++) {
       sortList.append(_data[i][row]);
     }
 
@@ -135,14 +153,14 @@ class tableOfStrings1 {
     return colourArray;
   }
 
-  float[][] getCurrent() {
+  float[][] getMain() {
     int a = mainTable.size();
     float[] r = mainTable.get(0);
     int b = r.length;
     float[][] current = new float[a][b];
     for (int i = 0; i < a; i++) {
       r = mainTable.get(i);
-      for (int j = 1; j < b; j++) {
+      for (int j = 0; j < b; j++) {
         current[i][j] = r[j];
       }
     }
@@ -187,7 +205,7 @@ class tableOfStrings1 {
     String[] strings;
     int a = _data.length;
     strings = new String[a];
-    strings[0] = names[int(_data[0])];
+    strings[0] = nameArray[int(_data[0])];
     for (int i = 1; i < a; i++) {
       strings[i] = String.format("%.2f", _data[i]);
     }
