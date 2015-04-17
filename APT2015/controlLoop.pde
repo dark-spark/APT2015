@@ -6,9 +6,9 @@ void control() {
     redON();
     if (nameSet) {
       mode = 20;
-      debugB();
+      debugB();//////////////////////////////////////////////////
       clearCurrentArrays();  
-      debugA();
+      debugA();//////////////////////////////////////////////////
       currentSesh[0] = name;
       currentRun[0] = nameCode(name, names);
       startButton.show();
