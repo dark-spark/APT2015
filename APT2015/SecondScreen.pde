@@ -163,8 +163,8 @@ public class SecondApplet extends PApplet {
     if (!run1) {
       run1 = true;
       startTime1 = millis();
-      println(startTime1);
-      println(millis());
+//      println(startTime1);
+//      println(millis());
     }
   }
 

@@ -32,7 +32,7 @@ void setup() {
   f4 = createFont("Arial Unicode MS", 15);
   f6 = createFont("Arial Unicode MS", 12);
 
-  setupListBoxandButtons();
+  setupCP5();
   
   boolean max = false;
   ranking = new tableOfStrings1();
@@ -47,33 +47,6 @@ void setup() {
   stop = false;
   first = false;
 }
-
-boolean sorted = false;
-String[] currentSesh = {
-  "", 
-  "", 
-  "", 
-  "", 
-  "", 
-  "", 
-  ""
-};
-
-String[] headings = {
-  "Name", 
-  "Obstacle Course", 
-  "Smash and Grab", 
-  "Obstacle Course", 
-  "Zombies", 
-  "Ammo Used", 
-  "Total Time"
-};
-
-boolean initRankingTable = false;
-
-int columGap = 150;
-int headingHeight = 96;
-int currentSeshHeight = 120;
 
 void draw() {
 

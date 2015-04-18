@@ -3,7 +3,6 @@ class tableOfStrings1 {
   int tableHeight, colSpacing, maxLength, arrayWidth;
   ArrayList<rowOfStrings> rows;
   ArrayList<int[]> colors;
-  ArrayList<float[]> mainTable;
   float[][] displayTable;
   int[][] colours;
   int[] rowHeights;
@@ -93,7 +92,7 @@ class tableOfStrings1 {
     println("mainTable");
     for (int i = 0; i < mainTable.size (); i++) {
       float[] a = mainTable.get(i);
-      println(a);
+      println(a[0]);
     }
   }
 

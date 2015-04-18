@@ -1,6 +1,6 @@
 
 void clearCurrentArrays() {
-  for(int a = 0; a < 7; a++) {
+  for (int a = 0; a < 7; a++) {
     currentSesh[a] = "";
     currentRun[a] = 0;
   }
@@ -34,6 +34,34 @@ void hideAllButtons() {
   pbrButton.hide();
   dfrButton.hide();
   startButton.hide();
+  okButton.hide();
+}
+
+void ammo(String theText) {
+  if (validateText(theText)) {
+    currentRun[5] = int(theText);
+    currentSesh[5] = theText;
+    mode = 108;
+  }
+}
+
+void OK(int theValue) {
+  String theText = textField.getText();
+  if (validateText(theText)) {
+    currentRun[5] = int(theText);
+    currentSesh[5] = theText;
+    mode = 108;
+  }
+}
+
+boolean validateText(String text) {
+  boolean isNull = text.equals("") ? true : false;
+  int n = int(text);
+  if(!isNull && n > 0) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 void Start(int theValue) {
@@ -109,13 +137,13 @@ void controlEvent(ControlEvent theEvent) {
 }
 
 void updateName() {
-  
+
   firstClick = false;
   l.captionLabel().set(names[selection]);
   data[index][0] = selection;
   name = names[int(data[index][0])];
   nameSet = true;
-//  debugT();/////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //  debugT();/////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 void debugT() {
@@ -332,7 +360,7 @@ void mousePressed() {
   }
 }
 
-void setupListBoxandButtons() {
+void setupCP5() {
 
   //Set up listbox
   cp5 = new ControlP5(this);
@@ -362,6 +390,16 @@ void setupListBoxandButtons() {
 
   ControlFont cFont = new ControlFont(f2);
 
+  //Set up textField
+  textField = cp5.addTextfield("ammo")
+    .setPosition(1000, 20)
+      .setSize(60, 25)
+        .setFont(cFont)
+          .setFocus(true)
+            .hide()
+              ;
+
+
   //Set up buttons
   startButton = cp5.addButton("Start")
     .setValue(0)
@@ -373,6 +411,22 @@ void setupListBoxandButtons() {
                 ;
 
   startButton.captionLabel()
+    .setFont(cFont)
+      .setSize(20)
+        .toUpperCase(false)
+          .align(ControlP5.CENTER, ControlP5.CENTER)
+            ;
+
+  okButton = cp5.addButton("OK")
+    .setValue(0)
+      .setPosition(1100, 20)
+        .setSize(60, 25)
+          .setId(0)
+            .activateBy(ControlP5.RELEASE)
+              .hide()
+                ;
+
+  okButton.captionLabel()
     .setFont(cFont)
       .setSize(20)
         .toUpperCase(false)

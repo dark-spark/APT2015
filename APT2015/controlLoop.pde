@@ -104,12 +104,28 @@ void control() {
     currentRun[6] = t;
     t /= 1000;
     currentSesh[6] = String.format("%.2f", t);
+    mode = 105;
+    nameSet = false;
+    break;
+
+  case 105:
+    textField.show();
+    okButton.show();
+    mode = 107;
+    break;
+
+  case 107:
+    //Ok button or data entry will move to next case.
+    break;
+
+  case 108:
+    textField.hide();
+    okButton.hide();
     data = appendArray(currentRun, data);
     ranking.addNewRow(currentRun);
     index++;
-    writeTextFile();
+//    writeTextFile();//////////////////////////////////////Commented Out for testing////////////////////
     mode = 110;
-    nameSet = false;
     break;
 
   case 110:
@@ -117,7 +133,7 @@ void control() {
     if (nameSet) {
       mode = 10;
       sScreen.resetTimer();
-    sScreen.resetTimer1();
+      sScreen.resetTimer1();
     }
     break;
   }

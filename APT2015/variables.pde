@@ -41,6 +41,7 @@ boolean lcsg = false;
 boolean dfr = false;
 boolean pbr = false;
 boolean obstacleCourse = false;
+String textInput = "";
 
 int runIndex = 0;
 
@@ -50,11 +51,14 @@ controlP5.Button startButton;
 controlP5.Button dfrButton;
 controlP5.Button lcsgButton;
 controlP5.Button pbrButton;
+controlP5.Textfield textField;
+controlP5.Button okButton;
 
 boolean updateTimer;
 boolean stop = false;
 boolean first = false;
 
+ArrayList<float[]> mainTable;
 float currentRun[] = new float[7];
 
 int cnt=0;
@@ -84,6 +88,34 @@ boolean salesForce = false;
 String[] accessDetails = new String[2];
 
 color red = color(255, 0, 0);
+
+boolean sorted = false;
+String[] currentSesh = {
+  "", 
+  "", 
+  "", 
+  "", 
+  "", 
+  "", 
+  ""
+};
+
+String[] headings = {
+  "Name", 
+  "Obstacle Course", 
+  "Smash and Grab", 
+  "Obstacle Course", 
+  "Zombies", 
+  "Ammo Used", 
+  "Total Time"
+};
+
+boolean initRankingTable = false;
+
+int columGap = 150;
+int headingHeight = 96;
+int currentSeshHeight = 120;
+
 
 int[][] brokenHeart = {
   {
