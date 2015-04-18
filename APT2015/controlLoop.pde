@@ -6,11 +6,11 @@ void control() {
     redON();
     if (nameSet) {
       mode = 20;
-      debugB();//////////////////////////////////////////////////
-      clearCurrentArrays();  
-      debugA();//////////////////////////////////////////////////
+      clearCurrentArrays(); 
       currentSesh[0] = name;
+      debugB();//////////////////////////////////////////////////
       currentRun[0] = nameCode(name, names);
+      debugA();////////////////////////////////////////////////// 
       startButton.show();
       sScreen.setTime1(10000);
     }
@@ -109,9 +109,12 @@ void control() {
     break;
 
   case 105:
-    textField.show();
-    okButton.show();
-    mode = 107;
+    if (obstacleCourse) {
+      mode = 108;
+    } else {
+      textField.show();
+      mode = 107;
+    }
     break;
 
   case 107:
@@ -124,7 +127,7 @@ void control() {
     data = appendArray(currentRun, data);
     ranking.addNewRow(currentRun);
     index++;
-//    writeTextFile();//////////////////////////////////////Commented Out for testing////////////////////
+    //    writeTextFile();//////////////////////////////////////Commented Out for testing////////////////////
     mode = 110;
     break;
 
@@ -138,3 +141,4 @@ void control() {
     break;
   }
 } 
+

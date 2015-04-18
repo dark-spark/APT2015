@@ -212,8 +212,13 @@ class tableOfStrings1 {
     strings = new String[a];
     strings[0] = nameArray[int(_data[0])];
     for (int i = 1; i < a; i++) {
-      strings[i] = String.format("%.2f", _data[i]);
+      if (_data[i] == 0) {
+        strings[i] = "";
+      } else {
+        strings[i] = String.format("%.2f", _data[i]);
+      }
     }
     return strings;
   }
 }
+

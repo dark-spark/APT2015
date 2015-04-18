@@ -85,8 +85,6 @@ To-do list
  Fix pushNewResults
  Add penalty bits recieve serial commands
  Add penalty bits data point and display
- Add pop up for ammo used
- 
- 
+  
  
  */

@@ -57,7 +57,7 @@ void OK(int theValue) {
 boolean validateText(String text) {
   boolean isNull = text.equals("") ? true : false;
   int n = int(text);
-  if(!isNull && n > 0) {
+  if (!isNull && n > 0) {
     return true;
   } else {
     return false;
@@ -137,13 +137,13 @@ void controlEvent(ControlEvent theEvent) {
 }
 
 void updateName() {
-
-  firstClick = false;
-  l.captionLabel().set(names[selection]);
-  data[index][0] = selection;
-  name = names[int(data[index][0])];
-  nameSet = true;
-  //  debugT();/////////////////////////////////////////////////////////////////////////////////////////////////////////
+  if (mode == 110 || mode == 10) {
+    firstClick = false;
+    l.captionLabel().set(names[selection]);
+    data[index][0] = selection;
+    name = names[int(data[index][0])];
+    nameSet = true;
+  }
 }
 
 void debugT() {
@@ -475,3 +475,4 @@ void setupCP5() {
           .align(ControlP5.CENTER, ControlP5.CENTER)
             ;
 }
+

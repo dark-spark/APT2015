@@ -30,6 +30,12 @@ void serialEvent (Serial myPort) {
       serialData = true;
     }
     
+    match = match(inString, "pbr");
+  if(match != null) {
+    pbr = true;
+    serialData = true;
+    penaltyBits = 
+    
     inString = trim(inString);
     String match2[] = match(inString, "yes.");
     if (match2 != null) {
