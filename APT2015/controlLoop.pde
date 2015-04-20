@@ -5,10 +5,10 @@ void control() {
   case 10:
     redON();
     if (nameSet) {
+      debugB();//////////////////////////////////////////////////
       mode = 20;
       clearCurrentArrays(); 
       currentSesh[0] = name;
-      debugB();//////////////////////////////////////////////////
       currentRun[0] = nameCode(name, names);
       debugA();////////////////////////////////////////////////// 
       startButton.show();
@@ -126,6 +126,7 @@ void control() {
     okButton.hide();
     data = appendArray(currentRun, data);
     ranking.addNewRow(currentRun);
+    mainGlobalTable.add(currentRun);
     index++;
     //    writeTextFile();//////////////////////////////////////Commented Out for testing////////////////////
     mode = 110;

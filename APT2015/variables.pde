@@ -58,7 +58,7 @@ boolean updateTimer;
 boolean stop = false;
 boolean first = false;
 
-ArrayList<float[]> mainTable;
+ArrayList<float[]> mainGlobalTable;
 float currentRun[] = new float[7];
 
 int cnt=0;

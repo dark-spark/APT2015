@@ -1,15 +1,16 @@
 class tableOfStrings1 {
   //Class variables
-  int tableHeight, colSpacing, maxLength, arrayWidth;
-  ArrayList<rowOfStrings> rows;
-  ArrayList<int[]> colors;
-  float[][] displayTable;
-  int[][] colours;
-  int[] rowHeights;
-  String[] nameArray;
-  boolean initialised = false;
-  boolean sort, minMax, coloured;
-  boolean blinker;
+  private int tableHeight, colSpacing, maxLength, arrayWidth;
+  private ArrayList<rowOfStrings> rows;
+  private ArrayList<int[]> colors;
+  private float[][] displayTable;
+  private int[][] colours;
+  private int[] rowHeights;
+  private String[] nameArray;
+  private boolean initialised = false;
+  private boolean sort, minMax, coloured;
+  private boolean blinker;
+  private ArrayList<float[]> mainTable;
 
   tableOfStrings1() {
   }
@@ -63,6 +64,24 @@ class tableOfStrings1 {
       displayTable = sortResults(6, minMax, main);
     } else if (!sort) {
       displayTable = getMain();
+    }
+    if (coloured) {
+      colourTableColoured();
+    } else if (!coloured) {
+      colourTableWhite();
+    }
+    for (int i = 0; i < displayTable.length; i++) {  
+      String[] displayArray = floatToStringRow(displayTable[i]);
+      rowOfText(displayArray, colSpacing, rowHeights[i], colours[i]);
+    }
+  }
+
+  void display(float[][] _table) {
+    if (sort) {
+      float[][] main = _table;
+      displayTable = sortResults(6, minMax, main);
+    } else if (!sort) {
+      displayTable = _table;
     }
     if (coloured) {
       colourTableColoured();

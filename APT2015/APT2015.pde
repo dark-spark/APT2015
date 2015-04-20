@@ -12,7 +12,7 @@ void setup() {
   f.setTitle("Timer");
   fill(0);
 
-  
+
   if (frame != null) {
     frame.setResizable(true);
   }
@@ -25,6 +25,17 @@ void setup() {
   //Start serial comms and initialise
   serial = startSerial();
 
+//////Test//////
+  mainGlobalTable = new ArrayList<float[]>();
+  for (int i = 0; i < index; i++) {
+    mainGlobalTable.add(new float[7]);
+    float[] fArray = mainGlobalTable.get(i);
+    for (int j = 0; j < fArray.length; j++) {
+      fArray[j] = data[i][j];
+    }
+  }
+//////Test//////
+
   //Create fonts
   f1 = createFont("Calibri", 50);
   f2 = createFont("Calibri Bold", 20);
@@ -33,7 +44,7 @@ void setup() {
   f6 = createFont("Arial Unicode MS", 12);
 
   setupCP5();
-  
+
   boolean max = false;
   ranking = new tableOfStrings1();
   ranking.setSorting(true, max);
@@ -74,8 +85,12 @@ void draw() {
   rowOfText(currentSesh, columGap, currentSeshHeight);
 
   //Text for ranking table
+  float[] a = mainGlobalTable.get(0);
+  float[][] fTable = new float[mainGlobalTable.size()][a.length];
+  for(int i = 0; i < mainGlobalTable.size(); i++) {
+    fTable[i] = mainGlobalTable.get(i);
+  }
   ranking.display();
-
 }
 
 
@@ -85,6 +100,6 @@ To-do list
  Fix pushNewResults
  Add penalty bits recieve serial commands
  Add penalty bits data point and display
-  
+ 
  
  */

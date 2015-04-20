@@ -17,25 +17,26 @@ void serialEvent (Serial myPort) {
   print(inString);
   if (inString != null) {
     blockedSensors = "";
-    
+
     String match[] = match(inString, "lcsg");
     if (match != null) {
       lcsg = true;
       serialData = true;
     }
-    
+
     match = match(inString, "dfr");
     if (match != null) {
       dfr = true;
       serialData = true;
     }
-    
+
     match = match(inString, "pbr");
-  if(match != null) {
-    pbr = true;
-    serialData = true;
-    penaltyBits = 
-    
+    if (match != null) {
+      pbr = true;
+      serialData = true;
+//      penaltyBits = 0;
+    }
+
     inString = trim(inString);
     String match2[] = match(inString, "yes.");
     if (match2 != null) {
@@ -218,33 +219,33 @@ void toneFalseStart() {
 
 void play1upTone() {
   if (serial) {
-     myPort.write("tone1UP.");
-     myPort.clear();
+    myPort.write("tone1UP.");
+    myPort.clear();
   }
 }
 
 void sendUp() {
   if (serial) {
-   myPort.write("up.");
-   myPort.clear();
+    myPort.write("up.");
+    myPort.clear();
   }
 }
 
 void reset() {
   if (serial) {
-   myPort.write("reset.");
-   myPort.clear();
+    myPort.write("reset.");
+    myPort.clear();
   }
 }
 
 boolean ping() {
-  if(serial) {
+  if (serial) {
     yesReceived = false;
     noReceived = false;
     sendUp();
     int time = millis();
     delay(50);
-    if(yesReceived || noReceived) {
+    if (yesReceived || noReceived) {
       return true;
     } 
     return false;
@@ -252,3 +253,4 @@ boolean ping() {
     return false;
   }
 }
+
