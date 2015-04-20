@@ -55,7 +55,8 @@ class tableOfStrings1 {
   }
 
   void addNewRow(float[] _newRow) {
-    mainTable.add(_newRow);
+    float[] newRow = _newRow;
+    mainTable.add(newRow);
   }
 
   void display() {
@@ -184,9 +185,10 @@ class tableOfStrings1 {
     float[][] ccurrent = new float[a][b];
     for (int i = 0; i < a; i++) {
       r = mainTable.get(i);
-      for (int j = 0; j < b; j++) {
-        ccurrent[i][j] = r[j];
-      }
+      ccurrent[i] = r;
+//      for (int j = 0; j < b; j++) {
+//        ccurrent[i][j] = r[j];
+//      }
     }
     return ccurrent;
   }

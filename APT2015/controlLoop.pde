@@ -6,13 +6,13 @@ void control() {
     redON();
     if (nameSet) {
       debugB();//////////////////////////////////////////////////
-      mode = 20;
-      clearCurrentArrays(); 
+      clearCurrentArrays();
       currentSesh[0] = name;
       currentRun[0] = nameCode(name, names);
       debugA();////////////////////////////////////////////////// 
       startButton.show();
       sScreen.setTime1(10000);
+      mode = 20;
     }
     break;
 

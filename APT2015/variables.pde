@@ -20,7 +20,7 @@ int count = 0;
 String total;
 String name;
 float data[][] = new float[arrayLength][7];
-float sortList[] = new float[arrayLength];
+
 String names[] = new String[arrayLength];
 String songs[] = new String[arrayLength];
 String barcodes[] = new String[arrayLength];

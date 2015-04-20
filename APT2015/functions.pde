@@ -203,14 +203,14 @@ void rowOfText(String[] text, int colSpacing, int hheight) {
   }
 }
 
-void rowOfText(String[] text, int colSpacing, int hheight, color[] colors) {
+void rowOfText(String[] ttext, int colSpacing, int hheight, color[] colors) {
 
-  float numOfCols = text.length;
+  float numOfCols = ttext.length;
   int ceil = ceil(numOfCols / 2);
 
   for (int i = 0; i < numOfCols; i++) {
     fill(colors[i]);
-    text(text[i], width/2 + (colSpacing * (i - numOfCols + ceil)), hheight);
+    text(ttext[i], width/2 + (colSpacing * (i - numOfCols + ceil)), hheight);
   }
 } 
 
