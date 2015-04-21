@@ -346,17 +346,10 @@ void mousePressed() {
     //      sortFastest = true;
     //      c3 = c1;
     //    }
-    //    test = !test;
-    //    if (test) {
-    //      sScreen.startTimer();
-    //    } else {
-    //      sScreen.stopTimer();
-    //    }
   }
 
 
   if (mouseX > boxX1 && mouseX < boxX1+boxSize && mouseY >boxY1 && mouseY < boxY1+boxSize) {
-    //    sScreen.resetTimer();
   }
 }
 
@@ -475,4 +468,3 @@ void setupCP5() {
           .align(ControlP5.CENTER, ControlP5.CENTER)
             ;
 }
-

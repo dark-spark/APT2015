@@ -1,7 +1,6 @@
 class tableOfStrings1 {
   //Class variables
-  private int tableHeight, colSpacing, maxLength, arrayWidth;
-  private ArrayList<rowOfStrings> rows;
+  private int tableHeight, colSpacing, maxLength, arrayWidth, tableIndex;
   private ArrayList<int[]> colors;
   private float[][] displayTable;
   private int[][] colours;
@@ -11,6 +10,7 @@ class tableOfStrings1 {
   private boolean sort, minMax, coloured;
   private boolean blinker;
   private ArrayList<float[]> mainTable;
+  private float[][] mainFloatTable;
 
   tableOfStrings1() {
   }
@@ -24,6 +24,7 @@ class tableOfStrings1 {
       colSpacing = _colSpacing; 
       maxLength = _maxLength;
       nameArray = _names;
+      tableIndex = _index;
 
       mainTable = new ArrayList<float[]>();
       for (int i = 0; i < _index; i++) {
@@ -33,6 +34,8 @@ class tableOfStrings1 {
           fArray[j] = ttable[i][j];
         }
       }
+      
+      mainFloatTable = _table;
 
       colours = whiteColor2dArray(arrayLength, arrayWidth);
 
@@ -57,6 +60,7 @@ class tableOfStrings1 {
   void addNewRow(float[] _newRow) {
     float[] newRow = _newRow;
     mainTable.add(newRow);
+    mainFloatTable[index + 1] = newRow;
   }
 
   void display() {
@@ -104,6 +108,7 @@ class tableOfStrings1 {
       for (int i = 0; i < mainTable.size (); i++) {
         float[] a = mainTable.get(i);
         println(a);
+        println(mainFloatTable[i]);
       }
     }
   }
@@ -113,6 +118,7 @@ class tableOfStrings1 {
     for (int i = 0; i < mainTable.size (); i++) {
       float[] a = mainTable.get(i);
       println(a[0]);
+      println(mainFloatTable[i][0]);
     }
   }
 
@@ -242,4 +248,3 @@ class tableOfStrings1 {
     return strings;
   }
 }
-

@@ -5,7 +5,7 @@ void control() {
   case 10:
     redON();
     if (nameSet) {
-      debugB();//////////////////////////////////////////////////
+      debugB();
       clearCurrentArrays();
       currentSesh[0] = name;
       currentRun[0] = nameCode(name, names);
@@ -142,4 +142,3 @@ void control() {
     break;
   }
 } 
-
