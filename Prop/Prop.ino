@@ -121,12 +121,12 @@ int randoms[31][6] = {
 };
 
 const int floatingPin = A6;
-const int red = A7;
-const int gree = A4;
-const int blue = A3;
-const int yell = A2;
-const int oran = A1;
-const int pink = A0;
+const int red = A0;
+const int gree = A1;
+const int blue = A2;
+const int yell = A3;
+const int oran = A4;
+const int pink = A7;
 const int buttonLight = A5;
 const int ledPin = 2;
 const int canPin = 3;
@@ -214,7 +214,7 @@ void loop(){
       time0 = millis();
       numCorrect = 0;
       r = random(30);
-      r=0;
+//      r=0;
       displayRand();
       mode = 5;
       time = countDownTime;
