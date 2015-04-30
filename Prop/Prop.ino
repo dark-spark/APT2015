@@ -154,7 +154,7 @@ int countDownTime = 500;
 boolean colon = true;
 boolean blinker = true;
 
-Adafruit_NeoPixel leds = Adafruit_NeoPixel(12, ledPin, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel leds = Adafruit_NeoPixel(numOfPixels, ledPin, NEO_GRB + NEO_KHZ800);
 
 LedControl digit = LedControl(digitDINPin, digitCLKPin, digitLoadPin, 1);
 
@@ -255,6 +255,7 @@ void loop(){
 
     case 40: //Transmit data
       transmit(numCorrect);
+      Serial.println(numCorrect);
       digitalWrite(enableShootingRange, HIGH);
       mode = 50;
       break;
@@ -265,6 +266,7 @@ void loop(){
   }
   mode = 0;
   Timer1.detachInterrupt();
+  transmit(0);
   digitalWrite(enableShootingRange, LOW);
   updateDigit(500);
   rainbowCycle(20);
@@ -318,6 +320,7 @@ void checkConnections(boolean bools[]) {
   vals[3] = sensorVal(yell);
   vals[4] = sensorVal(oran);
   vals[5] = sensorVal(pink);
+  Serial.println("checkConnections");
   for(int i = 0; i < numOfPixels; i++) {
     Serial.println(vals[i]);
     if(vals[i] == randoms[r][i]) {
@@ -332,6 +335,10 @@ void checkConnections(boolean bools[]) {
 
 int sensorVal(int pin) {
   int val = analogRead(pin);
+  Serial.print("SensorVal/npin: ");
+  Serial.println(pin);
+  Serial.print("Val: ");
+  Serial.println(val);
   if(val > 96 && val < 196) {
     return 0;
   } 
@@ -363,6 +370,7 @@ void displayScore() {
 }
 
 void displayRand() {
+  Serial.println("displayRand");
   for(int i = 0; i < numOfPixels; i++) {
     Serial.println(randoms[r][i]);
     leds.setPixelColor(numOfPixels-i-1, colors[randoms[r][i]][0], colors[randoms[r][i]][1], colors[randoms[r][i]][2]);
