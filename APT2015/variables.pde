@@ -20,6 +20,8 @@ int count = 0;
 String total;
 String name;
 float data[][] = new float[arrayLength][7];
+int colourTable[][] = new int[arrayLength][7];
+int rowHeights[];
 
 String names[] = new String[arrayLength];
 String songs[] = new String[arrayLength];
@@ -87,7 +89,10 @@ String blockedSensors = "";
 boolean salesForce = false;
 String[] accessDetails = new String[2];
 
-color red = color(255, 0, 0);
+int red = color(255, 0, 0);
+int pink = color(255, 220, 0);
+int yellow = color(255, 50, 255);
+int white = color(255, 255, 255);
 
 boolean sorted = false;
 String[] currentSesh = {
@@ -298,7 +303,3 @@ int[][] bigHeart = {
   }
   ,
 };
-
-int pink = color(255, 220, 0);
-int yellow = color(255, 50, 255);
-int white = color(255, 255, 255);

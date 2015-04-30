@@ -4,129 +4,130 @@
 
 int colors[][3] = {
   {
-    255, 0, 0    }
+    255, 0, 0      }
   ,
   {
-    0, 255, 0    }
+    0, 255, 0      }
   ,
   {
-    0, 0, 255    }
+    0, 0, 255      }
   ,
   {
-    255, 0, 255    }
+    255, 255, 0      }
   ,
   {
-    255, 255, 255    }
+    255, 100, 0      }
   ,
   {
-    255, 255, 0    }
+    255, 0, 255      }
   ,
   {
-    0, 0, 0    }
+    0, 0, 0      }
 };
 
-int randoms[30][6] = {
+int randoms[31][6] = {
   {
-    0,5,4,3,2,1    }
-//  ,
-//  {
-//    0,1,2,3,4,5    }
+    0,1,2,3,4,5      }
   ,
   {
-    5,0,3,2,1,4    }
+    5,4,3,2,1,0      }
   ,
   {
-    1,0,5,2,4,3    }
+    5,0,3,2,1,4      }
   ,
   {
-    5,3,0,4,1,2    }
+    1,0,5,2,4,3      }
   ,
   {
-    1,0,3,4,5,2    }
+    5,3,0,4,1,2      }
   ,
   {
-    3,5,0,2,1,4    }
+    1,0,3,4,5,2      }
   ,
   {
-    0,3,1,5,2,4    }
+    3,5,0,2,1,4      }
   ,
   {
-    2,5,0,3,4,1    }
+    0,3,1,5,2,4      }
   ,
   {
-    4,2,0,1,5,3    }
+    2,5,0,3,4,1      }
   ,
   {
-    5,1,0,4,2,3    }
+    4,2,0,1,5,3      }
   ,
   {
-    1,0,2,5,3,4    }
+    5,1,0,4,2,3      }
   ,
   {
-    0,1,5,4,2,3    }
+    1,0,2,5,3,4      }
   ,
   {
-    1,0,3,5,4,2    }
+    0,1,5,4,2,3      }
   ,
   {
-    0,4,3,1,5,2    }
+    1,0,3,5,4,2      }
   ,
   {
-    4,0,5,1,2,3    }
+    0,4,3,1,5,2      }
   ,
   {
-    3,2,5,1,4,0    }
+    4,0,5,1,2,3      }
   ,
   {
-    0,2,1,3,5,4    }
+    3,2,5,1,4,0      }
   ,
   {
-    2,4,3,0,1,5    }
+    0,2,1,3,5,4      }
   ,
   {
-    1,5,4,2,0,3    }
+    2,4,3,0,1,5      }
   ,
   {
-    0,4,5,3,2,1    }
+    1,5,4,2,0,3      }
   ,
   {
-    4,0,3,2,5,1    }
+    0,4,5,3,2,1      }
   ,
   {
-    3,5,2,4,1,0    }
+    4,0,3,2,5,1      }
   ,
   {
-    3,4,5,2,0,1    }
+    3,5,2,4,1,0      }
   ,
   {
-    1,5,4,2,3,0    }
+    3,4,5,2,0,1      }
   ,
   {
-    5,4,3,1,0,2    }
+    1,5,4,2,3,0      }
   ,
   {
-    2,4,0,5,1,3    }
+    5,4,3,1,0,2      }
   ,
   {
-    0,2,1,3,5,4    }
+    2,4,0,5,1,3      }
   ,
   {
-    0,1,5,2,4,3    }
+    0,2,1,3,5,4      }
   ,
   {
-    0,5,2,4,3,1    }
+    0,1,5,2,4,3      }
   ,
   {
-    4,0,3,2,1,5    }
+    0,5,2,4,3,1      }
+  ,
+  {
+    4,0,3,2,1,5      }
 };
 
 const int floatingPin = A6;
-const int AI0 = A0;
-const int AI1 = A1;
-const int AI2 = A2;
-const int AI3 = A3;
-const int AI4 = A4;
-const int AI5 = A5;
+const int red = A7;
+const int gree = A4;
+const int blue = A3;
+const int yell = A2;
+const int oran = A1;
+const int pink = A0;
+const int buttonLight = A5;
 const int ledPin = 2;
 const int canPin = 3;
 const int buttonPin = 4;
@@ -146,15 +147,16 @@ int r;
 boolean score[numOfPixels];
 int numCorrect = 0;
 int mode = 0;
-unsigned long time0, time1;
+unsigned long time0, time1, time2, time3;
 //int d0, d1, d2, d3;
 int time;
+int countDownTime = 500;
 boolean colon = true;
+boolean blinker = true;
 
-Adafruit_NeoPixel leds = Adafruit_NeoPixel(numOfPixels, ledPin, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel leds = Adafruit_NeoPixel(12, ledPin, NEO_GRB + NEO_KHZ800);
 
 LedControl digit = LedControl(digitDINPin, digitCLKPin, digitLoadPin, 1);
-
 
 void setup(){
 
@@ -174,6 +176,7 @@ void setup(){
   pinMode(data2, OUTPUT);
   pinMode(clk, OUTPUT);
   pinMode(enableShootingRange, OUTPUT);
+  pinMode(buttonLight, OUTPUT);
 
   digit.shutdown(0,false);
   digit.setIntensity(0,8);
@@ -186,28 +189,35 @@ void setup(){
 void loop(){
 
   while (digitalRead(canPin) == LOW) { 
-    
+
     switch(mode) {
 
     case 0: //Set clock display
-      updateDigit(500);
+      updateDigit(countDownTime);
       displayNothing();
       mode = 1;
       break;
 
-    case 1: //Wait for Start Button
-      if(digitalRead(buttonPin1) == LOW) {
+    case 1: //Switch is off
+      if(digitalRead(buttonPin1) == HIGH) {
         mode = 2;
       }
       break;
 
-    case 2:  //Display Random Colours
+    case 2: //Switch is on
+      if(digitalRead(buttonPin1) == LOW) {
+        mode = 4;
+      }
+      break;
+
+    case 4:  //Display Random Colours
       time0 = millis();
       numCorrect = 0;
       r = random(30);
+      r=0;
       displayRand();
       mode = 5;
-      time = 500;
+      time = countDownTime;
       Timer1.attachInterrupt(decrement);
       break;
 
@@ -217,12 +227,23 @@ void loop(){
 
     case 10: //Clear display
       displayNothing();
+      time2 = millis();
+      blinker = true;
+      digitalWrite(buttonLight, blinker);
       mode = 20;
       break;
 
     case 20: //Wait for button press
       if(digitalRead(buttonPin) == LOW) {
+        digitalWrite(buttonLight, HIGH);
         mode = 30;
+        break;
+      }
+      time3 = millis() - time2;
+      if(time3 >= 250) {
+        blinker = !blinker;
+        digitalWrite(buttonLight, blinker);
+        time2 = millis();
       }
       break;
 
@@ -255,10 +276,11 @@ void updateDigit(int value) {
   int d1 = (((value - d0) / 10) % 10);
   int d2 = (((value - d0 - (d1 * 10)) / 100) % 10);
   int d3 = (((value - d0 - (d1 * 10) - (d2 * 100)) / 1000) % 10);
-  
+
   if(d1 == 5) {
     colon = false;
-  } else if (d1 == 0) {
+  } 
+  else if (d1 == 0) {
     colon = true;
   }
 
@@ -290,13 +312,14 @@ void transmit(int i) {
 
 void checkConnections(boolean bools[]) {
   int vals[numOfPixels];
-  vals[0] = sensorVal(AI0);
-  vals[1] = sensorVal(AI1);
-  vals[2] = sensorVal(AI2);
-  vals[3] = sensorVal(AI3);
-  vals[4] = sensorVal(AI4);
-  vals[5] = sensorVal(AI5);
+  vals[0] = sensorVal(red);
+  vals[1] = sensorVal(gree);
+  vals[2] = sensorVal(blue);
+  vals[3] = sensorVal(yell);
+  vals[4] = sensorVal(oran);
+  vals[5] = sensorVal(pink);
   for(int i = 0; i < numOfPixels; i++) {
+    Serial.println(vals[i]);
     if(vals[i] == randoms[r][i]) {
       bools[i] = 1;
       numCorrect++;
@@ -341,7 +364,8 @@ void displayScore() {
 
 void displayRand() {
   for(int i = 0; i < numOfPixels; i++) {
-    leds.setPixelColor(i, colors[randoms[r][i]][0], colors[randoms[r][i]][1], colors[randoms[r][i]][2]);
+    Serial.println(randoms[r][i]);
+    leds.setPixelColor(numOfPixels-i-1, colors[randoms[r][i]][0], colors[randoms[r][i]][1], colors[randoms[r][i]][2]);
   }
   leds.show();
 }
@@ -397,6 +421,7 @@ void rainbowCycle(uint8_t wait) {
     delay(wait);
   }
 }
+
 
 
 

@@ -33,12 +33,4 @@ void loadFiles() {
     names[i] = split[0];
     barcodes[i] = split[1];
   }
-  println("Files Loaded");
-
-  // Import barcodes
-  //  String barcodeString[] = loadStrings("barcodes.txt");
-  //  for (int i = 0; i < barcodeString.length; i++) {
-  //    barcodes[i] = barcodeString[i];
-  //  }
-
 }

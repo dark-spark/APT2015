@@ -1,3 +1,107 @@
+void displayMainTable(float[][] _data) {
+  boolean sortByMax = true;
+  float[][] displayData = sortResults(6, sortByMax, _data);
+  int[][] colorTable = colorArray(displayData, sortByMax);
+  for (int i = 0; i < index; i++) { 
+    String[] displayArray = floatToStringRow(displayData[i]);
+    rowOfText(displayArray, 150, rowHeights[i], colorTable[i]);
+  }
+}
+
+String[] floatToStringRow(float[] _data) {
+  String[] strings;
+  int a = _data.length;
+  strings = new String[a];
+  strings[0] = names[int(_data[0])];
+  for (int i = 1; i < a; i++) {
+    if (_data[i] == 0) {
+      strings[i] = "";
+    } else {
+      strings[i] = String.format("%.2f", _data[i]);
+    }
+  }
+  return strings;
+}
+
+int[][] colorArray(float[][] dat, boolean max) {
+
+  float[] mask = findMinMax(dat, max);
+  int colour;
+  int[][] colourArray = new int[dat.length][dat[0].length];
+  if (max) {
+    colour = pink;
+  } else {
+    colour = yellow;
+  };
+
+  for (int i = 0; i < dat.length; i++) {
+    colourArray[i][0] = white;
+  }
+  for (int i = 1; i < dat[0].length; i++) {
+    for (int j = 0; j < dat.length; j++) {
+      if (dat[j][i] == mask[i]) {
+        colourArray[j][i] = colour;
+      } else {
+        colourArray[j][i] = white;
+      }
+    }
+  }
+  return colourArray;
+}
+
+float[] findMinMax(float[][] dat, boolean max) {
+
+  float[] minMax = new float[dat[0].length];
+  for (int i = 0; i < dat[0].length; i++) {
+    if (!max) {
+      minMax[i] = 2147483647;
+    }
+  } 
+  for (int i = 0; i < dat[0].length; i++) {
+    for (int j = 0; j < dat.length; j++) {
+      //        println("i="+i+"j="+j);
+      if (max) {
+        if (dat[j][i] > minMax[i]) {
+          minMax[i] = dat[j][i];
+        }
+      } else {
+        if (dat[j][i] < minMax[i]) {
+          minMax[i] = dat[j][i];
+        }
+      }
+    }
+  }
+  return minMax;
+}
+
+
+float[][] sortResults(int row, boolean max, float[][] _data) {
+
+  FloatList sortList;
+  sortList = new FloatList();
+  float[][] sortedTable = new float[_data.length][_data[0].length];
+
+  for (int i = 0; i < _data.length; i++) {
+    sortList.append(_data[i][row]);
+  }
+
+  //Sort for fastest or slowest
+  if (!max) {
+    sortList.sort();
+  } else {
+    sortList.sortReverse();
+  }
+
+  //Generate a list of the ranked positions
+  for (int i = 0; i < _data.length; i++) {
+    for (int j = 0; j < _data.length; j++) {
+      if (_data[j][row] == sortList.get(i)) {
+        sortedTable[i] = _data[j];
+      }
+    }
+  }
+  return sortedTable;
+}
 
 void clearCurrentArrays() {
   for (int a = 0; a < 7; a++) {
@@ -17,9 +121,8 @@ int nameCode(String _name, String[] _names) {
 }
 
 float[][] appendArray(float[] newData, float[][] da) {
-  float[][] d = da;
-  d[index] = newData;
-  return d;
+  da[index] = newData;
+  return da;
 }
 
 void resetSerialData() {

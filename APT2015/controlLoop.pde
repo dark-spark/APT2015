@@ -5,11 +5,11 @@ void control() {
   case 10:
     redON();
     if (nameSet) {
-      debugB();
+//      debugB();
       clearCurrentArrays();
       currentSesh[0] = name;
       currentRun[0] = nameCode(name, names);
-      debugA();////////////////////////////////////////////////// 
+//      debugA();////////////////////////////////////////////////// 
       startButton.show();
       sScreen.setTime1(10000);
       mode = 20;
@@ -124,9 +124,12 @@ void control() {
   case 108:
     textField.hide();
     okButton.hide();
-    data = appendArray(currentRun, data);
-    ranking.addNewRow(currentRun);
-    mainGlobalTable.add(currentRun);
+//    data = appendArray(currentRun, data);
+    for(int i = 0; i < currentRun.length; i++) {
+      data[index][i] = currentRun[i];
+    }
+//    ranking.addNewRow(currentRun);
+//    mainGlobalTable.add(currentRun);
     index++;
     //    writeTextFile();//////////////////////////////////////Commented Out for testing////////////////////
     mode = 110;
