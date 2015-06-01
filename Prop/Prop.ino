@@ -307,8 +307,9 @@ void transmit(int i) {
   digitalWrite(data0, i & 1 ? HIGH : LOW);
   digitalWrite(data1, i & 2 ? HIGH : LOW);
   digitalWrite(data2, i & 4 ? HIGH : LOW);
+  delay(10);
   digitalWrite(clk, HIGH);
-  delay(100);
+  delay(1000);
   digitalWrite(clk, LOW);
 }
 
