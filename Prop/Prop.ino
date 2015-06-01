@@ -150,7 +150,7 @@ int mode = 0;
 unsigned long time0, time1, time2, time3;
 //int d0, d1, d2, d3;
 int time;
-int countDownTime = 500;
+int countDownTime = 100;
 boolean colon = true;
 boolean blinker = true;
 
@@ -255,6 +255,7 @@ void loop(){
 
     case 40: //Transmit data
       transmit(numCorrect);
+      Serial.print("Number correct: ");
       Serial.println(numCorrect);
       digitalWrite(enableShootingRange, HIGH);
       mode = 50;
@@ -266,7 +267,6 @@ void loop(){
   }
   mode = 0;
   Timer1.detachInterrupt();
-  transmit(0);
   digitalWrite(enableShootingRange, LOW);
   updateDigit(500);
   rainbowCycle(20);
