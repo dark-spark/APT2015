@@ -2,5 +2,6 @@
     "port": "COM20",
     "configuration": "cpu=atmega328old",
     "board": "arduino:avr:nano",
-    "programmer": "arduino:avrispmkii"
+    "programmer": "arduino:avrispmkii",
+    "sketch": "Prop\\Prop.ino"
 }
